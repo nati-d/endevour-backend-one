@@ -1,6 +1,5 @@
-
-namespace Router {
+namespace Routers{
 
 }
 
-export default Router;
+export default Routers;
