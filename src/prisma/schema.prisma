@@ -58,6 +58,13 @@ model User {
   job_post      Job_post[]
   tender        Tender[]
   blog          Blog[]
+  saved_organization            Saved_organization[]
+  saved_service_provider        Saved_service_provider[]
+  saved_grant                   Saved_grant[]
+  saved_news                    Saved_news[]
+  saved_blog                    Saved_blog[]
+  saved_tender                  Saved_tender[]
+  saved_job                     Saved_job[]
 }
 
 // -- Tag -- //
@@ -72,6 +79,7 @@ model Tag {
   tender     Tender[]
   grant      Grant[]
   tag        Blog[]
+
 }
 
 // -- Organization -- //
@@ -97,6 +105,17 @@ model Organization {
 
   organization_type Organization_category @relation(fields: [category], references: [id])
   admin             Admin?                @relation(fields: [verified_by], references: [id])
+  saved_organization    Saved_organization[]
+}
+
+model Saved_organization {
+    user            Int
+    organization    Int
+
+    @@id([user, organization])
+
+    user_            User                @relation(fields: [user], references: [id])
+    organization_    Organization        @relation(fields: [organization], references: [id])
 }
 
 // -- Service_provider -- //
@@ -121,6 +140,7 @@ model Service_provider {
   service_category Service_provider_category @relation(fields: [category], references: [id])
   admin            Admin                     @relation(fields: [verified_by], references: [id])
   post             Service_provider_post[]
+  Saved_service_provider    Saved_service_provider[]
 }
 
 model Service_provider_post {
@@ -132,6 +152,16 @@ model Service_provider_post {
   updated_at       DateTime
 
   service_provider Service_provider @relation(fields: [posted_by], references: [id])
+}
+
+model Saved_service_provider {
+    user                Int
+    service_provider    Int
+
+    @@id([user, service_provider])
+
+    user_               User                @relation(fields: [user], references: [id])
+    service_provider_   Service_provider    @relation(fields: [service_provider], references: [id])
 }
 
 // -- Job -- //
@@ -174,6 +204,7 @@ model Job_post {
   job_category       Job_category  @relation(fields: [category], references: [id])
   tags               Tag[]
   salary             Salary?
+  saved_job_post     Saved_job[]
 }
 
 enum Contract_type {
@@ -190,6 +221,16 @@ enum Periodicity {
   DAILY
 }
 
+model Saved_job {
+    user                Int
+    job    Int
+
+    @@id([user, job])
+
+    user_               User                @relation(fields: [user], references: [id])
+    job_                Job_post            @relation(fields: [job], references: [id])
+}
+
 // -- News -- //
 model News {
   id         Int      @id @default(autoincrement())
@@ -202,6 +243,17 @@ model News {
   updated_at DateTime @default(now()) @updatedAt
   admin      Admin    @relation(fields: [posted_by], references: [id])
   tags       Tag[]
+  saved_job  Saved_news[]
+}
+
+model Saved_news {
+    user                Int
+    news                Int
+
+    @@id([user, news])
+
+    user_               User                @relation(fields: [user], references: [id])
+    news_               News                @relation(fields: [news], references: [id])
 }
 
 // -- Tender -- //
@@ -238,6 +290,7 @@ model Tender {
   tender_category     Tender_category @relation(fields: [category], references: [id])
   files               Tender_files[]
   tags                Tag[]
+  saved_tender        Saved_tender[]
 }
 
 model Tender_files {
@@ -248,6 +301,16 @@ model Tender_files {
   updated_at DateTime @default(now()) @updatedAt
 
   tender     Tender   @relation(fields: [tender_id], references: [id])
+}
+
+model Saved_tender {
+    user                Int
+    tender                Int
+
+    @@id([user, tender])
+
+    user_               User                @relation(fields: [user], references: [id])
+    tender_             Tender              @relation(fields: [tender], references: [id])
 }
 
 // -- Grant -- //
@@ -263,6 +326,17 @@ model Grant {
 
   admin       Admin    @relation(fields: [verified_by], references: [id])
   tags        Tag[]
+  grant       Saved_grant[]
+}
+
+model Saved_grant {
+    user                Int
+    grant                Int
+
+    @@id([user, grant])
+
+    user_               User                @relation(fields: [user], references: [id])
+    grant_              Grant               @relation(fields: [grant], references: [id])
 }
 
 // -- Blog -- //
@@ -279,6 +353,17 @@ model Blog {
   admin       Admin    @relation(fields: [verified_by], references: [id])
   user        User     @relation(fields: [posted_by], references: [id])
   tags        Tag[]
+  saved_blog  Saved_blog[]
+}
+
+model Saved_blog {
+    user                Int
+    blog                Int
+
+    @@id([user, blog])
+
+    user_               User                @relation(fields: [user], references: [id])
+    blog_               Blog                @relation(fields: [blog], references: [id])
 }
 
 // -- Exclusiv job -- //
