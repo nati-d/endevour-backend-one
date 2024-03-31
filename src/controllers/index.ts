@@ -6,4 +6,5 @@ interface ReqBody{
     name: string
 }
 
+
 export default Controller;
