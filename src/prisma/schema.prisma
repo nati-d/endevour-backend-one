@@ -7,18 +7,251 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int    @id @default(autoincrement())
-  email String @unique
-  name  String
-  posts Post[]
+// admin
+enum Admin_role {
+  SUPER_ADMIN
+  ADMIN
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+model Admin {
+  id               Int                @id @default(autoincrement())
+  first_name       String             @db.VarChar(30)
+  last_name        String             @db.VarChar(30)
+  email            String             @unique
+  phone_number     String
+  profile_image    String
+  password         String
+  token            String
+  created_at       DateTime           @default(now())
+  updated_at       DateTime           @default(now()) @updatedAt
+  role             Admin_role
+  user             User[]
+  organization     Organization[]
+  service_provider Service_provider[]
+  job_post         Job_post[]
+  news             News[]
+  tender           Tender[]
+  grant            Grant[]
+  blog             Blog[]
+}
+
+// user
+model User {
+  id            Int        @id @default(autoincrement())
+  first_name    String     @db.VarChar(30)
+  last_name     String     @db.VarChar(30)
+  email         String     @unique @db.VarChar(60)
+  phone_number  String     @unique @db.VarChar(12)
+  profile_image String
+  password      String
+  token         String
+  location      Json
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @default(now()) @updatedAt
+  verified_by   Int
+  admin         Admin      @relation(fields: [verified_by], references: [id])
+  job_post      Job_post[]
+  tender        Tender[]
+  blog          Blog[]
+}
+
+model Tag {
+  id         Int        @id @default(autoincrement())
+  name       String     @unique
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now()) @updatedAt
+  job_post   Job_post[]
+  news       News[]
+  tender     Tender[]
+  grant      Grant[]
+  tag        Blog[]
+}
+
+model Organization_category {
+  id           Int            @id @default(autoincrement())
+  name         String         @unique @db.VarChar(100)
+  organization Organization[]
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @default(now()) @updatedAt
+}
+
+model Organization {
+  id                Int                   @id @default(autoincrement())
+  name              String                @unique @db.VarChar(100)
+  about             String                @db.Text
+  location          Json
+  category          Int
+  verified_by       Int?
+  created_at        DateTime              @default(now())
+  updated_at        DateTime              @default(now()) @updatedAt
+  organization_type Organization_category @relation(fields: [category], references: [id])
+  admin             Admin?                @relation(fields: [verified_by], references: [id])
+}
+
+model Service_provider_category {
+  id               Int                @id @default(autoincrement())
+  name             String             @unique @db.VarChar(100)
+  service_provider Service_provider[]
+  created_at       DateTime           @default(now())
+  updated_at       DateTime           @default(now()) @updatedAt
+}
+
+model Service_provider {
+  id               Int                       @id @default(autoincrement())
+  name             String                    @unique @db.VarChar(100)
+  category         Int
+  about            String                    @db.Text
+  verified_by      Int
+  created_at       DateTime                  @default(now())
+  updated_at       DateTime                  @default(now()) @updatedAt
+  service_category Service_provider_category @relation(fields: [category], references: [id])
+  post             Service_provider_post[]
+  admin            Admin                     @relation(fields: [verified_by], references: [id])
+}
+
+model Service_provider_post {
+  id               Int              @id @default(autoincrement())
+  content          String
+  description      String
+  posted_by        Int
+  created_at       DateTime
+  updated_at       DateTime
+  service_provider Service_provider @relation(fields: [posted_by], references: [id])
+}
+
+model Job_category {
+  id         Int        @id @default(autoincrement())
+  name       String     @unique @db.VarChar(100)
+  job_posts  Job_post[]
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now()) @updatedAt
+}
+
+// job post 
+enum Contract_type {
+  REMOTE
+  PARTIME
+  FULLTIME
+  CONTRACT
+}
+
+// jop post 
+enum Periodicity {
+  HOURLY
+  MONTHLY
+  WEEKLY
+  DAILY
+}
+
+model Salary {
+  id          Int         @id @unique
+  low_end     Float
+  high_end    Float
+  periodicity Periodicity
+  currency    String
+  job         Job_post    @relation(fields: [id], references: [id])
+}
+
+model Job_post {
+  id                 Int           @id @default(autoincrement())
+  title              String
+  overview           String        @db.Text
+  body               String        @db.LongText
+  contract_type      Contract_type
+  year_of_experience Int
+  thumbnail          String
+  category           Int
+  closing_date       DateTime
+  verified_at        DateTime
+  verified_by        Int
+  posted_by          Int
+  created_at         DateTime      @default(now())
+  updated_at         DateTime      @default(now()) @updatedAt
+  salary             Salary?
+  user               User          @relation(fields: [posted_by], references: [id])
+  admin              Admin         @relation(fields: [verified_by], references: [id])
+  tags               Tag[]
+  job_category       Job_category  @relation(fields: [category], references: [id])
+}
+
+model News {
+  id         Int      @id @default(autoincrement())
+  title      String
+  overview   String
+  thumbnail  String
+  body       String   @db.LongText
+  posted_by  Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+  admin      Admin    @relation(fields: [posted_by], references: [id])
+  tags       Tag[]
+}
+
+model Tender_category {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+  tender     Tender[]
+}
+
+model Tender {
+  id                  Int             @id @default(autoincrement())
+  title               String
+  overview            String
+  body                String          @db.LongText
+  price               Float?
+  starting_bid        Float
+  oppeortunity_number Int
+  CFDA                String
+  eligibility         Boolean
+  status              String
+  category            Int
+  opening_date        DateTime
+  closing_date        DateTime
+  posted_by           Int
+  verified_by         Int
+  created_at          DateTime        @default(now())
+  updated_at          DateTime        @default(now()) @updatedAt
+  tags                Tag[]
+  admin               Admin           @relation(fields: [verified_by], references: [id])
+  user                User            @relation(fields: [posted_by], references: [id])
+  files               Tender_files[]
+  tender_category     Tender_category @relation(fields: [category], references: [id])
+}
+
+model Tender_files {
+  id         Int      @id @default(autoincrement())
+  file       String
+  tender_id  Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+  tender     Tender   @relation(fields: [tender_id], references: [id])
+}
+
+model Grant {
+  id          Int      @id @default(autoincrement())
+  title       String
+  overview    String
+  body        String   @db.LongText
+  location    String
+  verified_by Int
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
+  admin       Admin    @relation(fields: [verified_by], references: [id])
+  tags        Tag[]
+}
+
+model Blog {
+  id          Int      @id @default(autoincrement())
+  title       String
+  overview    String
+  body        String   @db.LongText
+  posted_by   Int
+  verified_by Int
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
+  admin       Admin    @relation(fields: [verified_by], references: [id])
+  user        User     @relation(fields: [posted_by], references: [id])
+  tags        Tag[]
 }
