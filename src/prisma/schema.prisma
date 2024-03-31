@@ -7,24 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// admin
-enum Admin_role {
-  SUPER_ADMIN
-  ADMIN
-}
-
+// -- Admin -- //
 model Admin {
   id               Int                @id @default(autoincrement())
   first_name       String             @db.VarChar(30)
   last_name        String             @db.VarChar(30)
-  email            String             @unique
+  email            String             @db.VarChar(60) @unique
   phone_number     String
+  role             Admin_role
   profile_image    String
   password         String
   token            String
   created_at       DateTime           @default(now())
   updated_at       DateTime           @default(now()) @updatedAt
-  role             Admin_role
+
   user             User[]
   organization     Organization[]
   service_provider Service_provider[]
@@ -33,33 +29,44 @@ model Admin {
   tender           Tender[]
   grant            Grant[]
   blog             Blog[]
+  exclusive_job    Exclusive_job[]
+  recommender      Recommender[]
 }
 
-// user
+enum Admin_role {
+  SUPER_ADMIN
+  ADMIN
+}
+
+
+// -- User -- //
 model User {
   id            Int        @id @default(autoincrement())
   first_name    String     @db.VarChar(30)
   last_name     String     @db.VarChar(30)
   email         String     @unique @db.VarChar(60)
-  phone_number  String     @unique @db.VarChar(12)
+  phone_number  String     @unique @db.Char(12)
   profile_image String
+  location      Json
+  verified_by   Int
   password      String
   token         String
-  location      Json
   created_at    DateTime   @default(now())
   updated_at    DateTime   @default(now()) @updatedAt
-  verified_by   Int
+
   admin         Admin      @relation(fields: [verified_by], references: [id])
   job_post      Job_post[]
   tender        Tender[]
   blog          Blog[]
 }
 
+// -- Tag -- //
 model Tag {
   id         Int        @id @default(autoincrement())
-  name       String     @unique
+  name       String     @db.VarChar(20) @unique
   created_at DateTime   @default(now())
   updated_at DateTime   @default(now()) @updatedAt
+
   job_post   Job_post[]
   news       News[]
   tender     Tender[]
@@ -67,33 +74,39 @@ model Tag {
   tag        Blog[]
 }
 
+// -- Organization -- //
 model Organization_category {
   id           Int            @id @default(autoincrement())
   name         String         @unique @db.VarChar(100)
-  organization Organization[]
   created_at   DateTime       @default(now())
   updated_at   DateTime       @default(now()) @updatedAt
+
+  organization Organization[]
 }
 
 model Organization {
   id                Int                   @id @default(autoincrement())
   name              String                @unique @db.VarChar(100)
+  email             String                @unique @db.VarChar(60)
   about             String                @db.Text
   location          Json
   category          Int
   verified_by       Int?
   created_at        DateTime              @default(now())
   updated_at        DateTime              @default(now()) @updatedAt
+
   organization_type Organization_category @relation(fields: [category], references: [id])
   admin             Admin?                @relation(fields: [verified_by], references: [id])
 }
 
+// -- Service_provider -- //
 model Service_provider_category {
   id               Int                @id @default(autoincrement())
   name             String             @unique @db.VarChar(100)
-  service_provider Service_provider[]
   created_at       DateTime           @default(now())
   updated_at       DateTime           @default(now()) @updatedAt
+
+  service_provider Service_provider[]
 }
 
 model Service_provider {
@@ -104,9 +117,10 @@ model Service_provider {
   verified_by      Int
   created_at       DateTime                  @default(now())
   updated_at       DateTime                  @default(now()) @updatedAt
+
   service_category Service_provider_category @relation(fields: [category], references: [id])
-  post             Service_provider_post[]
   admin            Admin                     @relation(fields: [verified_by], references: [id])
+  post             Service_provider_post[]
 }
 
 model Service_provider_post {
@@ -116,31 +130,18 @@ model Service_provider_post {
   posted_by        Int
   created_at       DateTime
   updated_at       DateTime
+
   service_provider Service_provider @relation(fields: [posted_by], references: [id])
 }
 
+// -- Job -- //
 model Job_category {
   id         Int        @id @default(autoincrement())
-  name       String     @unique @db.VarChar(100)
-  job_posts  Job_post[]
+  name       String     @unique @db.VarChar(30)
   created_at DateTime   @default(now())
   updated_at DateTime   @default(now()) @updatedAt
-}
 
-// job post 
-enum Contract_type {
-  REMOTE
-  PARTIME
-  FULLTIME
-  CONTRACT
-}
-
-// jop post 
-enum Periodicity {
-  HOURLY
-  MONTHLY
-  WEEKLY
-  DAILY
+  job_posts  Job_post[]
 }
 
 model Salary {
@@ -167,13 +168,29 @@ model Job_post {
   posted_by          Int
   created_at         DateTime      @default(now())
   updated_at         DateTime      @default(now()) @updatedAt
-  salary             Salary?
+
   user               User          @relation(fields: [posted_by], references: [id])
   admin              Admin         @relation(fields: [verified_by], references: [id])
-  tags               Tag[]
   job_category       Job_category  @relation(fields: [category], references: [id])
+  tags               Tag[]
+  salary             Salary?
 }
 
+enum Contract_type {
+  REMOTE
+  PARTIME
+  FULLTIME
+  CONTRACT
+}
+
+enum Periodicity {
+  HOURLY
+  MONTHLY
+  WEEKLY
+  DAILY
+}
+
+// -- News -- //
 model News {
   id         Int      @id @default(autoincrement())
   title      String
@@ -187,11 +204,13 @@ model News {
   tags       Tag[]
 }
 
+// -- Tender -- //
 model Tender_category {
   id         Int      @id @default(autoincrement())
   name       String   @unique
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
+
   tender     Tender[]
 }
 
@@ -213,11 +232,12 @@ model Tender {
   verified_by         Int
   created_at          DateTime        @default(now())
   updated_at          DateTime        @default(now()) @updatedAt
-  tags                Tag[]
+
   admin               Admin           @relation(fields: [verified_by], references: [id])
   user                User            @relation(fields: [posted_by], references: [id])
-  files               Tender_files[]
   tender_category     Tender_category @relation(fields: [category], references: [id])
+  files               Tender_files[]
+  tags                Tag[]
 }
 
 model Tender_files {
@@ -226,9 +246,11 @@ model Tender_files {
   tender_id  Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
+
   tender     Tender   @relation(fields: [tender_id], references: [id])
 }
 
+// -- Grant -- //
 model Grant {
   id          Int      @id @default(autoincrement())
   title       String
@@ -238,10 +260,12 @@ model Grant {
   verified_by Int
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
+
   admin       Admin    @relation(fields: [verified_by], references: [id])
   tags        Tag[]
 }
 
+// -- Blog -- //
 model Blog {
   id          Int      @id @default(autoincrement())
   title       String
@@ -251,7 +275,50 @@ model Blog {
   verified_by Int
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
+
   admin       Admin    @relation(fields: [verified_by], references: [id])
   user        User     @relation(fields: [posted_by], references: [id])
   tags        Tag[]
+}
+
+// -- Exclusiv job -- //
+model Exclusive_job {
+    id              Int         @id @default(autoincrement())
+    title           String
+    body            String      @db.LongText
+    verified_by     Int
+    created_at      DateTime    @default(now())
+    updated_at      DateTime    @default(now()) @updatedAt
+
+    admin           Admin       @relation(fields: [verified_by], references: [id])
+    recommended_applicants      Recommended_Applicants[]
+}
+
+model Recommender {
+    id              Int         @id @default(autoincrement())
+    first_name      String      @db.VarChar(30)
+    last_name       String      @db.VarChar(30)
+    email           String      @db.VarChar(60)
+    password        String
+    verified_by     Int
+    created_at      DateTime    @default(now())
+    updated_at      DateTime    @default(now()) @updatedAt
+
+    admin           Admin       @relation(fields: [verified_by], references: [id])
+    recommended_applicants      Recommended_Applicants[]
+}
+
+model Recommended_Applicants {
+    id              Int         @id @default(autoincrement())
+    first_name      String      @db.VarChar(30)
+    last_name       String      @db.VarChar(30)
+    cv              String
+    job             Int
+    recommender     Int
+    recommendation_letter       String
+    created_at      DateTime    @default(now())
+    updated_at      DateTime    @default(now()) @updatedAt
+
+    exclusive_job   Exclusive_job   @relation(fields: [job], references: [id])
+    recommender_    Recommender     @relation(fields: [recommender], references: [id])
 }
