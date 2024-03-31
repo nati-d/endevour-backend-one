@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// -- Admin -- //
+// -- ---- -- Admin -- ---- -- //
 model Admin {
   id               Int                @id @default(autoincrement())
   first_name       String             @db.VarChar(30)
@@ -39,7 +39,7 @@ enum Admin_role {
 }
 
 
-// -- User -- //
+// -- ---- -- User -- ---- -- //
 model User {
   id            Int        @id @default(autoincrement())
   first_name    String     @db.VarChar(30)
@@ -67,7 +67,7 @@ model User {
   saved_job                     Saved_job[]
 }
 
-// -- Tag -- //
+// -- ---- -- Tag -- ---- -- //
 model Tag {
   id         Int        @id @default(autoincrement())
   name       String     @db.VarChar(20) @unique
@@ -82,7 +82,7 @@ model Tag {
 
 }
 
-// -- Organization -- //
+// -- ---- -- Organization -- ---- -- //
 model Organization_category {
   id           Int            @id @default(autoincrement())
   name         String         @unique @db.VarChar(100)
@@ -118,7 +118,7 @@ model Saved_organization {
     organization_    Organization        @relation(fields: [organization], references: [id])
 }
 
-// -- Service_provider -- //
+// -- ---- -- Service_provider -- ---- -- //
 model Service_provider_category {
   id               Int                @id @default(autoincrement())
   name             String             @unique @db.VarChar(100)
@@ -164,7 +164,7 @@ model Saved_service_provider {
     service_provider_   Service_provider    @relation(fields: [service_provider], references: [id])
 }
 
-// -- Job -- //
+// -- ---- -- Job -- ---- -- //
 model Job_category {
   id         Int        @id @default(autoincrement())
   name       String     @unique @db.VarChar(30)
@@ -231,7 +231,7 @@ model Saved_job {
     job_                Job_post            @relation(fields: [job], references: [id])
 }
 
-// -- News -- //
+// -- ---- -- News -- ---- -- //
 model News {
   id         Int      @id @default(autoincrement())
   title      String
@@ -256,7 +256,7 @@ model Saved_news {
     news_               News                @relation(fields: [news], references: [id])
 }
 
-// -- Tender -- //
+// -- ---- -- Tender -- ---- -- //
 model Tender_category {
   id         Int      @id @default(autoincrement())
   name       String   @unique
@@ -313,7 +313,7 @@ model Saved_tender {
     tender_             Tender              @relation(fields: [tender], references: [id])
 }
 
-// -- Grant -- //
+// -- ---- -- Grant -- ---- -- //
 model Grant {
   id          Int      @id @default(autoincrement())
   title       String
@@ -339,7 +339,7 @@ model Saved_grant {
     grant_              Grant               @relation(fields: [grant], references: [id])
 }
 
-// -- Blog -- //
+// -- ---- -- Blog -- ---- -- //
 model Blog {
   id          Int      @id @default(autoincrement())
   title       String
@@ -366,7 +366,7 @@ model Saved_blog {
     blog_               Blog                @relation(fields: [blog], references: [id])
 }
 
-// -- Exclusiv job -- //
+// -- ---- -- Exclusiv job -- ---- -- //
 model Exclusive_job {
     id              Int         @id @default(autoincrement())
     title           String
