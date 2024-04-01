@@ -54,7 +54,7 @@ model User {
   created_at    DateTime   @default(now())
   updated_at    DateTime   @default(now()) @updatedAt
 
-  admin         Admin      @relation(fields: [verified_by], references: [id])
+  admin         Admin      @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   job_post      Job_post[]
   tender        Tender[]
   blog          Blog[]
@@ -103,8 +103,8 @@ model Organization {
   created_at        DateTime              @default(now())
   updated_at        DateTime              @default(now()) @updatedAt
 
-  organization_type Organization_category @relation(fields: [category], references: [id])
-  admin             Admin?                @relation(fields: [verified_by], references: [id])
+  organization_type Organization_category @relation(fields: [category], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  admin             Admin?                @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   saved_organization    Saved_organization[]
 }
 
@@ -114,8 +114,8 @@ model Saved_organization {
 
     @@id([user, organization])
 
-    user_            User                @relation(fields: [user], references: [id])
-    organization_    Organization        @relation(fields: [organization], references: [id])
+    user_            User                @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    organization_    Organization        @relation(fields: [organization], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 // -- ---- -- Service_provider -- ---- -- //
@@ -137,8 +137,8 @@ model Service_provider {
   created_at       DateTime                  @default(now())
   updated_at       DateTime                  @default(now()) @updatedAt
 
-  service_category Service_provider_category @relation(fields: [category], references: [id])
-  admin            Admin                     @relation(fields: [verified_by], references: [id])
+  service_category Service_provider_category @relation(fields: [category], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  admin            Admin                     @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   post             Service_provider_post[]
   Saved_service_provider    Saved_service_provider[]
 }
@@ -151,7 +151,7 @@ model Service_provider_post {
   created_at       DateTime
   updated_at       DateTime
 
-  service_provider Service_provider @relation(fields: [posted_by], references: [id])
+  service_provider Service_provider @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Saved_service_provider {
@@ -160,8 +160,8 @@ model Saved_service_provider {
 
     @@id([user, service_provider])
 
-    user_               User                @relation(fields: [user], references: [id])
-    service_provider_   Service_provider    @relation(fields: [service_provider], references: [id])
+    user_               User                @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    service_provider_   Service_provider    @relation(fields: [service_provider], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 // -- ---- -- Job -- ---- -- //
@@ -180,7 +180,7 @@ model Salary {
   high_end    Float
   periodicity Periodicity
   currency    String
-  job         Job_post    @relation(fields: [id], references: [id])
+  job         Job_post    @relation(fields: [id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Job_post {
@@ -199,9 +199,9 @@ model Job_post {
   created_at         DateTime      @default(now())
   updated_at         DateTime      @default(now()) @updatedAt
 
-  user               User          @relation(fields: [posted_by], references: [id])
-  admin              Admin         @relation(fields: [verified_by], references: [id])
-  job_category       Job_category  @relation(fields: [category], references: [id])
+  user               User          @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  admin              Admin         @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  job_category       Job_category  @relation(fields: [category], references: [id], onUpdate: Cascade, onDelete: Cascade)
   tags               Tag[]
   salary             Salary?
   saved_job_post     Saved_job[]
@@ -227,8 +227,8 @@ model Saved_job {
 
     @@id([user, job])
 
-    user_               User                @relation(fields: [user], references: [id])
-    job_                Job_post            @relation(fields: [job], references: [id])
+    user_               User                @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    job_                Job_post            @relation(fields: [job], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 // -- ---- -- News -- ---- -- //
@@ -241,7 +241,7 @@ model News {
   posted_by  Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
-  admin      Admin    @relation(fields: [posted_by], references: [id])
+  admin      Admin    @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   tags       Tag[]
   saved_job  Saved_news[]
 }
@@ -252,8 +252,8 @@ model Saved_news {
 
     @@id([user, news])
 
-    user_               User                @relation(fields: [user], references: [id])
-    news_               News                @relation(fields: [news], references: [id])
+    user_               User                @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    news_               News                @relation(fields: [news], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 // -- ---- -- Tender -- ---- -- //
@@ -285,9 +285,9 @@ model Tender {
   created_at          DateTime        @default(now())
   updated_at          DateTime        @default(now()) @updatedAt
 
-  admin               Admin           @relation(fields: [verified_by], references: [id])
-  user                User            @relation(fields: [posted_by], references: [id])
-  tender_category     Tender_category @relation(fields: [category], references: [id])
+  admin               Admin           @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user                User            @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  tender_category     Tender_category @relation(fields: [category], references: [id], onUpdate: Cascade, onDelete: Cascade)
   files               Tender_files[]
   tags                Tag[]
   saved_tender        Saved_tender[]
@@ -300,7 +300,7 @@ model Tender_files {
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
-  tender     Tender   @relation(fields: [tender_id], references: [id])
+  tender     Tender   @relation(fields: [tender_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Saved_tender {
@@ -309,8 +309,8 @@ model Saved_tender {
 
     @@id([user, tender])
 
-    user_               User                @relation(fields: [user], references: [id])
-    tender_             Tender              @relation(fields: [tender], references: [id])
+    user_               User                @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    tender_             Tender              @relation(fields: [tender], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 // -- ---- -- Grant -- ---- -- //
@@ -324,7 +324,7 @@ model Grant {
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
 
-  admin       Admin    @relation(fields: [verified_by], references: [id])
+  admin       Admin    @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   tags        Tag[]
   grant       Saved_grant[]
 }
@@ -335,8 +335,8 @@ model Saved_grant {
 
     @@id([user, grant])
 
-    user_               User                @relation(fields: [user], references: [id])
-    grant_              Grant               @relation(fields: [grant], references: [id])
+    user_               User                @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    grant_              Grant               @relation(fields: [grant], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 // -- ---- -- Blog -- ---- -- //
@@ -350,8 +350,8 @@ model Blog {
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
 
-  admin       Admin    @relation(fields: [verified_by], references: [id])
-  user        User     @relation(fields: [posted_by], references: [id])
+  admin       Admin    @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user        User     @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   tags        Tag[]
   saved_blog  Saved_blog[]
 }
@@ -362,8 +362,8 @@ model Saved_blog {
 
     @@id([user, blog])
 
-    user_               User                @relation(fields: [user], references: [id])
-    blog_               Blog                @relation(fields: [blog], references: [id])
+    user_               User                @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    blog_               Blog                @relation(fields: [blog], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 // -- ---- -- Exclusiv job -- ---- -- //
@@ -375,7 +375,7 @@ model Exclusive_job {
     created_at      DateTime    @default(now())
     updated_at      DateTime    @default(now()) @updatedAt
 
-    admin           Admin       @relation(fields: [verified_by], references: [id])
+    admin           Admin       @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
     recommended_applicants      Recommended_Applicants[]
 }
 
@@ -389,7 +389,7 @@ model Recommender {
     created_at      DateTime    @default(now())
     updated_at      DateTime    @default(now()) @updatedAt
 
-    admin           Admin       @relation(fields: [verified_by], references: [id])
+    admin           Admin       @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
     recommended_applicants      Recommended_Applicants[]
 }
 
@@ -404,6 +404,6 @@ model Recommended_Applicants {
     created_at      DateTime    @default(now())
     updated_at      DateTime    @default(now()) @updatedAt
 
-    exclusive_job   Exclusive_job   @relation(fields: [job], references: [id])
-    recommender_    Recommender     @relation(fields: [recommender], references: [id])
+    exclusive_job   Exclusive_job   @relation(fields: [job], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    recommender_    Recommender     @relation(fields: [recommender], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
