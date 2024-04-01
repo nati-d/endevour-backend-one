@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// -- Admin -- //
+// -- ---- -- Admin -- ---- -- //
 model Admin {
   id            Int        @id @default(autoincrement())
   first_name    String     @db.VarChar(30)
@@ -38,7 +38,9 @@ enum Admin_role {
   ADMIN
 }
 
-// -- User -- //
+
+
+// -- ---- -- User -- ---- -- //
 model User {
   id            Int      @id @default(autoincrement())
   first_name    String   @db.VarChar(30)
@@ -49,18 +51,28 @@ model User {
   location      Json
   verified_by   Int
   password      String
-  token         String?
-  created_at    DateTime @default(now())
-  updated_at    DateTime @default(now()) @updatedAt
 
-  admin    Admin      @relation(fields: [verified_by], references: [id])
-  job_post Job_post[]
-  tender   Tender[]
-  blog     Blog[]
+  token         String
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @default(now()) @updatedAt
+
+  admin         Admin      @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  job_post      Job_post[]
+  tender        Tender[]
+  blog          Blog[]
+  saved_organization            Saved_organization[]
+  saved_service_provider        Saved_service_provider[]
+  saved_grant                   Saved_grant[]
+  saved_news                    Saved_news[]
+  saved_blog                    Saved_blog[]
+  saved_tender                  Saved_tender[]
+  saved_job                     Saved_job[]
+
 }
 
-// -- Tag -- //
+// -- ---- -- Tag -- ---- -- //
 model Tag {
+
   id         Int      @id @default(autoincrement())
   name       String   @unique @db.VarChar(20)
   created_at DateTime @default(now())
@@ -71,9 +83,20 @@ model Tag {
   tender   Tender[]
   grant    Grant[]
   tag      Blog[]
+  id         Int        @id @default(autoincrement())
+  name       String     @db.VarChar(20) @unique
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now()) @updatedAt
+
+  job_post   Job_post[]
+  news       News[]
+  tender     Tender[]
+  grant      Grant[]
+  tag        Blog[]
+
 }
 
-// -- Organization -- //
+// -- ---- -- Organization -- ---- -- //
 model Organization_category {
   id         Int      @id @default(autoincrement())
   name       String   @unique @db.VarChar(100)
@@ -94,11 +117,22 @@ model Organization {
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
 
-  organization_type Organization_category @relation(fields: [category], references: [id])
-  admin             Admin?                @relation(fields: [verified_by], references: [id])
+  organization_type Organization_category @relation(fields: [category], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  admin             Admin?                @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  saved_organization    Saved_organization[]
 }
 
-// -- Service_provider -- //
+model Saved_organization {
+    user            Int
+    organization    Int
+
+    @@id([user, organization])
+
+    user_            User                @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    organization_    Organization        @relation(fields: [organization], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
+
+// -- ---- -- Service_provider -- ---- -- //
 model Service_provider_category {
   id         Int      @id @default(autoincrement())
   name       String   @unique @db.VarChar(100)
@@ -117,9 +151,10 @@ model Service_provider {
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
 
-  service_category Service_provider_category @relation(fields: [category], references: [id])
-  admin            Admin                     @relation(fields: [verified_by], references: [id])
+  service_category Service_provider_category @relation(fields: [category], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  admin            Admin                     @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   post             Service_provider_post[]
+  Saved_service_provider    Saved_service_provider[]
 }
 
 model Service_provider_post {
@@ -130,10 +165,20 @@ model Service_provider_post {
   created_at  DateTime
   updated_at  DateTime
 
-  service_provider Service_provider @relation(fields: [posted_by], references: [id])
+  service_provider Service_provider @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
-// -- Job -- //
+model Saved_service_provider {
+    user                Int
+    service_provider    Int
+
+    @@id([user, service_provider])
+
+    user_               User                @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    service_provider_   Service_provider    @relation(fields: [service_provider], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
+
+// -- ---- -- Job -- ---- -- //
 model Job_category {
   id         Int      @id @default(autoincrement())
   name       String   @unique @db.VarChar(30)
@@ -149,7 +194,7 @@ model Salary {
   high_end    Float
   periodicity Periodicity
   currency    String
-  job         Job_post    @relation(fields: [id], references: [id])
+  job         Job_post    @relation(fields: [id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Job_post {
@@ -168,11 +213,14 @@ model Job_post {
   created_at         DateTime      @default(now())
   updated_at         DateTime      @default(now()) @updatedAt
 
-  user         User         @relation(fields: [posted_by], references: [id])
-  admin        Admin        @relation(fields: [verified_by], references: [id])
-  job_category Job_category @relation(fields: [category], references: [id])
-  tags         Tag[]
-  salary       Salary?
+
+  user               User          @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  admin              Admin         @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  job_category       Job_category  @relation(fields: [category], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  tags               Tag[]
+  salary             Salary?
+  saved_job_post     Saved_job[]
+
 }
 
 enum Contract_type {
@@ -189,7 +237,16 @@ enum Periodicity {
   DAILY
 }
 
-// -- News -- //
+model Saved_job {
+    user                Int
+    job    Int
+    @@id([user, job])
+
+    user_               User                @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    job_                Job_post            @relation(fields: [job], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
+
+// -- ---- -- News -- ---- -- //
 model News {
   id         Int      @id @default(autoincrement())
   title      String
@@ -199,11 +256,22 @@ model News {
   posted_by  Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
-  admin      Admin    @relation(fields: [posted_by], references: [id])
+  admin      Admin    @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   tags       Tag[]
+  saved_job  Saved_news[]
 }
 
-// -- Tender -- //
+model Saved_news {
+    user                Int
+    news                Int
+
+    @@id([user, news])
+
+    user_               User                @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    news_               News                @relation(fields: [news], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
+
+// -- ---- -- Tender -- ---- -- //
 model Tender_category {
   id         Int      @id @default(autoincrement())
   name       String   @unique
@@ -229,14 +297,17 @@ model Tender {
   closing_date        DateTime
   posted_by           Int
   verified_by         Int
-  created_at          DateTime @default(now())
-  updated_at          DateTime @default(now()) @updatedAt
 
-  admin           Admin           @relation(fields: [verified_by], references: [id])
-  user            User            @relation(fields: [posted_by], references: [id])
-  tender_category Tender_category @relation(fields: [category], references: [id])
-  files           Tender_files[]
-  tags            Tag[]
+  created_at          DateTime        @default(now())
+  updated_at          DateTime        @default(now()) @updatedAt
+
+  admin               Admin           @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user                User            @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  tender_category     Tender_category @relation(fields: [category], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  files               Tender_files[]
+  tags                Tag[]
+  saved_tender        Saved_tender[]
+
 }
 
 model Tender_files {
@@ -246,10 +317,22 @@ model Tender_files {
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
-  tender Tender @relation(fields: [tender_id], references: [id])
+
+  tender     Tender   @relation(fields: [tender_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
 }
 
-// -- Grant -- //
+model Saved_tender {
+    user                Int
+    tender                Int
+
+    @@id([user, tender])
+
+    user_               User                @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    tender_             Tender              @relation(fields: [tender], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
+
+// -- ---- -- Grant -- ---- -- //
 model Grant {
   id          Int      @id @default(autoincrement())
   title       String
@@ -260,11 +343,23 @@ model Grant {
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
 
-  admin Admin @relation(fields: [verified_by], references: [id])
-  tags  Tag[]
+  admin       Admin    @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  tags        Tag[]
+  grant       Saved_grant[]
 }
 
-// -- Blog -- //
+model Saved_grant {
+    user                Int
+    grant                Int
+
+    @@id([user, grant])
+
+    user_               User                @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    grant_              Grant               @relation(fields: [grant], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+}
+
+// -- ---- -- Blog -- ---- -- //
 model Blog {
   id          Int      @id @default(autoincrement())
   title       String
@@ -275,49 +370,64 @@ model Blog {
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
 
-  admin Admin @relation(fields: [verified_by], references: [id])
-  user  User  @relation(fields: [posted_by], references: [id])
-  tags  Tag[]
+
+  admin       Admin    @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user        User     @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  tags        Tag[]
+  saved_blog  Saved_blog[]
 }
 
-// -- Exclusiv job -- //
-model Exclusive_job {
-  id          Int      @id @default(autoincrement())
-  title       String
-  body        String   @db.LongText
-  verified_by Int
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now()) @updatedAt
+model Saved_blog {
+    user                Int
+    blog                Int
 
-  admin                  Admin                    @relation(fields: [verified_by], references: [id])
-  recommended_applicants Recommended_Applicants[]
+    @@id([user, blog])
+
+    user_               User                @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    blog_               Blog                @relation(fields: [blog], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+}
+
+// -- ---- -- Exclusiv job -- ---- -- //
+model Exclusive_job {
+
+    id              Int         @id @default(autoincrement())
+    title           String
+    body            String      @db.LongText
+    verified_by     Int
+    created_at      DateTime    @default(now())
+    updated_at      DateTime    @default(now()) @updatedAt
+
+    admin           Admin       @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    recommended_applicants      Recommended_Applicants[]
 }
 
 model Recommender {
-  id          Int      @id @default(autoincrement())
-  first_name  String   @db.VarChar(30)
-  last_name   String   @db.VarChar(30)
-  email       String   @db.VarChar(60)
-  password    String
-  verified_by Int
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now()) @updatedAt
+    id              Int         @id @default(autoincrement())
+    first_name      String      @db.VarChar(30)
+    last_name       String      @db.VarChar(30)
+    email           String      @db.VarChar(60)
+    password        String
+    verified_by     Int
+    created_at      DateTime    @default(now())
+    updated_at      DateTime    @default(now()) @updatedAt
 
-  admin                  Admin                    @relation(fields: [verified_by], references: [id])
-  recommended_applicants Recommended_Applicants[]
+    admin           Admin       @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    recommended_applicants      Recommended_Applicants[]
 }
 
 model Recommended_Applicants {
-  id                    Int      @id @default(autoincrement())
-  first_name            String   @db.VarChar(30)
-  last_name             String   @db.VarChar(30)
-  cv                    String
-  job                   Int
-  recommender           Int
-  recommendation_letter String
-  created_at            DateTime @default(now())
-  updated_at            DateTime @default(now()) @updatedAt
+    id              Int         @id @default(autoincrement())
+    first_name      String      @db.VarChar(30)
+    last_name       String      @db.VarChar(30)
+    cv              String
+    job             Int
+    recommender     Int
+    recommendation_letter       String
+    created_at      DateTime    @default(now())
+    updated_at      DateTime    @default(now()) @updatedAt
 
-  exclusive_job Exclusive_job @relation(fields: [job], references: [id])
-  recommender_  Recommender   @relation(fields: [recommender], references: [id])
+    exclusive_job   Exclusive_job   @relation(fields: [job], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    recommender_    Recommender     @relation(fields: [recommender], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
 }
