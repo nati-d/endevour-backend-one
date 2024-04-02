@@ -1,8 +1,8 @@
-import _signup from "./user/signup"
+import _user from "./user"
 
 namespace Validator {
 
-    export const signup = _signup;
+    export const user = _user;
 
 }
 

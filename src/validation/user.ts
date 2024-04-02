@@ -1,11 +1,11 @@
 import Joi from 'joi';
 
-const locationSchema = Joi.object({
+export const locationSchema = Joi.object({
     x: Joi.number().required(),
     y: Joi.number().required()
 });
 
-const schema = Joi.object({
+export const userSignupSchema = Joi.object({
     first_name: Joi.string().required(),
     last_name: Joi.string().required(),
     email: Joi.string().email().required(),
@@ -14,4 +14,4 @@ const schema = Joi.object({
     password: Joi.string().min(8).required()
 });
 
-export default schema;
+export default { userSignupSchema };
