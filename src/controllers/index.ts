@@ -1,10 +1,9 @@
+import _userSignup from "./user/signup";
+
 namespace Controller {
 
-}
-interface ReqBody{
-    email: string,
-    name: string
-}
+    export const userSignup = _userSignup;
 
+}
 
 export default Controller;
