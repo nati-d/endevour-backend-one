@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
-import { PrismaClient, Prisma } from "@prisma/client";
+import prisma from "../../prisma/client/prismaClient";
+import { Prisma } from "@prisma/client"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Validator from "../../validation/index";
-
-const prisma = new PrismaClient();
 
 export default async (req: Request, res: Response) => {
     try {
@@ -67,9 +66,7 @@ export default async (req: Request, res: Response) => {
             message: 'Unknown error at registering user',
             error: error,
         });
-    } finally {
-        await prisma.$disconnect();
-    }
+    };
 
     try {
 

@@ -1,12 +1,9 @@
 import { Request, Response } from "express";
-import { PrismaClient, Prisma } from "@prisma/client";
+import prisma from "../../prisma/client/prismaClient";
 import { Admin } from "../../types/types";
 import bcrypt from "bcrypt";
 import { newAdmin } from "../../validation/admin";
 import _ from "lodash";
-
-const prisma = new PrismaClient();
-
 const addAdmin = async (req: Request, res: Response) => {
   const body = req.body as Admin;
   const { error } = newAdmin.validate(req.body);
