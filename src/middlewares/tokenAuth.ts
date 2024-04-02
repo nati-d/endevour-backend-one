@@ -6,19 +6,17 @@ const tokenAuth = (req: Request, res: Response, next: any) => {
   if (!token)
     return res
       .status(401)
-      .json({ success: false, message: "Access denied. token not provided" });
+      .json({ success: false, message: "Access denied. Token not provided" });
 
   try {
-    const decoded = jwt.verify(token, "jwtPrivateKey");
-    req.body = {
-      ...req.body,
-      auth: decoded,
-    };
+    const decoded = jwt.verify(token, "jwtprivatekey");
+    req.body.auth = decoded;
     next();
   } catch (error) {
+    console.log(error);
     res
       .status(400)
-      .json({ success: false, message: "Access denied. invalid token" });
+      .json({ success: false, message: "Access denied. Invalid token" });
   }
 };
 
