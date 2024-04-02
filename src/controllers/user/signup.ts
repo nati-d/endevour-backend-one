@@ -7,7 +7,7 @@ import Validator from "../../validation/index";
 
 export default async (req: Request, res: Response) => {
     try {
-        let { error } = Validator.signup.validate(req.body);
+        let { error } = Validator.user.userSignupSchema.validate(req.body);
         if (error) {
             return res.status(400).send({
                 status: false,
