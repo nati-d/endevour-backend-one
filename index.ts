@@ -9,6 +9,6 @@ app.use(express.json());
 app.use("/api/user", Router.user);
 
 app.use(express.json());
-app.use("/api/admin", router.adminRoutes);
+app.use("/api/admin", Router.adminRoutes);
 
 app.listen(port, () => console.log("Server started at port", port));
