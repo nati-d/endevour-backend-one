@@ -1,35 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the column `name` on the `User` table. All the data in the column will be lost.
-  - You are about to alter the column `email` on the `User` table. The data in that column could be lost. The data in that column will be cast from `VarChar(191)` to `VarChar(60)`.
-  - You are about to drop the `Post` table. If the table is not empty, all the data it contains will be lost.
-  - A unique constraint covering the columns `[phone_number]` on the table `User` will be added. If there are existing duplicate values, this will fail.
-  - Added the required column `first_name` to the `User` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `last_name` to the `User` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `password` to the `User` table without a default value. This is not possible if the table is not empty.
-
-*/
--- DropForeignKey
-ALTER TABLE `Post` DROP FOREIGN KEY `Post_authorId_fkey`;
-
--- AlterTable
-ALTER TABLE `User` DROP COLUMN `name`,
-    ADD COLUMN `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    ADD COLUMN `first_name` VARCHAR(30) NOT NULL,
-    ADD COLUMN `last_name` VARCHAR(30) NOT NULL,
-    ADD COLUMN `location` JSON NULL,
-    ADD COLUMN `password` VARCHAR(191) NOT NULL,
-    ADD COLUMN `phone_number` CHAR(12) NULL,
-    ADD COLUMN `profile_image` VARCHAR(191) NULL,
-    ADD COLUMN `token` VARCHAR(191) NULL,
-    ADD COLUMN `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    ADD COLUMN `verified_by` INTEGER NULL,
-    MODIFY `email` VARCHAR(60) NOT NULL;
-
--- DropTable
-DROP TABLE `Post`;
-
 -- CreateTable
 CREATE TABLE `Admin` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
@@ -37,14 +5,34 @@ CREATE TABLE `Admin` (
     `last_name` VARCHAR(30) NOT NULL,
     `email` VARCHAR(60) NOT NULL,
     `phone_number` VARCHAR(191) NOT NULL,
-    `role` ENUM('SUPER_ADMIN', 'ADMIN') NOT NULL,
-    `profile_image` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
-    `token` VARCHAR(191) NOT NULL,
+    `role` ENUM('SUPER_ADMIN', 'ADMIN') NOT NULL,
+    `profile_image` VARCHAR(191) NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `Admin_email_key`(`email`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `User` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `username` VARCHAR(30) NULL,
+    `first_name` VARCHAR(30) NOT NULL,
+    `last_name` VARCHAR(30) NOT NULL,
+    `email` VARCHAR(60) NOT NULL,
+    `phone_number` CHAR(12) NULL,
+    `profile_image` VARCHAR(191) NULL,
+    `location` JSON NULL,
+    `verified_by` INTEGER NULL,
+    `password` VARCHAR(191) NOT NULL,
+    `token` VARCHAR(191) NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    UNIQUE INDEX `User_email_key`(`email`),
+    UNIQUE INDEX `User_phone_number_key`(`phone_number`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -395,9 +383,6 @@ CREATE TABLE `_BlogToTag` (
     UNIQUE INDEX `_BlogToTag_AB_unique`(`A`, `B`),
     INDEX `_BlogToTag_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateIndex
-CREATE UNIQUE INDEX `User_phone_number_key` ON `User`(`phone_number`);
 
 -- AddForeignKey
 ALTER TABLE `User` ADD CONSTRAINT `User_verified_by_fkey` FOREIGN KEY (`verified_by`) REFERENCES `Admin`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

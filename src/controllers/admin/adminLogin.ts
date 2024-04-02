@@ -1,9 +1,12 @@
 import { Request, Response } from "express";
 import { login } from "../../validation/admin";
-import prisma from "../../prisma/client/prisamClient";
+import { PrismaClient, Prisma } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import _ from "lodash";
+
+const prisma = new PrismaClient();
+
 const adminLogin = async (req: Request, res: Response) => {
   const { error } = login.validate(req.body);
   if (error)
