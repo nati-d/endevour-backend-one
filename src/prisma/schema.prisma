@@ -17,7 +17,6 @@ model Admin {
   password      String
   role          Admin_role
   profile_image String?
-  token         String?
   created_at    DateTime   @default(now())
   updated_at    DateTime   @default(now()) @updatedAt
 
@@ -50,7 +49,6 @@ model User {
   verified_by   Int
   password      String
 
-  token      String
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 

@@ -3,9 +3,9 @@ const router = express.Router();
 import Controllers from "../controllers/index";
 import Middlewares from "../middlewares/index";
 router.post(
-  "/add-admin",
-  [Middlewares.adminAuth, Middlewares.superAdminAuth],
+  "/auth/add-admin",
+  [Middlewares.tokenAuth, Middlewares.adminAuth, Middlewares.superAdminAuth],
   Controllers.addAdmin
 );
-
+router.post("/auth/login", Controllers.adminLogin);
 export default router;
