@@ -25,11 +25,10 @@ exports.default = async (req, res) => {
             description: error
         });
     }
-    let newJobPost;
-    let newJobPostSalary;
+    let jobId = 0;
     try {
-        if (req.body.auth.role == "ADMIN" || req.body.auth.role == "SUPER_ADMIN")
-            newJobPost = await index_1.default.client.job_post.create({
+        if (req.body.auth.role == "ADMIN" || req.body.auth.role == "SUPER_ADMIN") {
+            const newJobPost = await index_1.default.client.job_post.create({
                 data: {
                     title: req.body.title,
                     overview: req.body.overview,
@@ -43,21 +42,8 @@ exports.default = async (req, res) => {
                     verified_by: req.body.auth.id,
                 }
             });
-    }
-    catch (error) {
-        if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
-            if (error.code = "P2022") {
-                return res.status(400).json({
-                    status: false,
-                    message: 'Not authorized to post jobs',
-                    error: error,
-                });
-            }
-        }
-    }
-    try {
-        if (req.body.auth.role == "ADMIN" || req.body.auth.role == "SUPER_ADMIN")
-            newJobPostSalary = await index_1.default.client.salary.create({
+            jobId = newJobPost.id;
+            await index_1.default.client.salary.create({
                 data: {
                     id: newJobPost.id,
                     low_end: req.body.low_end,
@@ -66,6 +52,8 @@ exports.default = async (req, res) => {
                     currency: req.body.currency,
                 }
             });
+            res.send(newJobPost);
+        }
     }
     catch (error) {
         if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
@@ -79,15 +67,27 @@ exports.default = async (req, res) => {
         }
         await index_1.default.client.job_post.delete({
             where: {
-                id: newJobPost.id
+                id: jobId
             }
         });
-        console.error("Error while insert job post:", error);
-        return res.status(500).send({
-            success: false,
-            message: 'Unknown error at posting job',
-            error: error,
-        });
     }
-    res.send(newJobPost);
+    // try {
+    //     if (req.body.auth.role == "ADMIN" || req.body.auth.role == "SUPER_ADMIN")
+    // } catch (error) {
+    //     if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    //         if (error.code = "P2022") {
+    //             return res.status(400).json({
+    //                 status: false,
+    //                 message: 'Not authorized to post jobs',
+    //                 error: error,
+    //             });
+    //         }
+    //     }
+    //     console.error("Error while insert job post:", error);
+    //     return res.status(500).send({
+    //         success: false,
+    //         message: 'Unknown error at posting job',
+    //         error: error,
+    //     }); 
+    // }
 };
