@@ -18,3 +18,7 @@ exports.login = joi_1.default.object({
     email: joi_1.default.string().email(),
     password: joi_1.default.string().min(6).max(20),
 });
+exports.default = {
+    newAdmin: exports.newAdmin,
+    login: exports.login
+};
