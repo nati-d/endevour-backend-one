@@ -18,14 +18,16 @@ CREATE TABLE `Admin` (
 -- CreateTable
 CREATE TABLE `User` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `username` VARCHAR(30) NULL,
     `first_name` VARCHAR(30) NOT NULL,
     `last_name` VARCHAR(30) NOT NULL,
     `email` VARCHAR(60) NOT NULL,
-    `phone_number` CHAR(12) NOT NULL,
+    `phone_number` CHAR(12) NULL,
     `profile_image` VARCHAR(191) NULL,
-    `location` JSON NOT NULL,
-    `verified_by` INTEGER NOT NULL,
+    `location` JSON NULL,
+    `verified_by` INTEGER NULL,
     `password` VARCHAR(191) NOT NULL,
+    `token` VARCHAR(191) NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 

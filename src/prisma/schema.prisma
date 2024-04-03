@@ -39,30 +39,31 @@ enum Admin_role {
 
 // -- ---- -- User -- ---- -- //
 model User {
-  id            Int     @id @default(autoincrement())
-  first_name    String  @db.VarChar(30)
-  last_name     String  @db.VarChar(30)
-  email         String  @unique @db.VarChar(60)
-  phone_number  String  @unique @db.Char(12)
-  profile_image String?
-  location      Json
-  verified_by   Int
-  password      String
+  id                Int        @id @default(autoincrement())
+  username          String?    @db.VarChar(30)
+  first_name        String     @db.VarChar(30)
+  last_name         String     @db.VarChar(30)
+  email             String     @unique @db.VarChar(60)
+  phone_number      String?    @unique @db.Char(12)
+  profile_image     String?
+  location          Json?
+  verified_by       Int?
+  password          String
+  token             String?
+  created_at        DateTime   @default(now())
+  updated_at        DateTime   @default(now()) @updatedAt
 
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
-
-  admin                  Admin                    @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  job_post               Job_post[]
-  tender                 Tender[]
-  blog                   Blog[]
-  saved_organization     Saved_organization[]
-  saved_service_provider Saved_service_provider[]
-  saved_grant            Saved_grant[]
-  saved_news             Saved_news[]
-  saved_blog             Saved_blog[]
-  saved_tender           Saved_tender[]
-  saved_job              Saved_job[]
+  admin         Admin?      @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  job_post      Job_post[]
+  tender        Tender[]
+  blog          Blog[]
+  saved_organization            Saved_organization[]
+  saved_service_provider        Saved_service_provider[]
+  saved_grant                   Saved_grant[]
+  saved_news                    Saved_news[]
+  saved_blog                    Saved_blog[]
+  saved_tender                  Saved_tender[]
+  saved_job                     Saved_job[]
 }
 
 // -- ---- -- Tag -- ---- -- //
@@ -72,11 +73,12 @@ model Tag {
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
-  job_post Job_post[]
-  news     News[]
-  tender   Tender[]
-  grant    Grant[]
-  tag      Blog[]
+  job_post   Job_post[]
+  news       News[]
+  tender     Tender[]
+  grant      Grant[]
+  blog        Blog[]
+
 }
 
 // -- ---- -- Organization -- ---- -- //
@@ -100,9 +102,9 @@ model Organization {
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
 
-  organization_type  Organization_category @relation(fields: [category], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  admin              Admin?                @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  saved_organization Saved_organization[]
+  organization_type     Organization_category   @relation(fields: [category], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  admin                 Admin?                  @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  saved_organization    Saved_organization[]
 }
 
 model Saved_organization {

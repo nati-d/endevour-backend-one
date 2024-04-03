@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { login } from "../../validation/admin";
-import prisma from "../../prisma/client/prisamClient";
+import prisma from "../../prisma/client/prismaClient";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import _ from "lodash";

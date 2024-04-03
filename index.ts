@@ -1,11 +1,13 @@
 import express from "express";
-import router from "./src/routers";
+import Router from "./src/routers/index"
 
 const app = express();
 
-const port = 3000;
-
 app.use(express.json());
-app.use("/api/admin", router.adminRoutes);
 
+app.use("/api/user", Router.user);
+
+app.use("/api/admin", Router.adminRoutes);
+
+const port = 3000;
 app.listen(port, () => console.log("Server started at port", port));

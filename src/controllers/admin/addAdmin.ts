@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import prisma from "../../prisma/client/prisamClient";
+import prisma from "../../prisma/client/prismaClient";
 import { Admin } from "../../types/types";
 import bcrypt from "bcrypt";
 import { newAdmin } from "../../validation/admin";
