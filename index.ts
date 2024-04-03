@@ -1,6 +1,5 @@
 import express from "express";
 import Router from "./src/routers/index";
-import "dotenv/config";
 const app = express();
 
 app.use(express.json());
