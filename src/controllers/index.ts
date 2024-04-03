@@ -6,3 +6,9 @@ namespace Controller {
 }
 
 export default Controller;
+// get all super admins
+// get all admins
+// update admin profile
+// delete admin
+// upload admin profile image, delete it and edit it
+// verirfy password
