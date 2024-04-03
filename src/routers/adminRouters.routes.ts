@@ -1,11 +1,15 @@
 import express from "express";
+import Controller from "../controllers/index";
+import Middleware from "../middlewares/index";
+
 const router = express.Router();
-import Controllers from "../controllers/index";
-import Middlewares from "../middlewares/index";
+
 router.post(
   "/auth/add-admin",
-  [Middlewares.tokenAuth, Middlewares.adminAuth, Middlewares.superAdminAuth],
-  Controllers.addAdmin
+  [Middleware.tokenAuth, Middleware.adminAuth, Middleware.superAdminAuth],
+  Controller.addAdmin
 );
-router.post("/auth/login", Controllers.adminLogin);
+
+router.post("/auth/login", Controller.adminLogin);
+
 export default router;

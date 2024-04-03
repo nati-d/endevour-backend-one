@@ -1,11 +1,13 @@
 // import express, { Router } from "express";
 import _user from "./userRouters.routes";
-import admin from "./adminRouters.routes";
+import _admin from "./adminRouters.routes";
+import _job from "./job.routes";
 
 namespace Routers {
 
-    export const adminRoutes = admin;
+    export const adminRoutes = _admin;
     export const user = _user;
+    export const job = _job;
 
 }
 
