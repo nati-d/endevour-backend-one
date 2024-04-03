@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.ts"
+    "test": "",
+    "start": "nodemon index.ts",
+    "prisma-gen": "npx prisma generate --schema ./src/prisma/schema.prisma",
+    "prisma-mig": "npx prisma migrate dev --schema ./src/prisma/schema.prisma",
+    "prisma-full": "npm prisma-gen\nnpm prisma-gen"
   },
   "prisma": {
     "schema": "./src/prisma/schema.prisma"
@@ -14,7 +17,7 @@
   "author": "amanuel wonde",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^5.11.0",
+    "@prisma/client": "^5.12.0",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.1",

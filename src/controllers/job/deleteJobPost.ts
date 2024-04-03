@@ -29,19 +29,16 @@ export default async (req: Request, res: Response) => {
   
     }
 
+    let deletedJobPost;
+
     try {
 
-        const deletedJobPost = await prisma.client.job_post.delete({
-            where: {
-                id: req.body.id
-            }
-        });
-
-        res.status(200).json({
-            success: true,
-            message: "Job post deleted successfully",
-            data: deletedJobPost
-        });
+        if (req.body.auth.role == "ADMIN" || req.body.auth.role == "SUPER_ADMIN")
+            deletedJobPost = await prisma.client.job_post.delete({
+                where: {
+                    id: req.body.id
+                }
+            });
 
     } catch (error) {
 
@@ -59,12 +56,18 @@ export default async (req: Request, res: Response) => {
 
         console.error("Error while deleting job post:", error);
 
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Unknown error at deleting job post",
             error: error
         });
 
     }
-};
 
+    return res.status(200).json({
+        success: true,
+        message: "job post deleted successfully",
+        data: deletedJobPost
+    });
+
+};

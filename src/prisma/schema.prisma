@@ -193,11 +193,11 @@ model Job_post {
   closing_date       DateTime
   verified_at        DateTime?
   verified_by        Int?
-  posted_by          Int
+  posted_by          Int?
   created_at         DateTime      @default(now())
   updated_at         DateTime      @default(now()) @updatedAt
 
-  user           User         @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user           User?        @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   admin          Admin?       @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   job_category   Job_category @relation(fields: [category], references: [id], onUpdate: Cascade, onDelete: Cascade)
   tags           Tag[]

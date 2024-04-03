@@ -8,6 +8,8 @@ router.post("/insert-job-catagory", [ Middleware.tokenAuth, Middleware.adminAuth
 
 router.post("/post-job", [Middleware.tokenAuth, Middleware.adminAuth], Controller.insertJobPost);
 
+router.put("/update-job-post", [Middleware.tokenAuth, Middleware.adminAuth], Controller.updateJobPost);
+
 router.delete("/delete-job-post", [ Middleware.tokenAuth, Middleware.adminAuth ], Controller.deleteJobPost);
 
 export default router;

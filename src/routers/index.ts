@@ -1,5 +1,5 @@
 // import express, { Router } from "express";
-import _user from "./userRouters.routes";
+import _user from "./user.routes";
 import _admin from "./adminRouters.routes";
 import _job from "./job.routes";
 
