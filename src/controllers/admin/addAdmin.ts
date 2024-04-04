@@ -4,6 +4,7 @@ import { Admin } from "../../types/types";
 import bcrypt from "bcrypt";
 import { newAdmin } from "../../validation/admin";
 import _ from "lodash";
+import ApiResponse from "../../types/response";
 const addAdmin = async (req: Request, res: Response) => {
   const body = req.body as Admin;
   const { error } = newAdmin.validate(req.body);
@@ -37,11 +38,14 @@ const addAdmin = async (req: Request, res: Response) => {
           role: body.role,
         },
       });
-      return res.status(201).json({
-        success: true,
-        message: "Admin added successfully",
-        data: _.pickBy(createdAdmin, (value, key) => key !== "password"),
-      });
+
+      return res.status(201).json(
+        new ApiResponse(
+          true,
+          "Admin added successfully",
+          _.pickBy(createdAdmin, (value, key) => key !== "password")
+        )
+      );
     }
   } catch (error) {
     console.log(error);

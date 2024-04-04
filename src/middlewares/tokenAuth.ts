@@ -1,22 +1,33 @@
-import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import { NextFunction, Request, Response } from "express";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import ApiResponse from "../types/response";
+import { Admin } from "../types/types";
 
-const tokenAuth = (req: Request, res: Response, next: any) => {
+declare global {
+  namespace Express {
+    interface Request {
+      auth?: Admin;
+    }
+  }
+}
+const tokenAuth = (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers.authorization;
+
   if (!token)
     return res
       .status(401)
-      .json({ success: false, message: "Access denied. Token not provided" });
+      .json(new ApiResponse(false, "Access denied. Token not provided"));
 
   try {
-    const decoded = jwt.verify(token, "jwtprivatekey");
-    req.body.auth = decoded;
+    const decoded = jwt.verify(token, "jwtprivatekey") as Admin;
+    req.auth = decoded;
     next();
   } catch (error) {
     console.log(error);
-    res
+
+    return res
       .status(400)
-      .json({ success: false, message: "Access denied. Invalid token" });
+      .json(new ApiResponse(false, "Access denied. Invalid token"));
   }
 };
 
