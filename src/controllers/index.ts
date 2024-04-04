@@ -4,7 +4,7 @@ import _userSignup from "./user/signup";
 import _insertJobPost from "./job/createJobPost";
 import _updateJobPost from "./job/updateJobPost";
 import _deleteJobPost from "./job/deleteJobPost";
-import _insertJobCatagory from "./job/jobCatagory";
+import _insertJobCatagory from "./job/createJobCatagory";
 import _getAdmins from "./admin/getAdmins";
 import _confirmPassword from "./admin/confirmPassword";
 import _adminProfileImgUpload from "./admin/uploadProfileImg";

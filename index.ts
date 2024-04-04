@@ -3,7 +3,8 @@ import Router from "./src/routers/index";
 const app = express();
 
 app.use(express.json());
-app.use("/public", express.static("public"));
+
+app.get("/", (req, res) => res.send("this is home page"));
 
 app.use("/api/user", Router.user);
 

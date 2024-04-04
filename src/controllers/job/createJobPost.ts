@@ -69,35 +69,19 @@ export default async (req: Request, res: Response) => {
       }
     }
 
-    await prisma.client.job_post.delete({
-      where: {
-        id: jobId,
-      },
-    });
-  }
+        try {
+            await prisma.client.job_post.delete({
+                where: {
+                    id: jobId
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
 
-  // try {
-
-  //     if (req.body.auth.role == "ADMIN" || req.body.auth.role == "SUPER_ADMIN")
-  // } catch (error) {
-
-  //     if (error instanceof Prisma.PrismaClientKnownRequestError) {
-
-  //         if (error.code = "P2022") {
-  //             return res.status(400).json({
-  //                 status: false,
-  //                 message: 'Not authorized to post jobs',
-  //                 error: error,
-  //             });
-  //         }
-  //     }
-
-  //     console.error("Error while insert job post:", error);
-
-  //     return res.status(500).send({
-  //         success: false,
-  //         message: 'Unknown error at posting job',
-  //         error: error,
-  //     });
-  // }
-};
+        return res.status(400).json({
+            status: false,
+            message: "error while creating job post"
+        })
+    }
+}
