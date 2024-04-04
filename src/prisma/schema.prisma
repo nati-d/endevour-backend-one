@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
@@ -406,4 +406,12 @@ model Recommended_Applicants {
 
   exclusive_job Exclusive_job @relation(fields: [job], references: [id], onUpdate: Cascade, onDelete: Cascade)
   recommender_  Recommender   @relation(fields: [recommender], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
+
+model Admin_pass_reset {
+  id                Int      @id @default(autoincrement())
+  admin_id          Int
+  confirmation_code Int
+  created_at        DateTime @default(now())
+  updated_at        DateTime @default(now()) @updatedAt
 }

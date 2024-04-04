@@ -8,6 +8,8 @@ import _insertJobCatagory from "./job/jobCatagory";
 import _getAdmins from "./admin/getAdmins";
 import _confirmPassword from "./admin/confirmPassword";
 import _adminProfileImgUpload from "./admin/uploadProfileImg";
+import _forgotPassword from "./admin/forgotPassword";
+import _verifyForgotPassword from "./admin/verifyForgotPassword";
 namespace Controller {
   export const addAdmin = _addAdmin;
 
@@ -16,6 +18,10 @@ namespace Controller {
   export const getAdmins = _getAdmins;
 
   export const confirmPassword = _confirmPassword;
+
+  export const forgotPassword = _forgotPassword;
+
+  export const verifyForgotPassword = _verifyForgotPassword;
 
   export const adminProfileImgUpload = _adminProfileImgUpload;
 
