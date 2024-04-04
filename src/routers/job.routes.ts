@@ -6,7 +6,7 @@ const router: Router = express.Router();
 
 router.post("/insert-job-catagory", [ Middleware.tokenAuth, Middleware.adminAuth ], Controller.insertJobCatagory);
 
-router.get("/get-job-catagory", [Middleware.tokenAuth], Controller.getJobCategory);
+router.get("/get-job-category", [Middleware.tokenAuth], Controller.getJobCategory);
 
 // router.put("/delete-job-catagory", [Middleware.tokenAuth, Middleware.adminAuth], Controller.deleteJobCatagory);
 

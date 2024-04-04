@@ -1,5 +1,8 @@
 import _addAdmin from "./admin/addAdmin";
 import _adminLogin from "./admin/adminLogin";
+import _getAdmins from "./admin/getAdmins";
+import _confirmPassword from "./admin/confirmPassword";
+import _adminProfileImgUpload from "./admin/uploadProfileImg";
 import _userSignup from "./user/signup";
 import _insertJobPost from "./job/createJobPost";
 import _getJobPost from "./job/getJobPost";
@@ -8,10 +11,6 @@ import _deleteJobPost from "./job/deleteJobPost";
 import _insertJobCategory from "./job/catagory/createJobCategory";
 import _getJobCategory from "./job/catagory/getJobCategory";
 
-import _insertJobCatagory from "./job/createJobCatagory";
-import _getAdmins from "./admin/getAdmins";
-import _confirmPassword from "./admin/confirmPassword";
-import _adminProfileImgUpload from "./admin/uploadProfileImg";
 namespace Controller {
   export const addAdmin = _addAdmin;
 
