@@ -1,7 +1,7 @@
-import prisma from "../../prisma/index";
+import prisma from "../../../prisma/index";
 import { Prisma } from "@prisma/client"
 import { Request, Response } from "express";
-import Validator from "../../validation/index";
+import Validator from "../../../validation/index";
 
 export default async (req: Request, res: Response) => {
     

@@ -171,6 +171,8 @@ model Job_category {
   updated_at DateTime @default(now()) @updatedAt
 
   job_posts Job_post[]
+
+  @@index([name])
 }
 
 model Salary {
@@ -180,6 +182,11 @@ model Salary {
   periodicity Periodicity
   currency    String
   job         Job_post    @relation(fields: [id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@index([low_end, high_end])
+  @@index([high_end, low_end])
+  @@index([periodicity])
+  @@index([currency])
 }
 
 model Job_post {
@@ -204,6 +211,17 @@ model Job_post {
   tags           Tag[]
   salary         Salary?
   saved_job_post Saved_job[]
+
+  @@index([title, created_at])
+  @@index([contract_type, created_at])
+  @@index([year_of_experience, created_at])
+  @@index([category, created_at])
+  @@index([closing_date, created_at])
+  @@index([verified_at, created_at])
+  @@index([verified_by, verified_at])
+  @@index([posted_by, created_at])
+  @@index([created_at])
+  @@index([updated_at])
 }
 
 enum Contract_type {
