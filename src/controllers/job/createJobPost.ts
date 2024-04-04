@@ -73,7 +73,6 @@ export default async (req: Request, res: Response) => {
         }
 
         try {
-            if (jobId != 0)
             await prisma.client.job_post.delete({
                 where: {
                     id: jobId
