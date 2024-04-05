@@ -31,6 +31,6 @@ router.post(
     Middleware.adminAuth,
     Middleware.uploadFile("profile_images/admin").single("profile_image"),
   ],
-  Controller.adminProfileImgUpload
+  // Controller.adminProfileImgUpload
 );
 export default router;

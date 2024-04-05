@@ -20,7 +20,7 @@ export default async (req: Request, res: Response) => {
 
     try {
 
-        if (req.body.auth.role == "ADMIN" || req.body.auth.role == "SUPER_ADMIN") {
+        if (req?.auth?.role == "ADMIN" || req?.auth?.role == "SUPER_ADMIN") {
             updatedJobPost = await prisma.client.job_post.update({
                 where: { id: req.body.id },
                 data: {

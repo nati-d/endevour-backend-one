@@ -8,7 +8,7 @@ export default async (req: Request, res: Response) => {
 
         res.send({
             success: true,
-            message: "New job catagory is added",
+            message: "data fetched successfully",
             data: newCatagory,
         });
 

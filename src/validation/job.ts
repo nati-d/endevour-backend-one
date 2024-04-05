@@ -38,7 +38,6 @@ const jobPost = joi.object({
     high_end: joi.number().positive(),
     periodicity: PERIODICITY_SET,
     currency: CURRENCY_SET,
-    auth: joi.object().required()
 });
 
 const getJobPost = joi.object({
@@ -47,7 +46,6 @@ const getJobPost = joi.object({
     category: RANGE_OF_JOB_CATEGORY,
     closing_date: RANGE_OF_DATE,
     salary: SALARY,
-    auth: joi.object().required()
 });
 
 const updateJobPost = joi.object({
@@ -64,17 +62,14 @@ const updateJobPost = joi.object({
     high_end: joi.number().positive(),
     periodicity: PERIODICITY_SET,
     currency: CURRENCY_SET,
-    auth: joi.object()
 })
 
 const deleteJobPost = joi.object({
     id: joi.number().positive().required(),
-    auth: joi.object().required()
 });
 
 const jobCatagory = joi.object({
     name: joi.string().required(),
-    auth: joi.object()
 });
 
 export default {
@@ -83,5 +78,4 @@ export default {
     updateJobPost,
     deleteJobPost,
     jobCatagory
-
 }

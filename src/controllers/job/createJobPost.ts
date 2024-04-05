@@ -40,7 +40,7 @@ export default async (req: Request, res: Response) => {
                 category: req.body.category,
                 closing_date: new Date(req.body.closing_date),
                 verified_at: new Date(), 
-                verified_by: req.body.auth.id,
+                verified_by: req.auth?.id,
                 }
             });
 
