@@ -29,7 +29,13 @@ export default async (req: Request, res: Response) => {
                 overview: req.body.overview,
                 body: req.body.body,
                 thumbnail: req.body.thumbnail,
-                posted_by: req.auth?.id as number
+                posted_by: req.auth?.id as number,
+                tags: {
+                    connectOrCreate: req.body.tags.map((id: string) => ({
+                        where: { id },
+                        create: { id }
+                    }))
+                }
             }
         });
 
@@ -44,7 +50,7 @@ export default async (req: Request, res: Response) => {
             return res.status(400).json({
                 success: false,
                 message: 'Not authorized to post news',
-                error: error,
+                data: error,
             });
         }
 
@@ -52,7 +58,7 @@ export default async (req: Request, res: Response) => {
         return res.status(500).json({
             success: false,
             message: "Error while posting news",
-            error: error,
+            data: error,
         });
     }
 };
