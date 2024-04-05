@@ -19,6 +19,11 @@ import _getTenderCategory from "./tender/category/getTenderCategory";
 import _getAllTenderCategories from "./tender/category/getAllTenderCategories";
 import _deleteTender from "./tender/deleteTender";
 import _createTender from "./tender/createTender";
+import _createNews from "./news/createNews";
+// import _getNews from "./news/getNews";
+// import _updateNews from "./news/updateNews";
+// import _deleteNews from "./news/deleteNews";
+
 namespace Controller {
   export const addAdmin = _addAdmin;
 
@@ -65,7 +70,16 @@ namespace Controller {
   // -- Job category -- //
   export const insertJobCategory = _insertJobCategory;
 
-  export const getJobCategory = _getJobCategory;
+    export const getJobCategory = _getJobCategory;
+
+    // -- News -- //
+    export const createNews = _createNews;
+
+    // export const getNews = _getNews;
+
+    // export const updateNews = _updateNews;
+
+    // export const deleteNews = _deleteNews;
 }
 
 export default Controller;
