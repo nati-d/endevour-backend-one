@@ -2,11 +2,12 @@
 import _user from "./user.routes";
 import _admin from "./admin.routes";
 import _job from "./job.routes";
-
+import _tender from "./tender.routes";
 namespace Routers {
   export const adminRoutes = _admin;
   export const user = _user;
   export const job = _job;
+  export const tender = _tender;
 }
 
 export default Routers;

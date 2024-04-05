@@ -29,8 +29,10 @@ router.post(
   [
     Middleware.tokenAuth,
     Middleware.adminAuth,
-    Middleware.uploadFile("profile_images/admin").single("profile_image"),
-  ],
+    Middleware.uploadFile("images/profile_images/admin").single(
+      "profile_image"
+    ),
+  ]
   // Controller.adminProfileImgUpload
 );
 

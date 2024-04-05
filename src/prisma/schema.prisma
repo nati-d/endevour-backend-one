@@ -31,6 +31,7 @@ model Admin {
   blog             Blog[]
   exclusive_job    Exclusive_job[]
   recommender      Recommender[]
+  tender_category  Tender_category[]
 }
 
 enum Admin_role {
@@ -275,36 +276,37 @@ model Saved_news {
 
 // -- ---- -- Tender -- ---- -- //
 model Tender_category {
-  id         Int      @id @default(autoincrement())
-  name       String   @unique
+  id          Int    @id @default(autoincrement())
+  name        String @unique
+  verified_by Int
+
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
+  admin  Admin    @relation(fields: [verified_by], references: [id])
   tender Tender[]
 }
 
 model Tender {
-  id                  Int      @id @default(autoincrement())
-  title               String
-  overview            String
-  body                String   @db.LongText
-  price               Float?
-  starting_bid        Float
-  oppeortunity_number Int
-  CFDA                String
-  eligibility         Boolean
-  status              String
-  category            Int
-  opening_date        DateTime
-  closing_date        DateTime
-  posted_by           Int
-  verified_by         Int
+  id           Int      @id @default(autoincrement())
+  title        String
+  overview     String
+  body         String   @db.LongText
+  price        Float?
+  starting_bid Float
+  eligibility  Boolean
+  status       String
+  category     Int
+  opening_date DateTime
+  closing_date DateTime
+  posted_by    Int?
+  verified_by  Int?
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
-  admin           Admin           @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  user            User            @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  admin           Admin?          @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user            User?           @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   tender_category Tender_category @relation(fields: [category], references: [id], onUpdate: Cascade, onDelete: Cascade)
   files           Tender_files[]
   tags            Tag[]
@@ -333,14 +335,16 @@ model Saved_tender {
 
 // -- ---- -- Grant -- ---- -- //
 model Grant {
-  id          Int      @id @default(autoincrement())
-  title       String
-  overview    String
-  body        String   @db.LongText
-  location    String
-  verified_by Int
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now()) @updatedAt
+  id                  Int      @id @default(autoincrement())
+  title               String
+  overview            String
+  body                String   @db.LongText
+  location            String
+  verified_by         Int
+  oppeortunity_number Int
+  CFDA                String
+  created_at          DateTime @default(now())
+  updated_at          DateTime @default(now()) @updatedAt
 
   admin Admin         @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   tags  Tag[]
