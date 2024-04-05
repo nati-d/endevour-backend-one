@@ -7,10 +7,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const user_routes_1 = __importDefault(require("./user.routes"));
 const admin_routes_1 = __importDefault(require("./admin.routes"));
 const job_routes_1 = __importDefault(require("./job.routes"));
+const tender_routes_1 = __importDefault(require("./tender.routes"));
 var Routers;
 (function (Routers) {
     Routers.adminRoutes = admin_routes_1.default;
     Routers.user = user_routes_1.default;
     Routers.job = job_routes_1.default;
+    Routers.tender = tender_routes_1.default;
 })(Routers || (Routers = {}));
 exports.default = Routers;

@@ -7,8 +7,7 @@ const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient
 const response_1 = __importDefault(require("../../types/response"));
 const uploadProfileImage = async (req, res) => {
     const id = parseInt(req.body.id);
-    const img = req.file?.path;
-    console.log(req.file);
+    const img = req.file?.filename;
     try {
         await prismaClient_1.default.admin.update({
             where: {

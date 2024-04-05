@@ -11,5 +11,6 @@ app.get("/", (req, res) => res.send("this is home page"));
 app.use("/api/user", index_1.default.user);
 app.use("/api/admin", index_1.default.adminRoutes);
 app.use("/api/job", index_1.default.job);
+app.use("/api/tender", index_1.default.tender);
 const port = 3000;
 app.listen(port, () => console.log("Server started at port", port));
