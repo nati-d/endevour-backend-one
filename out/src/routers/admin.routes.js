@@ -14,6 +14,10 @@ router.get("/confirm-password", [index_2.default.tokenAuth, index_2.default.admi
 router.post("/upload-profile-img", [
     index_2.default.tokenAuth,
     index_2.default.adminAuth,
-    index_2.default.uploadFile("profile_images/admin").single("profile_image"),
-]);
+    index_2.default.uploadFile("images/profile_images/admin").single("profile_image"),
+]
+// Controller.adminProfileImgUpload
+);
+router.post("/forgot-password", index_1.default.forgotPassword);
+router.post("/verify-forgot-password-confirmation-code", index_1.default.verifyForgotPassword);
 exports.default = router;
