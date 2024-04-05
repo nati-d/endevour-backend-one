@@ -10,9 +10,6 @@ namespace Routers {
   export const user = _user;
   export const job = _job;
   export const tender = _tender;
-    export const adminRoutes = _admin;
-    export const user = _user;
-    export const job = _job;
     export const news = _news;
 }
 

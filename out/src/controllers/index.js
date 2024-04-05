@@ -24,6 +24,10 @@ const getTenderCategory_1 = __importDefault(require("./tender/category/getTender
 const getAllTenderCategories_1 = __importDefault(require("./tender/category/getAllTenderCategories"));
 const deleteTender_1 = __importDefault(require("./tender/deleteTender"));
 const createTender_1 = __importDefault(require("./tender/createTender"));
+const createNews_1 = __importDefault(require("./news/createNews"));
+const getNews_1 = __importDefault(require("./news/getNews"));
+const updateNews_1 = __importDefault(require("./news/updateNews"));
+const deleteNews_1 = __importDefault(require("./news/deleteNews"));
 var Controller;
 (function (Controller) {
     Controller.addAdmin = addAdmin_1.default;
@@ -52,6 +56,11 @@ var Controller;
     // -- Job category -- //
     Controller.insertJobCategory = createJobCategory_1.default;
     Controller.getJobCategory = getJobCategory_1.default;
+    // -- News -- //
+    Controller.createNews = createNews_1.default;
+    Controller.getNews = getNews_1.default;
+    Controller.updateNews = updateNews_1.default;
+    Controller.deleteNews = deleteNews_1.default;
 })(Controller || (Controller = {}));
 exports.default = Controller;
 // get all super admins

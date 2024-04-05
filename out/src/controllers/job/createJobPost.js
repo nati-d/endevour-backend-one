@@ -19,7 +19,6 @@ exports.default = async (req, res) => {
         }
     }
     catch (error) {
-        console.error(error);
         return res.status(400).send({
             status: false,
             message: "Error at request validation",
@@ -63,6 +62,7 @@ exports.default = async (req, res) => {
                     error: error,
                 });
             }
+            ;
         }
         try {
             if (jobId != 0)
