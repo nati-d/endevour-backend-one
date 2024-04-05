@@ -5,18 +5,20 @@ import _ from "lodash";
 import Validator from "../../validation/index";
 
 export default async (req: Request, res: Response) => {
-  try {
-    const { error } = Validator.job.jobPost.validate(req.body);
 
-    if (error) {
-      return res.send({
-        success: false,
-        message: error.details,
-        data: null,
-      });
-    }
-  } catch (error) {
-    console.error(error);
+    try {
+
+        const { error } = Validator.job.jobPost.validate(req.body);
+
+        if (error) {
+            return res.send({
+                success: false,
+                message: error.details,
+                data: null,
+            });
+        }
+
+    } catch (error) {
 
         return res.status(400).send({
             status: false,
@@ -29,6 +31,7 @@ export default async (req: Request, res: Response) => {
     let jobId: number = 0;
 
     try {
+
         const newJobPost = await prisma.client.job_post.create({
             data: {
                 title: req.body.title,
@@ -41,8 +44,8 @@ export default async (req: Request, res: Response) => {
                 closing_date: new Date(req.body.closing_date),
                 verified_at: new Date(), 
                 verified_by: req.auth?.id,
-                }
-            });
+            }
+        });
 
         jobId = newJobPost.id;
 
@@ -68,7 +71,7 @@ export default async (req: Request, res: Response) => {
                     message: 'Not authorized to post jobs',
                     error: error,
                 });
-            }
+            };
 
         }
 

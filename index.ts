@@ -12,5 +12,7 @@ app.use("/api/admin", Router.adminRoutes);
 
 app.use("/api/job", Router.job);
 
+app.use("/api/news", Router.news);
+
 const port = 3000;
 app.listen(port, () => console.log("Server started at port", port));
