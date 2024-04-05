@@ -7,6 +7,24 @@ const joi_1 = __importDefault(require("joi"));
 const CONTRACT_TYPE_SET = joi_1.default.string().valid("REMOTE", "PARTIME", "FULLTIME", "CONTRACT");
 const CURRENCY_SET = joi_1.default.string().valid("DOLLAR", "BIRR", "EURO");
 const PERIODICITY_SET = joi_1.default.string().valid("HOURLY", "MONTHLY", "WEEKLY", "DAILY");
+const RANGE_OF_PERIODICITY = joi_1.default.array().items(PERIODICITY_SET);
+const RANGE_OF_CONTRACT_TYPE = joi_1.default.array().items(CONTRACT_TYPE_SET);
+const RANGE_OF_JOB_CATEGORY = joi_1.default.array().items(joi_1.default.number());
+const RANGE_OF_CURRENCY = joi_1.default.array().items(CURRENCY_SET);
+const RANGE_OF_NUMBER = joi_1.default.object({
+    lower_bound: joi_1.default.number().required(),
+    upper_bound: joi_1.default.number().required()
+});
+const RANGE_OF_DATE = joi_1.default.object({
+    lower_bound: joi_1.default.date().iso().required(),
+    upper_bound: joi_1.default.date().iso().required()
+});
+const SALARY = joi_1.default.object({
+    low_end: joi_1.default.number().positive().required(),
+    high_end: joi_1.default.number().positive().required(),
+    periodicity: RANGE_OF_PERIODICITY,
+    currency: RANGE_OF_CURRENCY
+});
 const jobPost = joi_1.default.object({
     title: joi_1.default.string().required(),
     overview: joi_1.default.string().required(),
@@ -20,7 +38,13 @@ const jobPost = joi_1.default.object({
     high_end: joi_1.default.number().positive(),
     periodicity: PERIODICITY_SET,
     currency: CURRENCY_SET,
-    auth: joi_1.default.object()
+});
+const getJobPost = joi_1.default.object({
+    contract_type: RANGE_OF_CONTRACT_TYPE,
+    year_of_experience: RANGE_OF_NUMBER,
+    category: RANGE_OF_JOB_CATEGORY,
+    closing_date: RANGE_OF_DATE,
+    salary: SALARY,
 });
 const updateJobPost = joi_1.default.object({
     id: joi_1.default.number().positive().required(),
@@ -36,18 +60,16 @@ const updateJobPost = joi_1.default.object({
     high_end: joi_1.default.number().positive(),
     periodicity: PERIODICITY_SET,
     currency: CURRENCY_SET,
-    auth: joi_1.default.object()
 });
 const deleteJobPost = joi_1.default.object({
     id: joi_1.default.number().positive().required(),
-    auth: joi_1.default.object().required()
 });
 const jobCatagory = joi_1.default.object({
     name: joi_1.default.string().required(),
-    auth: joi_1.default.object()
 });
 exports.default = {
     jobPost,
+    getJobPost,
     updateJobPost,
     deleteJobPost,
     jobCatagory

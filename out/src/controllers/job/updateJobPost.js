@@ -19,7 +19,7 @@ exports.default = async (req, res) => {
     let updatedJobPost;
     let updatedJobPostSalary;
     try {
-        if (req.body.auth.role == "ADMIN" || req.body.auth.role == "SUPER_ADMIN") {
+        if (req?.auth?.role == "ADMIN" || req?.auth?.role == "SUPER_ADMIN") {
             updatedJobPost = await index_1.default.client.job_post.update({
                 where: { id: req.body.id },
                 data: {
