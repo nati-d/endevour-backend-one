@@ -70,8 +70,7 @@ model User {
 
 // -- ---- -- Tag -- ---- -- //
 model Tag {
-  id         Int      @id @default(autoincrement())
-  name       String   @unique @db.VarChar(20)
+  id         String   @id
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
