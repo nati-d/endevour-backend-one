@@ -7,6 +7,7 @@ const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const admin_1 = require("../../validation/admin");
 const lodash_1 = __importDefault(require("lodash"));
+const response_1 = __importDefault(require("../../types/response"));
 const addAdmin = async (req, res) => {
     const body = req.body;
     const { error } = admin_1.newAdmin.validate(req.body);
@@ -38,11 +39,7 @@ const addAdmin = async (req, res) => {
                     role: body.role,
                 },
             });
-            return res.status(201).json({
-                success: true,
-                message: "Admin added successfully",
-                data: lodash_1.default.pickBy(createdAdmin, (value, key) => key !== "password"),
-            });
+            return res.status(201).json(new response_1.default(true, "Admin added successfully", lodash_1.default.pickBy(createdAdmin, (value, key) => key !== "password")));
         }
     }
     catch (error) {

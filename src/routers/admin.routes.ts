@@ -31,7 +31,7 @@ router.post(
     Middleware.adminAuth,
     Middleware.uploadFile("profile_images/admin").single("profile_image"),
   ],
-  Controller.adminProfileImgUpload
+  // Controller.adminProfileImgUpload
 );
 
 router.post("/forgot-password", Controller.forgotPassword);
