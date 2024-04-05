@@ -2,7 +2,7 @@ import _addAdmin from "./admin/addAdmin";
 import _adminLogin from "./admin/adminLogin";
 import _getAdmins from "./admin/getAdmins";
 import _confirmPassword from "./admin/confirmPassword";
-// import _adminProfileImgUpload from "./admin/uploadProfileImg";
+import _adminProfileImgUpload from "./admin/uploadProfileImg";
 import _userSignup from "./user/signup";
 import _insertJobPost from "./job/createJobPost";
 import _getJobPost from "./job/getJobPost";
@@ -16,26 +16,26 @@ namespace Controller {
 
     export const adminLogin = _adminLogin;
 
-  export const getAdmins = _getAdmins;
+    export const getAdmins = _getAdmins;
 
     export const confirmPassword = _confirmPassword;
 
-    // export const adminProfileImgUpload = _adminProfileImgUpload;
+    export const adminProfileImgUpload = _adminProfileImgUpload;
 
     // -- User -- //
     export const userSignup = _userSignup;
 
-// -- Job post -- //
+    // -- Job post -- //
     export const insertJobPost = _insertJobPost;
 
     export const getJobPost = _getJobPost;
 
-  export const updateJobPost = _updateJobPost;
+    export const updateJobPost = _updateJobPost;
 
-  export const deleteJobPost = _deleteJobPost;
+    export const deleteJobPost = _deleteJobPost;
 
-// -- Job category -- //
-    export const insertJobCatagory = _insertJobCategory;
+    // -- Job category -- //
+    export const insertJobCategory = _insertJobCategory;
 
     export const getJobCategory = _getJobCategory;
 }

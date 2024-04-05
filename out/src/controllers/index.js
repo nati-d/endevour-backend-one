@@ -7,7 +7,7 @@ const addAdmin_1 = __importDefault(require("./admin/addAdmin"));
 const adminLogin_1 = __importDefault(require("./admin/adminLogin"));
 const getAdmins_1 = __importDefault(require("./admin/getAdmins"));
 const confirmPassword_1 = __importDefault(require("./admin/confirmPassword"));
-// import _adminProfileImgUpload from "./admin/uploadProfileImg";
+const uploadProfileImg_1 = __importDefault(require("./admin/uploadProfileImg"));
 const signup_1 = __importDefault(require("./user/signup"));
 const createJobPost_1 = __importDefault(require("./job/createJobPost"));
 const getJobPost_1 = __importDefault(require("./job/getJobPost"));
@@ -19,10 +19,9 @@ var Controller;
 (function (Controller) {
     Controller.addAdmin = addAdmin_1.default;
     Controller.adminLogin = adminLogin_1.default;
-    // -- User -- //
     Controller.getAdmins = getAdmins_1.default;
     Controller.confirmPassword = confirmPassword_1.default;
-    // export const adminProfileImgUpload = _adminProfileImgUpload;
+    Controller.adminProfileImgUpload = uploadProfileImg_1.default;
     // -- User -- //
     Controller.userSignup = signup_1.default;
     // -- Job post -- //
