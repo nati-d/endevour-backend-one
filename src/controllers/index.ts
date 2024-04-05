@@ -3,6 +3,8 @@ import _adminLogin from "./admin/adminLogin";
 import _getAdmins from "./admin/getAdmins";
 import _confirmPassword from "./admin/confirmPassword";
 import _adminProfileImgUpload from "./admin/uploadProfileImg";
+import _forgotPassword from "./admin/forgotPassword";
+import _verifyForgotPassword from "./admin/verifyForgotPassword";
 import _userSignup from "./user/signup";
 import _insertJobPost from "./job/createJobPost";
 import _getJobPost from "./job/getJobPost";
@@ -12,32 +14,36 @@ import _insertJobCategory from "./job/catagory/createJobCategory";
 import _getJobCategory from "./job/catagory/getJobCategory";
 
 namespace Controller {
-    export const addAdmin = _addAdmin;
+  export const addAdmin = _addAdmin;
 
-    export const adminLogin = _adminLogin;
+  export const adminLogin = _adminLogin;
 
-    export const getAdmins = _getAdmins;
+  export const getAdmins = _getAdmins;
 
-    export const confirmPassword = _confirmPassword;
+  export const confirmPassword = _confirmPassword;
 
-    export const adminProfileImgUpload = _adminProfileImgUpload;
+  export const forgotPassword = _forgotPassword;
 
-    // -- User -- //
-    export const userSignup = _userSignup;
+  export const verifyForgotPassword = _verifyForgotPassword;
 
-    // -- Job post -- //
-    export const insertJobPost = _insertJobPost;
+  export const adminProfileImgUpload = _adminProfileImgUpload;
 
-    export const getJobPost = _getJobPost;
+  // -- User -- //
+  export const userSignup = _userSignup;
 
-    export const updateJobPost = _updateJobPost;
+  // -- Job post -- //
+  export const insertJobPost = _insertJobPost;
 
-    export const deleteJobPost = _deleteJobPost;
+  export const getJobPost = _getJobPost;
 
-    // -- Job category -- //
-    export const insertJobCategory = _insertJobCategory;
+  export const updateJobPost = _updateJobPost;
 
-    export const getJobCategory = _getJobCategory;
+  export const deleteJobPost = _deleteJobPost;
+
+  // -- Job category -- //
+  export const insertJobCategory = _insertJobCategory;
+
+  export const getJobCategory = _getJobCategory;
 }
 
 export default Controller;

@@ -4,8 +4,7 @@ import ApiResponse from "../../types/response";
 
 const uploadProfileImage = async (req: Request, res: Response) => {
   const id = parseInt(req.body.id);
-  const img = req.file?.path;
-  console.log(req.file);
+  const img = req.file?.filename;
   try {
     await prisma.admin.update({
       where: {

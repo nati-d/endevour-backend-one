@@ -33,4 +33,11 @@ router.post(
   ],
   // Controller.adminProfileImgUpload
 );
+
+router.post("/forgot-password", Controller.forgotPassword);
+
+router.post(
+  "/verify-forgot-password-confirmation-code",
+  Controller.verifyForgotPassword
+);
 export default router;
