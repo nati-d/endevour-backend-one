@@ -12,7 +12,13 @@ import _updateJobPost from "./job/updateJobPost";
 import _deleteJobPost from "./job/deleteJobPost";
 import _insertJobCategory from "./job/catagory/createJobCategory";
 import _getJobCategory from "./job/catagory/getJobCategory";
-
+import _createTenderCategory from "./tender/category/createTenderCategory";
+import _updateTenderCategory from "./tender/category/updateTenderCategory";
+import _deleteTenderCategory from "./tender/category/deleteTenderCategory";
+import _getTenderCategory from "./tender/category/getTenderCategory";
+import _getAllTenderCategories from "./tender/category/getAllTenderCategories";
+import _deleteTender from "./tender/deleteTender";
+import _createTender from "./tender/createTender";
 namespace Controller {
   export const addAdmin = _addAdmin;
 
@@ -28,6 +34,22 @@ namespace Controller {
 
   export const adminProfileImgUpload = _adminProfileImgUpload;
 
+  // -- Tender category --//
+  export const createTenderCategory = _createTenderCategory;
+
+  export const updateTenderCategory = _updateTenderCategory;
+
+  export const deleteTenderCategory = _deleteTenderCategory;
+
+  export const getTenderCategory = _getTenderCategory;
+
+  export const getAllTenderCategories = _getAllTenderCategories;
+
+  // -- Tender --//
+
+  export const createTender = _createTender;
+
+  export const deleteTender = _deleteTender;
   // -- User -- //
   export const userSignup = _userSignup;
 
