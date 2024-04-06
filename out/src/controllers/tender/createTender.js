@@ -37,16 +37,6 @@ const createTender = async (req, res) => {
                         })),
                     },
                 },
-                tags: {
-                    connectOrCreate: {
-                        where: {
-                            id: 1,
-                        },
-                        create: {
-                            name: "tag1",
-                        },
-                    },
-                },
             },
         });
         return res

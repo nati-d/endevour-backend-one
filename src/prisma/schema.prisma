@@ -429,9 +429,9 @@ model Recommended_Applicants {
   recommender_  Recommender   @relation(fields: [recommender], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
-model Admin_pass_reset {
+model password_reset {
   id                Int      @id @default(autoincrement())
-  admin_id          Int
+  email             String
   confirmation_code Int
   created_at        DateTime @default(now())
   updated_at        DateTime @default(now()) @updatedAt

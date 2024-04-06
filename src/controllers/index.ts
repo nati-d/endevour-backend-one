@@ -3,8 +3,7 @@ import _adminLogin from "./admin/adminLogin";
 import _getAdmins from "./admin/getAdmins";
 import _confirmPassword from "./admin/confirmPassword";
 import _adminProfileImgUpload from "./admin/uploadProfileImg";
-import _forgotPassword from "./admin/forgotPassword";
-import _verifyForgotPassword from "./admin/verifyForgotPassword";
+
 import _userSignup from "./user/signup";
 import _insertJobPost from "./job/createJobPost";
 import _getJobPost from "./job/getJobPost";
@@ -26,10 +25,6 @@ namespace Controller {
   export const getAdmins = _getAdmins;
 
   export const confirmPassword = _confirmPassword;
-
-  export const forgotPassword = _forgotPassword;
-
-  export const verifyForgotPassword = _verifyForgotPassword;
 
   export const adminProfileImgUpload = _adminProfileImgUpload;
 
