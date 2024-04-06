@@ -5,30 +5,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient"));
 const response_1 = __importDefault(require("../../types/response"));
-const getTender = async (req, res) => {
-    const { tender_id } = req.params;
+const getTenders = async (req, res) => {
     try {
-        const tender = await prismaClient_1.default.tender.findUnique({
-            where: {
-                id: parseInt(tender_id),
-            },
+        const tenders = await prismaClient_1.default.tender.findMany({
             include: {
                 files: true,
             },
         });
-        if (!tender)
-            return res
-                .status(404)
-                .json(new response_1.default(false, "We can't find tender with the given id."));
         return res
             .status(200)
-            .json(new response_1.default(true, "Tender getted successfully.", tender));
+            .json(new response_1.default(true, "Tenders getted successfully.", tenders));
     }
     catch (error) {
         console.log(error);
         return res
             .status(500)
-            .json(new response_1.default(false, "Something went wrong while getting tender."));
+            .json(new response_1.default(false, "Something went wrong while getting tendrs."));
     }
 };
-exports.default = getTender;
+exports.default = getTenders;

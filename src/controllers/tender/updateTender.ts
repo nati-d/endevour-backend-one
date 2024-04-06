@@ -1,25 +1,26 @@
 import { Request, Response } from "express";
 import ApiResponse from "../../types/response";
 import prisma from "../../prisma/client/prismaClient";
+import { Tender } from "../../types/types";
 
 const updateTender = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    req.body.price = parseFloat(req.body.price);
-    req.body.starting_bid = parseFloat(req.body.starting_bid);
+    const body = req.body as Tender;
+    const { tender_id } = req.query;
+    console.log(tender_id);
     const updatedTender = await prisma.tender.update({
-      where: { id: Number(id) },
+      where: { id: Number(tender_id) },
       data: {
-        title: req.body.title,
-        overview: req.body.overview,
-        body: req.body.body,
-        price: req.body.price,
-        starting_bid: 123,
+        title: body.title,
+        overview: body.overview,
+        body: body.body,
+        price: body.price,
+        starting_bid: body.starting_bid,
         eligibility: true,
-        status: req.body.status,
-        category: req.body.category,
-        opening_date: req.body.opening_date,
-        closing_date: req.body.closing_date,
+        status: body.status,
+        category: body.category,
+        opening_date: body.opening_date,
+        closing_date: body.closing_date,
       },
     });
 

@@ -7,22 +7,22 @@ const response_1 = __importDefault(require("../../types/response"));
 const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient"));
 const updateTender = async (req, res) => {
     try {
-        const { id } = req.params;
-        req.body.price = parseFloat(req.body.price);
-        req.body.starting_bid = parseFloat(req.body.starting_bid);
+        const body = req.body;
+        const { tender_id } = req.query;
+        console.log(tender_id);
         const updatedTender = await prismaClient_1.default.tender.update({
-            where: { id: Number(id) },
+            where: { id: Number(tender_id) },
             data: {
-                title: req.body.title,
-                overview: req.body.overview,
-                body: req.body.body,
-                price: req.body.price,
-                starting_bid: 123,
+                title: body.title,
+                overview: body.overview,
+                body: body.body,
+                price: body.price,
+                starting_bid: body.starting_bid,
                 eligibility: true,
-                status: req.body.status,
-                category: req.body.category,
-                opening_date: req.body.opening_date,
-                closing_date: req.body.closing_date,
+                status: body.status,
+                category: body.category,
+                opening_date: body.opening_date,
+                closing_date: body.closing_date,
             },
         });
         return res.json(new response_1.default(true, "Tender updated successfully", updatedTender));

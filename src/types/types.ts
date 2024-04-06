@@ -163,8 +163,6 @@ export type Tender = {
   body: string;
   price: number | null;
   starting_bid: number;
-  oppeortunity_number: number;
-  CFDA: string;
   eligibility: boolean;
   status: string;
   category: number;

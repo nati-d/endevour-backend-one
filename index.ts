@@ -6,8 +6,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => res.send("this is home page"));
-
 app.use("/api/user", Router.user);
 
 app.use("/api/admin", Router.adminRoutes);
