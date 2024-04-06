@@ -31,29 +31,30 @@ exports.default = async (req, res) => {
                 title: req.body.title,
                 created_at: {
                     gte: req.body?.date?.lower_bound,
-                    lte: req.body?.date?.upper_bound
+                    lte: req.body?.date?.upper_bound,
                 },
-                tags: { some: { id: { in: req.body.tags } } }
+                tags: { some: { id: { in: req.body.tags } } },
             },
             include: {
                 tags: {
                     select: {
-                        id: true
-                    }
-                }
-            }
+                        id: true,
+                    },
+                },
+            },
         });
         res.status(201).json({
             success: true,
-            message: "News created successfully",
-            data: newNews
+            message: "News getted successfully",
+            data: newNews,
         });
     }
     catch (error) {
-        if (error instanceof client_1.Prisma.PrismaClientKnownRequestError && error.code === "P2022") {
+        if (error instanceof client_1.Prisma.PrismaClientKnownRequestError &&
+            error.code === "P2022") {
             return res.status(400).json({
                 success: false,
-                message: 'Not authorized to post news',
+                message: "Not authorized to post news",
                 data: error,
             });
         }
