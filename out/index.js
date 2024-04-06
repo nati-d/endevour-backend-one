@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const index_1 = __importDefault(require("./src/routers/index"));
 const app = (0, express_1.default)();
-app.use(cors_1.default);
+app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.get("/", (req, res) => res.send("this is home page"));
 app.use("/api/user", index_1.default.user);
