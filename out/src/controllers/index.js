@@ -17,13 +17,6 @@ const updateJobPost_1 = __importDefault(require("./job/updateJobPost"));
 const deleteJobPost_1 = __importDefault(require("./job/deleteJobPost"));
 const createJobCategory_1 = __importDefault(require("./job/catagory/createJobCategory"));
 const getJobCategory_1 = __importDefault(require("./job/catagory/getJobCategory"));
-const createTenderCategory_1 = __importDefault(require("./tender/category/createTenderCategory"));
-const updateTenderCategory_1 = __importDefault(require("./tender/category/updateTenderCategory"));
-const deleteTenderCategory_1 = __importDefault(require("./tender/category/deleteTenderCategory"));
-const getTenderCategory_1 = __importDefault(require("./tender/category/getTenderCategory"));
-const getAllTenderCategories_1 = __importDefault(require("./tender/category/getAllTenderCategories"));
-const deleteTender_1 = __importDefault(require("./tender/deleteTender"));
-const createTender_1 = __importDefault(require("./tender/createTender"));
 const createNews_1 = __importDefault(require("./news/createNews"));
 const getNews_1 = __importDefault(require("./news/getNews"));
 const updateNews_1 = __importDefault(require("./news/updateNews"));
@@ -37,15 +30,6 @@ var Controller;
     Controller.forgotPassword = forgotPassword_1.default;
     Controller.verifyForgotPassword = verifyForgotPassword_1.default;
     Controller.adminProfileImgUpload = uploadProfileImg_1.default;
-    // -- Tender category --//
-    Controller.createTenderCategory = createTenderCategory_1.default;
-    Controller.updateTenderCategory = updateTenderCategory_1.default;
-    Controller.deleteTenderCategory = deleteTenderCategory_1.default;
-    Controller.getTenderCategory = getTenderCategory_1.default;
-    Controller.getAllTenderCategories = getAllTenderCategories_1.default;
-    // -- Tender --//
-    Controller.createTender = createTender_1.default;
-    Controller.deleteTender = deleteTender_1.default;
     // -- User -- //
     Controller.userSignup = signup_1.default;
     // -- Job post -- //

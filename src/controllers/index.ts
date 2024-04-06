@@ -12,13 +12,7 @@ import _updateJobPost from "./job/updateJobPost";
 import _deleteJobPost from "./job/deleteJobPost";
 import _insertJobCategory from "./job/catagory/createJobCategory";
 import _getJobCategory from "./job/catagory/getJobCategory";
-import _createTenderCategory from "./tender/category/createTenderCategory";
-import _updateTenderCategory from "./tender/category/updateTenderCategory";
-import _deleteTenderCategory from "./tender/category/deleteTenderCategory";
-import _getTenderCategory from "./tender/category/getTenderCategory";
-import _getAllTenderCategories from "./tender/category/getAllTenderCategories";
-import _deleteTender from "./tender/deleteTender";
-import _createTender from "./tender/createTender";
+
 import _createNews from "./news/createNews";
 import _getNews from "./news/getNews";
 import _updateNews from "./news/updateNews";
@@ -39,22 +33,6 @@ namespace Controller {
 
   export const adminProfileImgUpload = _adminProfileImgUpload;
 
-  // -- Tender category --//
-  export const createTenderCategory = _createTenderCategory;
-
-  export const updateTenderCategory = _updateTenderCategory;
-
-  export const deleteTenderCategory = _deleteTenderCategory;
-
-  export const getTenderCategory = _getTenderCategory;
-
-  export const getAllTenderCategories = _getAllTenderCategories;
-
-  // -- Tender --//
-
-  export const createTender = _createTender;
-
-  export const deleteTender = _deleteTender;
   // -- User -- //
   export const userSignup = _userSignup;
 
@@ -70,16 +48,16 @@ namespace Controller {
   // -- Job category -- //
   export const insertJobCategory = _insertJobCategory;
 
-    export const getJobCategory = _getJobCategory;
+  export const getJobCategory = _getJobCategory;
 
-    // -- News -- //
-    export const createNews = _createNews;
+  // -- News -- //
+  export const createNews = _createNews;
 
-    export const getNews = _getNews;
+  export const getNews = _getNews;
 
-    export const updateNews = _updateNews;
+  export const updateNews = _updateNews;
 
-    export const deleteNews = _deleteNews;
+  export const deleteNews = _deleteNews;
 }
 
 export default Controller;

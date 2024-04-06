@@ -1,4 +1,3 @@
-// createTender.ts
 import { Request, Response } from "express";
 import prisma from "../../prisma/client/prismaClient";
 import ApiResponse from "../../types/response";
@@ -24,9 +23,9 @@ const createTender = async (req: Request, res: Response) => {
         starting_bid: parseFloat(req.body.starting_bid),
         eligibility: true,
         status: req.body.status,
-        category: 1,
-        opening_date: new Date(req.body.opening_date),
-        closing_date: new Date(req.body.closing_date),
+        category: parseInt(req.body.category),
+        opening_date: req.body.opening_date,
+        closing_date: req.body.closing_date,
         posted_by: req.body.posted_by,
         verified_by: parseInt(req.body.verified_by),
 
@@ -50,9 +49,11 @@ const createTender = async (req: Request, res: Response) => {
       },
     });
 
-    return res.json(
-      new ApiResponse(true, "Tender created successfully", createdTender)
-    );
+    return res
+      .status(201)
+      .json(
+        new ApiResponse(true, "Tender created successfully", createdTender)
+      );
   } catch (error) {
     console.error("Error creating tender:", error);
     return res
