@@ -9,7 +9,7 @@ const tender_1 = __importDefault(require("../controllers/tender"));
 const router = express_1.default.Router();
 router.post("/post", [
     middlewares_1.default.tokenAuth,
-    middlewares_1.default.uploadFile("files/tender_files").array("files"),
+    middlewares_1.default.uploadFile("files/tender").array("files"),
 ], tender_1.default.createTender);
 router.get("/:tender_id", middlewares_1.default.tokenAuth, tender_1.default.getTender);
 router.get("/all/tenders", middlewares_1.default.tokenAuth, tender_1.default.getTenders);

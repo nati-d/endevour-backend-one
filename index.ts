@@ -16,5 +16,6 @@ app.use("/api/tender", Router.tender);
 
 app.use("/api/news", Router.news);
 
+app.use("/api/exclusive-job", Router.exclusiveJob);
 const port = 3000;
 app.listen(port, () => console.log("Server started at port", port));

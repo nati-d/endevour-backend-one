@@ -30,7 +30,7 @@ const deleteTender = async (req: Request, res: Response) => {
       where: { id: Number(tender_id) },
     });
 
-    return res.json(new ApiResponse(true, "Tender deleted successfully"));
+    return res.status(204).end();
   } catch (error) {
     console.error("Error deleting tender:", error);
     return res

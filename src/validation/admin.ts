@@ -20,6 +20,7 @@ export const adminRole = joi
     role: joi.string().valid("SUPER_ADMIN", "ADMIN"),
   })
   .unknown(true);
+
 export default {
   newAdmin,
   login,
