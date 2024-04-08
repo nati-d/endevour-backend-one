@@ -35,32 +35,33 @@ export default async (req: Request, res: Response) => {
     try {
         const jobPosts = await prisma.client.job_post.findMany({
             where: {
+                id: req.body.id,
                 contract_type: {
                     in: req.body.contract_type
                 },
                 year_of_experience: {
-                    gte: req.body.year_of_experience.lower_bound,
-                    lte: req.body.year_of_experience.upper_bound
+                    gte: req.body?.year_of_experience?.lower_bound,
+                    lte: req.body?.year_of_experience?.upper_bound
                 },
                 category: {
                     in: req.body.category
                 },
                 closing_date: {
-                    gte: req.body.closing_date.lower_bound,
-                    lte: req.body.closing_date.upper_bound
+                    gte: req.body?.closing_date?.lower_bound,
+                    lte: req.body?.closing_date?.upper_bound
                 },
                 salary: {
                     low_end: {
-                        lte: req.body.salary.high_end,
+                        lte: req.body?.salary?.high_end,
                     },
                     high_end: {
-                        gte: req.body.salary.low_end,
+                        gte: req.body?.salary?.low_end,
                     },
                     periodicity: {
-                        in: req.body.salary.periodicity
+                        in: req.body?.salary?.periodicity
                     },
                     currency: {
-                        in: req.body.salary.currency,
+                        in: req.body?.salary?.currency,
                     }
                 }
             },

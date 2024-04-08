@@ -366,19 +366,19 @@ model Saved_grant {
 
 // -- ---- -- Blog -- ---- -- //
 model Blog {
-  id          Int      @id @default(autoincrement())
-  title       String
-  overview    String
-  body        String   @db.LongText
-  posted_by   Int
-  verified_by Int
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now()) @updatedAt
+  id            Int           @id @default(autoincrement())
+  title         String
+  overview      String
+  body          String        @db.LongText
+  posted_by     Int?
+  verified_by   Int?
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @default(now()) @updatedAt
 
-  admin      Admin        @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  user       User         @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  tags       Tag[]
-  saved_blog Saved_blog[]
+  admin         Admin?          @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user          User?            @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  tags          Tag[]
+  saved_blog    Saved_blog[]
 }
 
 model Saved_blog {

@@ -4,6 +4,7 @@ import _job from "./job";
 import _news from "./news";
 import _grant from "./grant";
 import _recommender from "./exclusiveJob";
+import _blog from "./blog";
 
 namespace Validator {
   export const user = _user;
@@ -17,6 +18,8 @@ namespace Validator {
   export const recommender = _recommender;
 
   export const grant = _grant;
+
+    export const blog = _blog;
 }
 
 export default Validator;

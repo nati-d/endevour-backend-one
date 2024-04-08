@@ -7,6 +7,7 @@ import _news from "./news.routes";
 import _exclusiveJob from "./exclusiveJob.routes";
 
 import _grant from "./grant.routes";
+import _blog from "./blog.routes";
 
 namespace Routers {
     export const adminRoutes = _admin;
@@ -16,6 +17,7 @@ namespace Routers {
   export const news = _news;
   export const exclusiveJob = _exclusiveJob;
     export const grant = _grant;
+    export const blog = _blog;
 }
 
 export default Routers;

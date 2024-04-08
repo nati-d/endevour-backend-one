@@ -6,43 +6,37 @@ const RANGE_OF_DATE = joi.object({
     upper_bound: joi.date().iso()
 });
 
-
-const createGrant = joi.object({
+const createBlog = joi.object({
     title: joi.string().required(),
     overview: joi.string().required(),
-    thumbnail: joi.string(),
     body: joi.string().required(),
-    opportunity_number: joi.string().required(),
-    cfda: joi.string().required(),
     tags: ARRAY_OF_STRINGS
 });
 
-const getGrant = joi.object({
+const getBlog = joi.object({
     id: joi.number(),
     title: joi.string(),
-    date: RANGE_OF_DATE,
-    tags: ARRAY_OF_STRINGS
-});
+    posted_by: joi.number().allow(null),
+    tags: ARRAY_OF_STRINGS,
+    date: RANGE_OF_DATE
+})
 
-const updateGrant = joi.object({
+const updateBlog = joi.object({
     id: joi.number().required(),
     title: joi.string().required(),
     overview: joi.string().required(),
-    thumbnail: joi.string().required(),
     body: joi.string().required(),
-    opportunity_number: joi.string().required(),
-    cfda: joi.string().required(),
     tags: ARRAY_OF_STRINGS,
     tags_to_remove: ARRAY_OF_STRINGS
 });
 
-const deleteGrant = joi.object({
+const deleteBlog = joi.object({
     id: joi.number().required()
-});
+})
 
 export default {
-    createGrant,
-    getGrant,
-    updateGrant,
-    deleteGrant,
+    createBlog,
+    getBlog,
+    updateBlog,
+    deleteBlog
 }

@@ -22,5 +22,7 @@ app.use("/api/grant", Router.grant);
 
 app.use("/api/exclusive-job", Router.exclusiveJob);
 
+app.use(("/api/blog"), Router.blog);
+
 const port = 3000;
 app.listen(port, () => console.log("Server started at port", port));

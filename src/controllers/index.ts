@@ -22,6 +22,11 @@ import _getGrant from "./grant/getGrant";
 import _updateGrant from "./grant/updateGrant";
 import _deleteGrant from "./grant/deleteGrant";
 
+import _createBlog from "./blog/createBlog";
+import _getBlog from "./blog/getBlog";
+import _updateBlog from "./blog/updateBlog";
+import _deleteBlog from "./blog/deleteBlog";
+
 namespace Controller {
   export const addAdmin = _addAdmin;
 
@@ -68,6 +73,14 @@ namespace Controller {
 
   export const deleteGrant = _deleteGrant;
 
+// -- Blog -- //
+    export const createBlog = _createBlog;
+
+    export const getBlog = _getBlog;
+
+    export const updateBlog = _updateBlog;
+
+    export const deleteBlog = _deleteBlog;
 }
 
 export default Controller;
