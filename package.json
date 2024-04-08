@@ -6,6 +6,7 @@
   "scripts": {
     "test": "",
     "start": "nodemon index.ts",
+    "dev": "nodemon index.ts",
     "prisma-gen": "npx prisma generate --schema ./src/prisma/schema.prisma",
     "prisma-mig": "npx prisma migrate dev --schema ./src/prisma/schema.prisma",
     "prisma-full": "npm prisma-gen\nnpm prisma-gen"
