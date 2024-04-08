@@ -17,6 +17,11 @@ import _getNews from "./news/getNews";
 import _updateNews from "./news/updateNews";
 import _deleteNews from "./news/deleteNews";
 
+import _createGrant from "./grant/createGrant";
+import _getGrant from "./grant/getGrant";
+import _updateGrant from "./grant/updateGrant";
+import _deleteGrant from "./grant/deleteGrant";
+
 namespace Controller {
   export const addAdmin = _addAdmin;
 
@@ -53,6 +58,16 @@ namespace Controller {
   export const updateNews = _updateNews;
 
   export const deleteNews = _deleteNews;
+
+  // -- Grant -- //
+  export const createGrant = _createGrant;
+
+  export const getGrant = _getGrant;
+
+  export const updateGrant = _updateGrant;
+
+  export const deleteGrant = _deleteGrant;
+
 }
 
 export default Controller;

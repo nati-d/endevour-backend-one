@@ -342,9 +342,9 @@ model Grant {
   title               String
   overview            String
   body                String   @db.LongText
-  location            String
+  location            Json?
   verified_by         Int
-  oppeortunity_number Int
+  opportunity_number  String
   CFDA                String
   created_at          DateTime @default(now())
   updated_at          DateTime @default(now()) @updatedAt
