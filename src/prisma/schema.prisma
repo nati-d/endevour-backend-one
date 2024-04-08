@@ -32,6 +32,7 @@ model Admin {
   exclusive_job    Exclusive_job[]
   recommender      Recommender[]
   tender_category  Tender_category[]
+  tag              Tag[]
 }
 
 enum Admin_role {
@@ -70,7 +71,10 @@ model User {
 
 // -- ---- -- Tag -- ---- -- //
 model Tag {
-  id         String   @id
+  id          String @id
+  verified_by Int
+
+  admin      Admin    @relation(fields: [verified_by], references: [id])
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
@@ -389,12 +393,15 @@ model Saved_blog {
 
 // -- ---- -- Exclusiv job -- ---- -- //
 model Exclusive_job {
-  id          Int      @id @default(autoincrement())
+  id          Int    @id @default(autoincrement())
   title       String
-  body        String   @db.LongText
+  overview    String @db.Text
+  file        String
+  link        String
   verified_by Int
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now()) @updatedAt
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 
   admin                  Admin                    @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   recommended_applicants Recommended_Applicants[]
@@ -404,8 +411,7 @@ model Recommender {
   id          Int      @id @default(autoincrement())
   first_name  String   @db.VarChar(30)
   last_name   String   @db.VarChar(30)
-  email       String   @db.VarChar(60)
-  password    String
+  email       String   @unique @db.VarChar(60)
   verified_by Int
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt

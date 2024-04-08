@@ -7,11 +7,13 @@ const user_1 = __importDefault(require("./user"));
 const admin_1 = __importDefault(require("./admin"));
 const job_1 = __importDefault(require("./job"));
 const news_1 = __importDefault(require("./news"));
+const exclusiveJob_1 = __importDefault(require("./exclusiveJob"));
 var Validator;
 (function (Validator) {
     Validator.user = user_1.default;
     Validator.admin = admin_1.default;
     Validator.job = job_1.default;
     Validator.news = news_1.default;
+    Validator.recommender = exclusiveJob_1.default;
 })(Validator || (Validator = {}));
 exports.default = Validator;

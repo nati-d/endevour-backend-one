@@ -1,36 +1,23 @@
 import { Request, Response } from "express";
 import prisma from "../../prisma/client/prismaClient";
 import { Admin } from "../../types/types";
-import bcrypt from "bcrypt";
 import { newAdmin } from "../../validation/admin";
 import _ from "lodash";
 import ApiResponse from "../../types/response";
 import sendEmail from "../../services/notifications/sendEmail";
+import hashPassword from "../../helpers/hashPassword";
+import { Prisma } from "@prisma/client";
+
 const addAdmin = async (req: Request, res: Response) => {
   const { first_name, last_name, email, password, phone_number, role } =
     req.body as Admin;
 
   const { error } = newAdmin.validate(req.body);
 
-  if (error)
-    return res.status(400).json({ success: false, message: error.message });
+  if (error) return res.status(400).json(new ApiResponse(false, error.message));
 
   try {
-    const getAdmin = await prisma.admin.findUnique({
-      where: {
-        email,
-      },
-    });
-
-    if (getAdmin)
-      return res.status(400).json({
-        success: false,
-        message: "Admin already exist with this email.",
-        data: null,
-      });
-
-    const salt = await bcrypt.genSalt(13);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await hashPassword(password);
 
     const createAdmin = await prisma.admin.create({
       data: {
@@ -58,6 +45,12 @@ const addAdmin = async (req: Request, res: Response) => {
     );
   } catch (error) {
     console.log(error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002")
+        return res
+          .status(400)
+          .json(new ApiResponse(false, "Admin email already exists!"));
+    }
 
     await prisma.admin.delete({
       where: {

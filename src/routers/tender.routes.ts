@@ -7,7 +7,7 @@ router.post(
   "/post",
   [
     Middlewares.tokenAuth,
-    Middlewares.uploadFile("files/tender_files").array("files"),
+    Middlewares.uploadFile("files/tender").array("files"),
   ],
   Tender.createTender
 );
@@ -15,6 +15,7 @@ router.post(
 router.get("/:tender_id", Middlewares.tokenAuth, Tender.getTender);
 
 router.get("/all/tenders", Middlewares.tokenAuth, Tender.getTenders);
+
 router.put("/update", [Middlewares.tokenAuth], Tender.updateTender);
 
 router.delete("/delete", [Middlewares.tokenAuth], Tender.deleteTender);
@@ -44,4 +45,5 @@ router.get(
 );
 
 router.get("/category/get-all-categories", Tender.getAllTenderCategories);
+
 export default router;

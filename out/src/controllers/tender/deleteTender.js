@@ -25,7 +25,7 @@ const deleteTender = async (req, res) => {
         await prismaClient_1.default.tender.delete({
             where: { id: Number(tender_id) },
         });
-        return res.json(new response_1.default(true, "Tender deleted successfully"));
+        return res.status(204).end();
     }
     catch (error) {
         console.error("Error deleting tender:", error);
