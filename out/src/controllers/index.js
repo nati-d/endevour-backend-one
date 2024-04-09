@@ -19,6 +19,14 @@ const createNews_1 = __importDefault(require("./news/createNews"));
 const getNews_1 = __importDefault(require("./news/getNews"));
 const updateNews_1 = __importDefault(require("./news/updateNews"));
 const deleteNews_1 = __importDefault(require("./news/deleteNews"));
+const createGrant_1 = __importDefault(require("./grant/createGrant"));
+const getGrant_1 = __importDefault(require("./grant/getGrant"));
+const updateGrant_1 = __importDefault(require("./grant/updateGrant"));
+const deleteGrant_1 = __importDefault(require("./grant/deleteGrant"));
+const createBlog_1 = __importDefault(require("./blog/createBlog"));
+const getBlog_1 = __importDefault(require("./blog/getBlog"));
+const updateBlog_1 = __importDefault(require("./blog/updateBlog"));
+const deleteBlog_1 = __importDefault(require("./blog/deleteBlog"));
 var Controller;
 (function (Controller) {
     Controller.addAdmin = addAdmin_1.default;
@@ -41,6 +49,16 @@ var Controller;
     Controller.getNews = getNews_1.default;
     Controller.updateNews = updateNews_1.default;
     Controller.deleteNews = deleteNews_1.default;
+    // -- Grant -- //
+    Controller.createGrant = createGrant_1.default;
+    Controller.getGrant = getGrant_1.default;
+    Controller.updateGrant = updateGrant_1.default;
+    Controller.deleteGrant = deleteGrant_1.default;
+    // -- Blog -- //
+    Controller.createBlog = createBlog_1.default;
+    Controller.getBlog = getBlog_1.default;
+    Controller.updateBlog = updateBlog_1.default;
+    Controller.deleteBlog = deleteBlog_1.default;
 })(Controller || (Controller = {}));
 exports.default = Controller;
 // get all super admins

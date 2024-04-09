@@ -71,18 +71,18 @@ model User {
 
 // -- ---- -- Tag -- ---- -- //
 model Tag {
-  id          String @id
-  verified_by Int
+  id                String @id
+  verified_by       Int?
 
-  admin      Admin    @relation(fields: [verified_by], references: [id])
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
+  admin              Admin?    @relation(fields: [verified_by], references: [id])
+  created_at         DateTime @default(now())
+  updated_at         DateTime @default(now()) @updatedAt
 
-  job_post Job_post[]
-  news     News[]
-  tender   Tender[]
-  grant    Grant[]
-  blog     Blog[]
+  job_post         Job_post[]
+  news             News[]
+  tender           Tender[]
+  grant            Grant[]
+  blog             Blog[]
 }
 
 // -- ---- -- Organization -- ---- -- //
@@ -342,10 +342,10 @@ model Grant {
   title               String
   overview            String
   body                String   @db.LongText
-  location            String
+  location            Json?
   verified_by         Int
-  oppeortunity_number Int
-  CFDA                String
+  opportunity_number  String
+  cfda                String
   created_at          DateTime @default(now())
   updated_at          DateTime @default(now()) @updatedAt
 
@@ -366,19 +366,19 @@ model Saved_grant {
 
 // -- ---- -- Blog -- ---- -- //
 model Blog {
-  id          Int      @id @default(autoincrement())
-  title       String
-  overview    String
-  body        String   @db.LongText
-  posted_by   Int
-  verified_by Int
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now()) @updatedAt
+  id            Int           @id @default(autoincrement())
+  title         String
+  overview      String
+  body          String        @db.LongText
+  posted_by     Int?
+  verified_by   Int?
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @default(now()) @updatedAt
 
-  admin      Admin        @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  user       User         @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  tags       Tag[]
-  saved_blog Saved_blog[]
+  admin         Admin?          @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user          User?            @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  tags          Tag[]
+  saved_blog    Saved_blog[]
 }
 
 model Saved_blog {

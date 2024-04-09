@@ -27,7 +27,7 @@ exports.default = async (req, res) => {
     }
     let deletedJobPost;
     try {
-        if (req.body.auth.role == "ADMIN" || req.body.auth.role == "SUPER_ADMIN")
+        if (req?.auth?.role == "ADMIN" || req?.auth?.role == "SUPER_ADMIN")
             deletedJobPost = await index_1.default.client.job_post.delete({
                 where: {
                     id: req.body.id
