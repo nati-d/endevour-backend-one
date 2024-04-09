@@ -40,6 +40,7 @@ const jobPost = joi_1.default.object({
     currency: CURRENCY_SET,
 });
 const getJobPost = joi_1.default.object({
+    id: joi_1.default.number(),
     contract_type: RANGE_OF_CONTRACT_TYPE,
     year_of_experience: RANGE_OF_NUMBER,
     category: RANGE_OF_JOB_CATEGORY,

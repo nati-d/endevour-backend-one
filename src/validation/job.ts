@@ -41,6 +41,7 @@ const jobPost = joi.object({
 });
 
 const getJobPost = joi.object({
+    id: joi.number(),
     contract_type: RANGE_OF_CONTRACT_TYPE,
     year_of_experience: RANGE_OF_NUMBER,
     category: RANGE_OF_JOB_CATEGORY,
