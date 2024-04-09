@@ -71,18 +71,18 @@ model User {
 
 // -- ---- -- Tag -- ---- -- //
 model Tag {
-  id          String @id
-  verified_by Int
+  id                String @id
+  verified_by       Int?
 
-  admin      Admin    @relation(fields: [verified_by], references: [id])
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
+  admin              Admin?    @relation(fields: [verified_by], references: [id])
+  created_at         DateTime @default(now())
+  updated_at         DateTime @default(now()) @updatedAt
 
-  job_post Job_post[]
-  news     News[]
-  tender   Tender[]
-  grant    Grant[]
-  blog     Blog[]
+  job_post         Job_post[]
+  news             News[]
+  tender           Tender[]
+  grant            Grant[]
+  blog             Blog[]
 }
 
 // -- ---- -- Organization -- ---- -- //
@@ -345,7 +345,7 @@ model Grant {
   location            Json?
   verified_by         Int
   opportunity_number  String
-  CFDA                String
+  cfda                String
   created_at          DateTime @default(now())
   updated_at          DateTime @default(now()) @updatedAt
 

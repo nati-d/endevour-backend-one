@@ -28,7 +28,7 @@ export default async (req: Request, res: Response) => {
                 verified_by: req.auth?.id as number,
                 location: req.body.location,
                 opportunity_number: req.body.opportunity_number,
-                CFDA: req.body.cfda,
+                cfda: req.body.cfda,
                 tags: {
                     connectOrCreate: req.body.tags.map((id: string) => ({
                         where: { id },

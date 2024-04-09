@@ -25,7 +25,7 @@ export default async (req: Request, res: Response) => {
                 id: req.body.id,
                 title: req.body.title,
                 opportunity_number: req.body.opportunity_number,
-                CFDA: req.body.cdfa,
+                cfda: req.body.cdfa,
                 created_at: {
                     gte: req.body?.date?.lower_bound,
                     lte: req.body?.date?.upper_bound,
