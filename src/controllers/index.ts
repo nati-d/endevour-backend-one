@@ -17,6 +17,7 @@ import _getNews from "./news/getNews";
 import _updateNews from "./news/updateNews";
 import _deleteNews from "./news/deleteNews";
 
+import _getPostUrl from "./common/getPostUrl";
 import _createGrant from "./grant/createGrant";
 import _getGrant from "./grant/getGrant";
 import _updateGrant from "./grant/updateGrant";
@@ -73,14 +74,14 @@ namespace Controller {
 
   export const deleteGrant = _deleteGrant;
 
-// -- Blog -- //
-    export const createBlog = _createBlog;
+  // -- Blog -- //
+  export const createBlog = _createBlog;
 
-    export const getBlog = _getBlog;
+  export const getBlog = _getBlog;
 
-    export const updateBlog = _updateBlog;
+  export const updateBlog = _updateBlog;
 
-    export const deleteBlog = _deleteBlog;
+  export const deleteBlog = _deleteBlog;
 }
 
 export default Controller;

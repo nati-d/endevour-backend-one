@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import prisma from "../../prisma/client/prismaClient";
-import ApiResponse from "../../types/response";
+import prisma from "../../../prisma/client/prismaClient";
+import ApiResponse from "../../../types/response";
 import bcrypt from "bcrypt";
 import _ from "lodash";
 

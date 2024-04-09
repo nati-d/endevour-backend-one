@@ -210,7 +210,7 @@ export type Blog = {
 export type Exclusive_job = {
   id: number;
   title: string;
-  body: string;
+  overview: string;
   verified_by: number;
   created_at: Date;
   updated_at: Date;

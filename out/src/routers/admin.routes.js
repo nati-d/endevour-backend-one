@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const index_1 = __importDefault(require("../controllers/index"));
 const index_2 = __importDefault(require("../middlewares/index"));
-const services_1 = __importDefault(require("../services"));
 const router = express_1.default.Router();
 router.post("/auth/add-admin", [index_2.default.tokenAuth, index_2.default.adminAuth, index_2.default.superAdminAuth], index_1.default.addAdmin);
 router.post("/auth/login", index_1.default.adminLogin);
@@ -16,9 +15,5 @@ router.post("/upload-profile-img", [
     index_2.default.tokenAuth,
     index_2.default.adminAuth,
     index_2.default.uploadFile("images/profile_images/admin").single("profile_image"),
-]
-// Controller.adminProfileImgUpload
-);
-router.post("/forgot-password", services_1.default.forgotPassword);
-router.post("/verify-forgot-password-confirmation-code", services_1.default.verifyConfirmationCode);
+], index_1.default.adminProfileImgUpload);
 exports.default = router;
