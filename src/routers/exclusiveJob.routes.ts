@@ -33,4 +33,13 @@ router.delete(
   ExclusiveJob.deleteRecommender
 );
 
+router.post(
+  "/create",
+  [
+    Middlewares.tokenAuth,
+    Middlewares.adminAuth,
+    Middlewares.uploadFile("files/exclusive_job").single("file"),
+  ],
+  ExclusiveJob.createExclusiveJob
+);
 export default router;

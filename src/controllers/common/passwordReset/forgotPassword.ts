@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import prisma from "../../prisma/client/prismaClient";
-import ApiResponse from "../../types/response";
-import sendEmail from "../notifications/sendEmail";
+import prisma from "../../../prisma/client/prismaClient";
+import ApiResponse from "../../../types/response";
+import sendEmail from "../../../services/notifications/sendEmail";
 
 const forgotPassword = async (req: Request, res: Response) => {
   const email = req.body.email;

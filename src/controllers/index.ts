@@ -17,6 +17,8 @@ import _getNews from "./news/getNews";
 import _updateNews from "./news/updateNews";
 import _deleteNews from "./news/deleteNews";
 
+import _getPostUrl from "./common/getPostUrl";
+
 namespace Controller {
   export const addAdmin = _addAdmin;
 

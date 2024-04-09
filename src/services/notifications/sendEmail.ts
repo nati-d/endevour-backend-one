@@ -1,9 +1,19 @@
 import nodemailer from "nodemailer";
-const sendEmail = async (sendTo: string, subject: string, html: string) => {
+export interface Attachment {
+  filename: string;
+  path: string;
+}
+
+const sendEmail = (
+  sendTo: string,
+  subject: string,
+  html: string,
+  file?: Attachment[]
+) => {
   const transporter = nodemailer.createTransport({
     host: "endevour.org",
     port: 465,
-    secure: true, // Use `true` for port 465, `false` for all other ports
+    secure: true,
     auth: {
       user: "info@endevour.org",
       pass: "Bwn#+AUS853W",
@@ -15,6 +25,7 @@ const sendEmail = async (sendTo: string, subject: string, html: string) => {
     to: sendTo,
     subject: subject,
     html: html,
+    attachments: file,
   });
 };
 

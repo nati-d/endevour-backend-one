@@ -15,5 +15,6 @@ app.use("/api/job", index_1.default.job);
 app.use("/api/tender", index_1.default.tender);
 app.use("/api/news", index_1.default.news);
 app.use("/api/exclusive-job", index_1.default.exclusiveJob);
+app.use("/api/common", index_1.default.common);
 const port = 3000;
 app.listen(port, () => console.log("Server started at port", port));

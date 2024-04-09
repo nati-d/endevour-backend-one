@@ -12,4 +12,9 @@ router.get("/recommender/all", [middlewares_1.default.tokenAuth, middlewares_1.d
 router.get("/recommender/get-by-id/:recommender_id", [middlewares_1.default.tokenAuth, middlewares_1.default.adminAuth], exclusive_job_1.default.getRecommender);
 router.put("/recommender/update/:recommender_id", [middlewares_1.default.tokenAuth, middlewares_1.default.adminAuth], exclusive_job_1.default.updateRecommender);
 router.delete("/recommender/delete/:recommender_id", [middlewares_1.default.tokenAuth, middlewares_1.default.adminAuth], exclusive_job_1.default.deleteRecommender);
+router.post("/create", [
+    middlewares_1.default.tokenAuth,
+    middlewares_1.default.adminAuth,
+    middlewares_1.default.uploadFile("files/exclusive_job").single("file"),
+], exclusive_job_1.default.createExclusiveJob);
 exports.default = router;

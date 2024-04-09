@@ -393,16 +393,16 @@ model Saved_blog {
 
 // -- ---- -- Exclusiv job -- ---- -- //
 model Exclusive_job {
-  id          Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   title       String
-  overview    String @db.Text
-  file        String
-  link        String
+  overview    String  @db.Text
+  file        String?
   verified_by Int
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
+  recommenders           Recommender[]
   admin                  Admin                    @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   recommended_applicants Recommended_Applicants[]
 }
@@ -416,6 +416,7 @@ model Recommender {
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
 
+  exclusive_jobs         Exclusive_job[]
   admin                  Admin                    @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   recommended_applicants Recommended_Applicants[]
 }

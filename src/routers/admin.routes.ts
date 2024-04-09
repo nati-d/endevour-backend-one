@@ -1,7 +1,6 @@
 import express from "express";
 import Controller from "../controllers/index";
 import Middleware from "../middlewares/index";
-import Services from "../services";
 
 const router = express.Router();
 
@@ -33,14 +32,8 @@ router.post(
     Middleware.uploadFile("images/profile_images/admin").single(
       "profile_image"
     ),
-  ]
-  // Controller.adminProfileImgUpload
+  ],
+  Controller.adminProfileImgUpload
 );
 
-router.post("/forgot-password", Services.forgotPassword);
-
-router.post(
-  "/verify-forgot-password-confirmation-code",
-  Services.verifyConfirmationCode
-);
 export default router;

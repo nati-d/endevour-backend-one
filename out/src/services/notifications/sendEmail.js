@@ -4,11 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer_1 = __importDefault(require("nodemailer"));
-const sendEmail = async (sendTo, subject, html) => {
+const sendEmail = (sendTo, subject, html, file) => {
     const transporter = nodemailer_1.default.createTransport({
         host: "endevour.org",
         port: 465,
-        secure: true, // Use `true` for port 465, `false` for all other ports
+        secure: true,
         auth: {
             user: "info@endevour.org",
             pass: "Bwn#+AUS853W",
@@ -19,6 +19,7 @@ const sendEmail = async (sendTo, subject, html) => {
         to: sendTo,
         subject: subject,
         html: html,
+        attachments: file,
     });
 };
 exports.default = sendEmail;
