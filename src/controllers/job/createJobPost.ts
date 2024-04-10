@@ -11,7 +11,7 @@ export default async (req: Request, res: Response) => {
         const { error } = Validator.job.jobPost.validate(req.body);
 
         if (error) {
-            return res.send({
+            return res.status(400).send({
                 success: false,
                 message: error.details,
                 data: null,
@@ -59,7 +59,7 @@ export default async (req: Request, res: Response) => {
             }
         })
 
-        res.send(_.merge(newJobPost, salary));
+        res.status(201).send(_.merge(newJobPost, salary));
 
     } catch (error) {
 

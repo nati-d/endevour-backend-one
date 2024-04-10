@@ -69,9 +69,7 @@ export default async (req: Request, res: Response) => {
 
     }
 
-    // console.log(_.merge(updatedJobPost, updatedJobPostSalary));
-
-    res.status(200).json({
+    res.status(201).json({
         success: true,
         message: "Job post updated successfully",
         data: _.merge(updatedJobPost, updatedJobPostSalary)

@@ -10,7 +10,7 @@ export default async (req: Request, res: Response) => {
         const { error } = Validator.job.deleteJobPost.validate(req.body);
 
         if (error) {
-            return res.send({
+            return res.status(400).send({
                 success: false,
                 message: error.details,
                 data: null

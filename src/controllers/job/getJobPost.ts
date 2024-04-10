@@ -12,7 +12,7 @@ export default async (req: Request, res: Response) => {
 
         if (error) {
 
-            return res.send({
+            return res.status(400).send({
                 success: false,
                 message: error.details,
                 data: null

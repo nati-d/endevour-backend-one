@@ -18,6 +18,10 @@ tmp
 public/css/main.css
 src/prisma/migrations
 
+# Public directories
+public/files/*
+public/images/*
+
 # Coverage reports
 coverage
 
