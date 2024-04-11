@@ -7,9 +7,10 @@
     "test": "",
     "start": "nodemon index.ts",
     "dev": "nodemon index.ts",
+    "build": "npx tsc",
     "prisma-gen": "npx prisma generate --schema ./src/prisma/schema.prisma",
     "prisma-mig": "npx prisma migrate dev --schema ./src/prisma/schema.prisma",
-    "prisma-full": "npm prisma-gen\nnpm prisma-gen"
+    "prisma-full": "npm run prisma-gen\nnpm run prisma-mig"
   },
   "prisma": {
     "schema": "./src/prisma/schema.prisma"
@@ -43,7 +44,7 @@
     "@types/multer": "^1.4.11",
     "@types/node": "^20.11.30",
     "nodemon": "^3.1.0",
-    "prisma": "^5.12.0",
+    "prisma": "^5.12.1",
     "typescript": "^5.4.3"
   }
 }

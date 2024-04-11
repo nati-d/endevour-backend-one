@@ -28,7 +28,6 @@ export default async (req: Request, res: Response) => {
                 title: req.body.title,
                 overview: req.body.overview,
                 body: req.body.body,
-                thumbnail: req.body.thumbnail,
                 posted_by: req.auth?.id as number,
                 tags: {
                     connectOrCreate: req.body.tags.map((id: string) => ({

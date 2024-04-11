@@ -4,7 +4,7 @@ import Controller from "../controllers/index";
 
 const router: Router = express.Router();
 
-router.post("/insert-job-category", [ Middleware.tokenAuth, Middleware.adminAuth ], Controller.insertJobCategory);
+router.post("/insert-job-category", [ Middleware.tokenAuth, Middleware.adminAuth], Controller.insertJobCategory);
 
 router.get("/get-job-category", [Middleware.tokenAuth], Controller.getJobCategory);
 

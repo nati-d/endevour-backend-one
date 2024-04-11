@@ -24,7 +24,7 @@ const updateTender = async (req: Request, res: Response) => {
       },
     });
 
-    return res.json(
+    return res.status(200).json(
       new ApiResponse(true, "Tender updated successfully", updatedTender)
     );
   } catch (error) {

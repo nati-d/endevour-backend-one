@@ -7,25 +7,21 @@ import Validator from "../../validation/index";
 export default async (req: Request, res: Response) => {
 
     try {
-
         const { error } = Validator.job.jobPost.validate(req.body);
 
         if (error) {
-            return res.send({
+            return res.status(400).send({
                 success: false,
                 message: error.details,
                 data: null,
             });
         }
-
     } catch (error) {
-
         return res.status(400).send({
             status: false,
             message: "Error at request validation",
             description: error
         });
-
     }
 
     let jobId: number = 0;
@@ -38,9 +34,8 @@ export default async (req: Request, res: Response) => {
                 overview: req.body.overview,
                 body: req.body.body,
                 contract_type: req.body.contract_type,
-                year_of_experience: req.body.year_of_experience,
-                thumbnail: req.body.thumbnail,
-                category: req.body.category,
+                year_of_experience: parseInt( req.body.year_of_experience ),
+                category: parseInt( req.body.category ),
                 closing_date: new Date(req.body.closing_date),
                 verified_at: new Date(), 
                 verified_by: req.auth?.id,
@@ -52,14 +47,14 @@ export default async (req: Request, res: Response) => {
         const salary = await prisma.client.salary.create({
             data: {
                 id: newJobPost.id,
-                low_end: req.body.low_end,
-                high_end: req.body.high_end,
+                low_end: parseInt( req.body.low_end ),
+                high_end: parseInt( req.body.high_end ),
                 periodicity: req.body.periodicity,
                 currency: req.body.currency,
             }
         })
 
-        res.send(_.merge(newJobPost, salary));
+        res.status(201).send(_.merge(newJobPost, salary));
 
     } catch (error) {
 
@@ -86,9 +81,12 @@ export default async (req: Request, res: Response) => {
             console.log(error)
         }
 
+        console.log(error)
+
         return res.status(400).json({
             status: false,
-            message: "error while creating job post"
+            message: "error while creating job post",
+            data: error
         })
     }
 }
