@@ -7,9 +7,10 @@
     "test": "",
     "start": "nodemon index.ts",
     "dev": "nodemon index.ts",
+    "build": "npx tsc",
     "prisma-gen": "npx prisma generate --schema ./src/prisma/schema.prisma",
     "prisma-mig": "npx prisma migrate dev --schema ./src/prisma/schema.prisma",
-    "prisma-full": "npm prisma-gen\nnpm prisma-gen"
+    "prisma-full": "npm run prisma-gen\nnpm run prisma-mig"
   },
   "prisma": {
     "schema": "./src/prisma/schema.prisma"

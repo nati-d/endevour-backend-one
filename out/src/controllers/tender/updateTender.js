@@ -25,7 +25,7 @@ const updateTender = async (req, res) => {
                 closing_date: body.closing_date,
             },
         });
-        return res.json(new response_1.default(true, "Tender updated successfully", updatedTender));
+        return res.status(200).json(new response_1.default(true, "Tender updated successfully", updatedTender));
     }
     catch (error) {
         console.error("Error updating tender:", error);

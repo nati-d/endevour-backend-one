@@ -10,7 +10,7 @@ exports.default = async (req, res) => {
     try {
         const { error } = index_2.default.job.getJobPost.validate(req.body);
         if (error) {
-            return res.send({
+            return res.status(400).send({
                 success: false,
                 message: error.details,
                 data: null

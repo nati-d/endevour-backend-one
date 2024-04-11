@@ -28,7 +28,6 @@ exports.default = async (req, res) => {
                     body: req.body.body,
                     contract_type: req.body.contract_type,
                     year_of_experience: req.body.year_of_experience,
-                    thumbnail: req.body.thumbnail,
                     category: req.body.category,
                     closing_date: new Date(req.body.closing_date),
                 }
@@ -59,8 +58,7 @@ exports.default = async (req, res) => {
             error: error
         });
     }
-    // console.log(_.merge(updatedJobPost, updatedJobPostSalary));
-    res.status(200).json({
+    res.status(201).json({
         success: true,
         message: "Job post updated successfully",
         data: lodash_1.default.merge(updatedJobPost, updatedJobPostSalary)
