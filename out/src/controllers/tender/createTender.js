@@ -5,8 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient"));
 const response_1 = __importDefault(require("../../types/response"));
+const library_1 = require("@prisma/client/runtime/library");
 const createTender = async (req, res) => {
     try {
+        const { tags, new_tags } = req.body;
         if (req.auth?.role) {
             req.body.verified_by = req.auth.id;
             req.body.posted_by = null;
@@ -23,7 +25,6 @@ const createTender = async (req, res) => {
                 body: req.body.body,
                 price: parseFloat(req.body.price),
                 starting_bid: parseFloat(req.body.starting_bid),
-                eligibility: true,
                 status: req.body.status,
                 category: parseInt(req.body.category),
                 opening_date: req.body.opening_date,
@@ -37,6 +38,10 @@ const createTender = async (req, res) => {
                         })),
                     },
                 },
+                tags: {
+                    connect: JSON.parse(tags),
+                    create: JSON.parse(new_tags),
+                },
             },
         });
         return res
@@ -45,9 +50,15 @@ const createTender = async (req, res) => {
     }
     catch (error) {
         console.error("Error creating tender:", error);
+        if (error instanceof library_1.PrismaClientKnownRequestError) {
+            if (error.code === "P2002")
+                return res
+                    .status(400)
+                    .json(new response_1.default(false, "Tag already exists."));
+        }
         return res
             .status(500)
-            .json(new response_1.default(false, "Internal server error"));
+            .json(new response_1.default(false, "Internal server error", null, error));
     }
 };
 exports.default = createTender;

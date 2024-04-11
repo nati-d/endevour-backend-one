@@ -16,16 +16,16 @@ const createTenderCategory = async (req, res) => {
                     verified_by: adminId,
                 },
             });
-            res
+            return res
                 .status(201)
                 .json(new response_1.default(true, "Tender category created successfully.", createdCategory));
         }
     }
     catch (error) {
         console.log(error);
-        res
+        return res
             .status(500)
-            .json(new response_1.default(false, "Unable to create tender category"));
+            .json(new response_1.default(false, "Unable to create tender category", null, error));
     }
 };
 exports.default = createTenderCategory;

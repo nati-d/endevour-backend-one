@@ -18,14 +18,15 @@ const updateTender = async (req, res) => {
                 body: body.body,
                 price: body.price,
                 starting_bid: body.starting_bid,
-                eligibility: true,
                 status: body.status,
                 category: body.category,
                 opening_date: body.opening_date,
                 closing_date: body.closing_date,
             },
         });
-        return res.status(200).json(new response_1.default(true, "Tender updated successfully", updatedTender));
+        return res
+            .status(200)
+            .json(new response_1.default(true, "Tender updated successfully", updatedTender));
     }
     catch (error) {
         console.error("Error updating tender:", error);

@@ -11,9 +11,8 @@ const deleteTender = async (req: Request, res: Response) => {
       include: { files: true },
     });
 
-    if (!existingTender) {
+    if (!existingTender)
       return res.status(404).json(new ApiResponse(false, "Tender not found"));
-    }
 
     const fileDeletePromises = existingTender.files.map(async (file) => {
       const filePath = path.join(
