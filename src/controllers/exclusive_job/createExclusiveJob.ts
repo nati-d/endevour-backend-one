@@ -6,12 +6,13 @@ import { Exclusive_job } from "../../types/types";
 
 const createExclusiveJob = async (req: Request, res: Response) => {
   if (!req.auth) return;
-  console.log(req.body);
-  console.log(req.file);
+
   const { title, overview } = req.body;
   const file = req.file?.filename;
   const verifiedBy = req.auth?.id;
   let createdExclusiveJob: Exclusive_job;
+
+  if (!file) res.status(400).json(new ApiResponse(false, "File not provided."));
 
   const recommenders = req.body.recommenders;
   try {
