@@ -112,14 +112,11 @@ export type Job_post = {
   body: string;
   contract_type: Contract_type;
   year_of_experience: number;
-  thumbnail: string;
   category: number;
   closing_date: Date;
   verified_at: Date;
   verified_by: number;
   posted_by: number;
-  created_at: Date;
-  updated_at: Date;
 };
 
 export enum Contract_type {

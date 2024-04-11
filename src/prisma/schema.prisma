@@ -213,7 +213,6 @@ model Job_post {
   body               String        @db.LongText
   contract_type      Contract_type
   year_of_experience Int
-  thumbnail          String?
   category           Int
   closing_date       DateTime
   verified_at        DateTime?
