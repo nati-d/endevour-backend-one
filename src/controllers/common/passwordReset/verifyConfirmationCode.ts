@@ -1,16 +1,10 @@
 import { Request, Response } from "express";
 import prisma from "../../../prisma/client/prismaClient";
 import ApiResponse from "../../../types/response";
-import bcrypt from "bcrypt";
 import _ from "lodash";
 
 const verifyForgotPassword = async (req: Request, res: Response) => {
-  const { email, code_id, code, new_password, type } = req.body;
-
-  if (type !== "admin" && type !== "user")
-    return res
-      .status(400)
-      .json(new ApiResponse(false, "You inserted invalid type."));
+  const { email, code_id, code } = req.body;
 
   try {
     const getCode = await prisma.password_reset.findFirst({
@@ -25,43 +19,19 @@ const verifyForgotPassword = async (req: Request, res: Response) => {
         .status(400)
         .json(new ApiResponse(false, "Invalide confirmation code."));
 
-    const salt = await bcrypt.genSalt(13);
-    const hashedPassword = await bcrypt.hash(new_password, salt);
-    let updatedUser;
-
-    if (type === "admin") {
-      updatedUser = await prisma.admin.update({
-        data: {
-          password: hashedPassword,
-        },
-        where: {
-          email,
-        },
-      });
-    } else {
-      updatedUser = await prisma.user.update({
-        where: {
-          email,
-        },
-        data: {
-          password: hashedPassword,
-        },
-      });
-    }
-
-    await prisma.password_reset.delete({
+    await prisma.password_reset.update({
       where: {
         id: code_id,
+        email,
+      },
+      data: {
+        verified: true,
       },
     });
 
-    return res.status(201).json(
-      new ApiResponse(
-        true,
-        "Password rested successfully.",
-        _.pickBy(updatedUser, (value, key) => key !== "password")
-      )
-    );
+    return res
+      .status(200)
+      .json(new ApiResponse(true, "Code confirmed!", { code_id: getCode.id }));
   } catch (error) {
     return res
       .status(500)

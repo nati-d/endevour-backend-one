@@ -3,12 +3,14 @@ const router = express.Router();
 import Common from "../controllers/common";
 import Middleware from "../middlewares/index";
 
-router.post("/forgot-password", Common.forgotPassword);
+router.post("/forgot-password/get-confirmation-code", Common.forgotPassword);
 
 router.post(
-  "/verify-forgot-password-confirmation-code",
+  "/forgot-password/verify-confirmation-code",
   Common.verifyConfirmationCode
 );
+
+router.post("/forgot-password/change-password", Common.changePassword);
 
 router.post(
   "/get-post-url",
