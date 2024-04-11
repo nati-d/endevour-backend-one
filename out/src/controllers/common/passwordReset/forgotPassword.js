@@ -7,8 +7,7 @@ const prismaClient_1 = __importDefault(require("../../../prisma/client/prismaCli
 const response_1 = __importDefault(require("../../../types/response"));
 const sendEmail_1 = __importDefault(require("../../../services/notifications/sendEmail"));
 const forgotPassword = async (req, res) => {
-    const email = req.body.email;
-    const type = req.body.type;
+    const { email, type } = req.body;
     let user;
     if (type !== "admin" && type !== "user")
         return res
