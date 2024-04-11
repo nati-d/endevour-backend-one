@@ -6,6 +6,7 @@ const createTenderCategory = async (req: Request, res: Response) => {
   try {
     const { name } = req.body;
     const adminId = req.auth?.id;
+
     if (adminId) {
       const createdCategory = await prisma.tender_category.create({
         data: {
@@ -14,7 +15,7 @@ const createTenderCategory = async (req: Request, res: Response) => {
         },
       });
 
-      res
+      return res
         .status(201)
         .json(
           new ApiResponse(
@@ -26,9 +27,11 @@ const createTenderCategory = async (req: Request, res: Response) => {
     }
   } catch (error) {
     console.log(error);
-    res
+    return res
       .status(500)
-      .json(new ApiResponse(false, "Unable to create tender category"));
+      .json(
+        new ApiResponse(false, "Unable to create tender category", null, error)
+      );
   }
 };
 

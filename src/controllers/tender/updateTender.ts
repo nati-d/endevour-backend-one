@@ -16,7 +16,6 @@ const updateTender = async (req: Request, res: Response) => {
         body: body.body,
         price: body.price,
         starting_bid: body.starting_bid,
-        eligibility: true,
         status: body.status,
         category: body.category,
         opening_date: body.opening_date,
@@ -24,9 +23,11 @@ const updateTender = async (req: Request, res: Response) => {
       },
     });
 
-    return res.status(200).json(
-      new ApiResponse(true, "Tender updated successfully", updatedTender)
-    );
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(true, "Tender updated successfully", updatedTender)
+      );
   } catch (error) {
     console.error("Error updating tender:", error);
     return res

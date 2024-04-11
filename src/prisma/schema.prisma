@@ -75,7 +75,7 @@ model User {
 
 // -- ---- -- Tag -- ---- -- //
 model Tag {
-  id          String @id
+  name        String @id
   verified_by Int?
 
   admin      Admin?   @relation(fields: [verified_by], references: [id])
@@ -311,7 +311,6 @@ model Tender {
   body         String   @db.LongText
   price        Float?
   starting_bid Float
-  eligibility  Boolean
   status       String
   category     Int
   opening_date DateTime
@@ -460,7 +459,7 @@ model Recommended_Applicants {
   recommender_  Recommender   @relation(fields: [recommender], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
-model password_reset {
+model Password_reset {
   id                Int     @id @default(autoincrement())
   email             String
   confirmation_code Int

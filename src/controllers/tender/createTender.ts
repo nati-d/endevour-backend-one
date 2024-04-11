@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 import prisma from "../../prisma/client/prismaClient";
 import ApiResponse from "../../types/response";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 const createTender = async (req: Request, res: Response) => {
   try {
+    const { tags, new_tags } = req.body;
     if (req.auth?.role) {
       req.body.verified_by = req.auth.id;
       req.body.posted_by = null;
@@ -21,20 +23,22 @@ const createTender = async (req: Request, res: Response) => {
         body: req.body.body,
         price: parseFloat(req.body.price),
         starting_bid: parseFloat(req.body.starting_bid),
-        eligibility: true,
         status: req.body.status,
         category: parseInt(req.body.category),
         opening_date: req.body.opening_date,
         closing_date: req.body.closing_date,
         posted_by: req.body.posted_by,
         verified_by: parseInt(req.body.verified_by),
-
         files: {
           createMany: {
             data: files.map((file: Express.Multer.File) => ({
               file: file.filename,
             })),
           },
+        },
+        tags: {
+          connect: JSON.parse(tags),
+          create: JSON.parse(new_tags),
         },
       },
     });
@@ -46,9 +50,17 @@ const createTender = async (req: Request, res: Response) => {
       );
   } catch (error) {
     console.error("Error creating tender:", error);
+
+    if (error instanceof PrismaClientKnownRequestError) {
+      if (error.code === "P2002")
+        return res
+          .status(400)
+          .json(new ApiResponse(false, "Tag already exists."));
+    }
+
     return res
       .status(500)
-      .json(new ApiResponse(false, "Internal server error"));
+      .json(new ApiResponse(false, "Internal server error", null, error));
   }
 };
 

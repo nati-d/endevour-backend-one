@@ -31,12 +31,15 @@ export default async (req: Request, res: Response) => {
           gte: req.body?.date?.lower_bound,
           lte: req.body?.date?.upper_bound,
         },
-        tags: req.body.tags && req.body.tags.length > 0 ? { some: { id: { in: req.body.tags } } } : {}
+        tags:
+          req.body.tags && req.body.tags.length > 0
+            ? { some: { name: { in: req.body.tags } } }
+            : {},
       },
       include: {
         tags: {
           select: {
-            id: true,
+            name: true,
           },
         },
       },
