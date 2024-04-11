@@ -5,14 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const prismaClient_1 = __importDefault(require("../../../prisma/client/prismaClient"));
 const response_1 = __importDefault(require("../../../types/response"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
-const lodash_1 = __importDefault(require("lodash"));
 const verifyForgotPassword = async (req, res) => {
-    const { email, code_id, code, new_password, type } = req.body;
-    if (type !== "admin" && type !== "user")
-        return res
-            .status(400)
-            .json(new response_1.default(false, "You inserted invalid type."));
+    const { email, code_id, code } = req.body;
     try {
         const getCode = await prismaClient_1.default.password_reset.findFirst({
             where: {
@@ -24,35 +18,18 @@ const verifyForgotPassword = async (req, res) => {
             return res
                 .status(400)
                 .json(new response_1.default(false, "Invalide confirmation code."));
-        const salt = await bcrypt_1.default.genSalt(13);
-        const hashedPassword = await bcrypt_1.default.hash(new_password, salt);
-        let updatedUser;
-        if (type === "admin") {
-            updatedUser = await prismaClient_1.default.admin.update({
-                data: {
-                    password: hashedPassword,
-                },
-                where: {
-                    email,
-                },
-            });
-        }
-        else {
-            updatedUser = await prismaClient_1.default.user.update({
-                where: {
-                    email,
-                },
-                data: {
-                    password: hashedPassword,
-                },
-            });
-        }
-        await prismaClient_1.default.password_reset.delete({
+        await prismaClient_1.default.password_reset.update({
             where: {
                 id: code_id,
+                email,
+            },
+            data: {
+                verified: true,
             },
         });
-        return res.status(201).json(new response_1.default(true, "Password rested successfully.", lodash_1.default.pickBy(updatedUser, (value, key) => key !== "password")));
+        return res
+            .status(200)
+            .json(new response_1.default(true, "Code confirmed!", { code_id: getCode.id }));
     }
     catch (error) {
         return res
