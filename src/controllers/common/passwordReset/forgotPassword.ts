@@ -4,8 +4,7 @@ import ApiResponse from "../../../types/response";
 import sendEmail from "../../../services/notifications/sendEmail";
 
 const forgotPassword = async (req: Request, res: Response) => {
-  const email = req.body.email;
-  const type = req.body.type;
+  const { email, type } = req.body;
   let user;
 
   if (type !== "admin" && type !== "user")
