@@ -39,7 +39,6 @@ export default async (req: Request, res: Response) => {
                 body: req.body.body,
                 contract_type: req.body.contract_type,
                 year_of_experience: req.body.year_of_experience,
-                thumbnail: req.body.thumbnail,
                 category: req.body.category,
                 closing_date: new Date(req.body.closing_date),
                 verified_at: new Date(), 
