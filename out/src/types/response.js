@@ -4,10 +4,12 @@ class ApiResponse {
     success;
     message;
     data;
-    constructor(success, message, data) {
+    error;
+    constructor(success, message, data, error) {
         this.success = success;
         this.message = message;
         this.data = data;
+        this.error = error;
     }
 }
 exports.default = ApiResponse;

@@ -11,11 +11,15 @@ exports.default = async (req, res) => {
     try {
         const { error } = index_2.default.blog.getBlog.validate(req.body);
         if (error) {
-            return res.status(400).json(new response_1.default(false, "unidentified request content", error.details));
+            return res
+                .status(400)
+                .json(new response_1.default(false, "unidentified request content", error.details));
         }
     }
     catch (error) {
-        return res.status(400).json(new response_1.default(false, "error while validating request"));
+        return res
+            .status(400)
+            .json(new response_1.default(false, "error while validating request"));
     }
     try {
         let newBlog;
@@ -30,15 +34,17 @@ exports.default = async (req, res) => {
                         gte: req.body?.date?.lower_bound,
                         lte: req.body?.date?.upper_bound,
                     },
-                    tags: req.body.tags && req.body.tags.length > 0 ? { some: { id: { in: req.body.tags } } } : {}
+                    tags: req.body.tags && req.body.tags.length > 0
+                        ? { some: { name: { in: req.body.tags } } }
+                        : {},
                 },
                 include: {
                     tags: {
                         select: {
-                            id: true,
+                            name: true,
                         },
                     },
-                }
+                },
             });
         else
             newBlog = await index_1.default.client.blog.findMany({
@@ -50,15 +56,21 @@ exports.default = async (req, res) => {
                         gte: req.body?.date?.lower_bound,
                         lte: req.body?.date?.upper_bound,
                     },
-                    tags: req.body.tags && req.body.tags.length > 0 ? { some: { id: { in: req.body.tags } } } : {}
-                }
+                    tags: req.body.tags && req.body.tags.length > 0
+                        ? { some: { name: { in: req.body.tags } } }
+                        : {},
+                },
             });
-        res.status(201).json(new response_1.default(true, "blog gotted successfully", newBlog));
+        res
+            .status(201)
+            .json(new response_1.default(true, "blog gotted successfully", newBlog));
     }
     catch (error) {
         if (error instanceof client_1.Prisma.PrismaClientKnownRequestError &&
             error.code === "P2022") {
-            return res.status(400).json(new response_1.default(false, "not authorized to post blogs"));
+            return res
+                .status(400)
+                .json(new response_1.default(false, "not authorized to post blogs"));
         }
         res.status(400).json(new response_1.default(false, "error while getting blog"));
     }

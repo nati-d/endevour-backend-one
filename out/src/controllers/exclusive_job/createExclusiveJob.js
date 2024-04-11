@@ -9,12 +9,12 @@ const sendEmail_1 = __importDefault(require("../../services/notifications/sendEm
 const createExclusiveJob = async (req, res) => {
     if (!req.auth)
         return;
-    console.log(req.body);
-    console.log(req.file);
     const { title, overview } = req.body;
     const file = req.file?.filename;
     const verifiedBy = req.auth?.id;
     let createdExclusiveJob;
+    if (!file)
+        res.status(400).json(new response_1.default(false, "File not provided."));
     const recommenders = req.body.recommenders;
     try {
         createdExclusiveJob = await prismaClient_1.default.exclusive_job.create({
