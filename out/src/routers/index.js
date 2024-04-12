@@ -13,6 +13,7 @@ const exclusiveJob_routes_1 = __importDefault(require("./exclusiveJob.routes"));
 const common_routes_1 = __importDefault(require("./common.routes"));
 const grant_routes_1 = __importDefault(require("./grant.routes"));
 const blog_routes_1 = __importDefault(require("./blog.routes"));
+const tag_routes_1 = __importDefault(require("./tag.routes"));
 var Routers;
 (function (Routers) {
     Routers.adminRoutes = admin_routes_1.default;
@@ -24,5 +25,6 @@ var Routers;
     Routers.common = common_routes_1.default;
     Routers.grant = grant_routes_1.default;
     Routers.blog = blog_routes_1.default;
+    Routers.tag = tag_routes_1.default;
 })(Routers || (Routers = {}));
 exports.default = Routers;
