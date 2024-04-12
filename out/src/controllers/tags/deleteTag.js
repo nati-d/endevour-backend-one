@@ -7,7 +7,8 @@ const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient
 const library_1 = require("@prisma/client/runtime/library");
 const response_1 = __importDefault(require("../../types/response"));
 const deleteTag = async (req, res) => {
-    const { tag_name } = req.body;
+    const { tag_name } = req.params;
+    console.log(tag_name);
     try {
         await prismaClient_1.default.tag.delete({
             where: {
