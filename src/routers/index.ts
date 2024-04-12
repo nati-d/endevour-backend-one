@@ -10,6 +10,7 @@ import _common from "./common.routes";
 import _grant from "./grant.routes";
 import _blog from "./blog.routes";
 
+import _tag from "./tag.routes";
 namespace Routers {
   export const adminRoutes = _admin;
   export const user = _user;
@@ -20,6 +21,8 @@ namespace Routers {
   export const common = _common;
   export const grant = _grant;
   export const blog = _blog;
+
+  export const tag = _tag;
 }
 
 export default Routers;
