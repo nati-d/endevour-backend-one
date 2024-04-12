@@ -5,7 +5,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
+app.use("/public", express.static("public"));
 app.use("/api/user", Router.user);
 
 app.use("/api/admin", Router.adminRoutes);
