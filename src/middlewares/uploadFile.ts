@@ -1,12 +1,16 @@
 import multer from "multer";
-const uploadFile = (path: string) => {
+import path from "path";
+const uploadFile = (director: string) => {
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, `public/${path}`);
+      cb(null, `public/${director}`);
     },
     filename: function (req, file, cb) {
       const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-      cb(null, file.fieldname + "-" + uniqueSuffix);
+      cb(
+        null,
+        file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname)
+      );
     },
   });
 
