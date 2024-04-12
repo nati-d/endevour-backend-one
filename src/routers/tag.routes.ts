@@ -17,7 +17,7 @@ router.put(
 );
 
 router.delete(
-  "/delete",
+  "/delete/:tag_name",
   [Middlewares.tokenAuth, Middlewares.adminAuth],
   Tag.deleteTag
 );

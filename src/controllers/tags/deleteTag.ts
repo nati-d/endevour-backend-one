@@ -4,7 +4,8 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import ApiResponse from "../../types/response";
 
 const deleteTag = async (req: Request, res: Response) => {
-  const { tag_name } = req.body;
+  const { tag_name } = req.params;
+  console.log(tag_name);
   try {
     await prisma.tag.delete({
       where: {
