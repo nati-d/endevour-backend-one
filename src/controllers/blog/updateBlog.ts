@@ -32,11 +32,11 @@ export default async (req: Request, res: Response) => {
                 body: req.body.body,
                 verified_by: req.auth?.id as number,
                 tags: {
-                    connectOrCreate: req.body.tags.map((id: string) => ({
-                        where: { id },
-                        create: { id }
+                    connectOrCreate: req.body.tags.map((name: string) => ({
+                        where: { name },
+                        create: { name }
                     })),
-                    disconnect: req.body.tags_to_remove.map((id: string) => ({ id })),
+                    disconnect: req.body.tags_to_remove.map((name: string) => ({ name })),
                 }
             }
         });
@@ -52,26 +52,30 @@ export default async (req: Request, res: Response) => {
                 body: req.body.body,
                 posted_by: req.auth?.id as number,
                 tags: {
-                    connectOrCreate: req.body.tags.map((id: string) => ({
-                        where: { id },
-                        create: { id }
+                    connectOrCreate: req.body.tags.map((name: string) => ({
+                        where: { name },
+                        create: { name }
                     })),
-                    disconnect: req.body.tags_to_remove.map((id: string) => ({ id })),
+                     disconnect: req.body.tags_to_remove.map((name: string) => ({ name })),
                 }
-            }
+            },
+            include: { tags: { select: { name: true } } }
         });
 
-        res.status(201).json(new ApiResponse(true, "new blog created successfully", newBlog));
+        res.status(200).json(new ApiResponse(true, "new blog created successfully", newBlog));
 
     } catch (error) {
-        if (
-            error instanceof Prisma.PrismaClientKnownRequestError &&
-                error.code === "P2022"
-        ) {
-            return res.status(400).json(new ApiResponse(false, "not authorized to post blogs"));
+        console.error(error);
+
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            if ( error.code === "P2022" )
+                return res.status(403).json(new ApiResponse(false, "not authorized to post blogs", error));
+
+            if ( error.code === "P2016" )
+                return res.status(404).json(new ApiResponse(false, "resource to be updated not found", error));
         }
 
-        res.status(400).json(new ApiResponse(false, "error while creating blog"));
+        res.status(500).json(new ApiResponse(false, "error while creating blog"));
     }
 
 }

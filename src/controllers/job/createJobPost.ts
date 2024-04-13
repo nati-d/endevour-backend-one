@@ -3,6 +3,7 @@ import { Prisma } from "@prisma/client";
 import { Request, Response } from "express";
 import _ from "lodash";
 import Validator from "../../validation/index";
+import ApiResponse from "../../types/response";
 
 export default async (req: Request, res: Response) => {
 
@@ -10,18 +11,10 @@ export default async (req: Request, res: Response) => {
         const { error } = Validator.job.jobPost.validate(req.body);
 
         if (error) {
-            return res.status(400).send({
-                success: false,
-                message: error.details,
-                data: null,
-            });
+            return res.status(400).send(new ApiResponse(false, "unidentified request content", error.details));
         }
     } catch (error) {
-        return res.status(400).send({
-            status: false,
-            message: "Error at request validation",
-            description: error
-        });
+        return res.status(400).send(new ApiResponse(false, "Error at request validation", error));
     }
 
     let jobId: number = 0;
@@ -54,18 +47,15 @@ export default async (req: Request, res: Response) => {
             }
         })
 
-        res.status(201).send(_.merge(newJobPost, salary));
+        res.status(201).json(new ApiResponse(true, "job posted successfully", _.merge(newJobPost, salary)));
 
     } catch (error) {
+        console.log(error);
 
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
 
             if (error.code = "P2022") {
-                return res.status(400).json({
-                    status: false,
-                    message: 'Not authorized to post jobs',
-                    error: error,
-                });
+                return res.status(401).json(new ApiResponse(false, 'Not authorized to post jobs', error));
             };
 
         }
@@ -81,12 +71,6 @@ export default async (req: Request, res: Response) => {
             console.log(error)
         }
 
-        console.log(error)
-
-        return res.status(400).json({
-            status: false,
-            message: "error while creating job post",
-            data: error
-        })
+        return res.status(400).json(new ApiResponse(false, "error while creating job post", error));
     }
 }

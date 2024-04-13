@@ -46,6 +46,8 @@ const getJobPost = joi.object({
     category: RANGE_OF_JOB_CATEGORY,
     closing_date: RANGE_OF_DATE,
     salary: SALARY,
+    created_at: RANGE_OF_DATE,
+    page: joi.number().allow(null)
 });
 
 const updateJobPost = joi.object({

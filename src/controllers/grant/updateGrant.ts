@@ -16,7 +16,7 @@ export default async (req: Request, res: Response) => {
     }
 
     try {
-        const newGrant = await prisma.client.grant.update({
+        const grant = await prisma.client.grant.update({
             where: {
                 id: req.body.id
             },
@@ -29,36 +29,29 @@ export default async (req: Request, res: Response) => {
                 opportunity_number: req.body.opportunity_number,
                 cfda: req.body.cfda,
                 tags: {
-                    connectOrCreate: req.body.tags.map((id: string) => ({
-                        where: { id },
-                        create: { id }
+                    connectOrCreate: req.body.tags.map((name: string) => ({
+                        where: { name },
+                        create: { name }
                     })),
-                    disconnect: req.body.tags_to_remove.map((id: string) => ({ id })),
+                    disconnect: req.body.tags_to_remove.map((name: string) => ({ name })),
                 }
-            }
+            },
+            include: { tags: { select: { name: true } } }
         });
 
-        res.status(201).json({
-            success: true,
-            message: "Grant updated successfully",
-            data: newGrant
-        });
+        res.status(200).json(new ApiResponse(true, "grant updated successfully", grant));
 
     } catch (error) {
-        if (error instanceof Prisma.PrismaClientKnownRequestError) {
-            return res.status(400).json({
-                success: false,
-                message: 'error while updating grant',
-                data: error,
-            });
-        }
-
         console.log(error)
 
-        return res.status(500).json({
-            success: false,
-            message: "Error while posting grant",
-            data: error,
-        });
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            if ( error.code === "P2022" )
+                return res.status(403).json(new ApiResponse(false, "not authorized to post blogs", error));
+
+            if ( error.code === "P2016" )
+                return res.status(404).json(new ApiResponse(false, "resource to be updated not found", error));
+        }
+
+        return res.status(500).json(new ApiResponse(false, "Error while posting "));
     }
 };

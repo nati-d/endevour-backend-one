@@ -5,39 +5,33 @@ import Validator from "../../validation/index";
 import ApiResponse from "../../types/response";
 
 export default async (req: Request, res: Response) => {
-    try {
-        const { error } = Validator.blog.deleteBlog.validate(req.body);
-
-        if (error) {
-            return res.status(400).json(new ApiResponse(false, "unidentified request content", error.details));
-        }
-    } catch (error) {
-        return res.status(400).json(new ApiResponse(false, "error at validating request"));
-    }
 
     try {
-        let newBlog: any;
+        let blog: any;
         if (req.auth?.role == "ADMIN" || req.auth?.role == "SUPER_ADMIN")
-        newBlog = await prisma.client.blog.delete({
-            where: { id: req.body.id },
+        blog = await prisma.client.blog.delete({
+            where: { id: parseInt( req.query.id as string ) },
         });
 
         else
-        newBlog = await prisma.client.blog.delete({
+        blog = await prisma.client.blog.delete({
              where: { id: req.body.id },
         });
 
-        res.status(201).json(new ApiResponse(true, "blog deleted successfully", newBlog));
+        res.status(204).json(new ApiResponse(true, "blog deleted successfully", blog));
 
     } catch (error) {
-        if (
-            error instanceof Prisma.PrismaClientKnownRequestError &&
-                error.code === "P2022"
-        ) {
-            return res.status(400).json(new ApiResponse(false, "not authorized to post blogs"));
+        console.log(error);
+
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            if ( error.code === "P2022" )
+                return res.status(403).json(new ApiResponse(false, "not authorized to post blogs", error));
+
+            if ( error.code === "P2025" )
+                return res.status(404).json(new ApiResponse(false, "resource to be deleted not found", error));
         }
 
-        res.status(400).json(new ApiResponse(false, "error while creating blog"));
+        res.status(400).json(new ApiResponse(false, "error while creating blog", error));
     }
 
 }

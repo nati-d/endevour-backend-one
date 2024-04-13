@@ -15,9 +15,12 @@ const createNews = joi.object({
 });
 
 const getNews = joi.object({
+    id: joi.number(),
     title: joi.string(),
+    posted_by: joi.number(),
     date: RANGE_OF_DATE,
-    tags: ARRAY_OF_STRINGS
+    tags: ARRAY_OF_STRINGS,
+    pages: joi.number()
 });
 
 const updateNews = joi.object({

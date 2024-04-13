@@ -2,33 +2,15 @@ import prisma from "../../../prisma/index";
 import { Prisma } from "@prisma/client"
 import { Request, Response } from "express";
 import Validator from "../../../validation/index";
+import ApiResponse from "../../../types/response";
 
 export default async (req: Request, res: Response) => {
-    
-    try {
+    const { error } = Validator.job.jobCatagory.validate(req.body);
+    if (error) {
 
-        const { error } = Validator.job.jobCatagory.validate(req.body);
-        if (error) {
+        res.send(new ApiResponse(false, "unidentified request content", error.details));
 
-            res.send({
-                success: false,
-                message: error.details,
-                data: null
-            });
-
-            return;
-
-        }
-
-    } catch(error) {
-
-        console.error(error);
-
-        return res.status(400).send({
-            status: false,
-            message: "Error at request validation",
-            description: error
-        });
+        return;
 
     }
 
@@ -44,27 +26,15 @@ export default async (req: Request, res: Response) => {
     } catch(error: any) {
 
         if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
-            return res.status(400).json({
-                status: false,
-                message: 'Duplicate catagory name',
-                error: error,
-            });
+            return res.status(400).json(new ApiResponse(false, 'Duplicate catagory name', error));
         }
 
         console.error("Error inserting user:", error);
 
-        return res.status(500).send({
-            success: false,
-            message: 'Unknown error at registering user',
-            error: error,
-        }); 
+        return res.status(500).send(new ApiResponse(false, 'Unknown error at registering user', error)); 
 
     }
 
-    res.send({
-        success: true,
-        message: "New job catagory is added",
-        data: newCatagory,
-    })
+    res.send(new ApiResponse(true, "New job catagory is added", newCatagory));
 
 }

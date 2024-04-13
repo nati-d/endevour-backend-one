@@ -3,16 +3,13 @@ import { Prisma } from "@prisma/client";
 import { Request, Response } from "express";
 import _ from "lodash";
 import Validator from "../../validation/index";
+import ApiResponse from "../../types/response";
 
 export default async (req: Request, res: Response) => {
 
     const { error } = Validator.job.updateJobPost.validate(req.body);
     if (error) {
-        return res.status(400).json({
-            success: false,
-            message: "Invalid request data",
-            error: error.details
-        });
+        return res.status(400).json(new ApiResponse(false, "unidentified request content", error.details));
     }
 
     let updatedJobPost;
@@ -46,32 +43,22 @@ export default async (req: Request, res: Response) => {
             })
         }
 
+        res.status(201).json(new ApiResponse(true, "Job post updated successfully", _.merge(updatedJobPost, updatedJobPostSalary)));
+
     } catch (error) {
-
-        if (error instanceof Prisma.PrismaClientKnownRequestError) {
-
-                return res.status(400).json({
-                    status: false,
-                    message: 'unknown database error',
-                    error: error,
-                });
-
-        }
 
         console.error("Error while updating job post:", error);
 
-        res.status(500).json({
-            success: false,
-            message: "Unknown error at updating job post",
-            error: error
-        });
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            if ( error.code === "P2022" )
+            return res.status(403).json(new ApiResponse(false, "not authorized to post blogs", error));
+
+            if ( error.code === "P2016" )
+            return res.status(404).json(new ApiResponse(false, "resource to be updated not found", error));
+        }
+
+        res.status(500).json(new ApiResponse(false, "Unknown error at updating job post", error));
 
     }
-
-    res.status(201).json({
-        success: true,
-        message: "Job post updated successfully",
-        data: _.merge(updatedJobPost, updatedJobPostSalary)
-    });
 };
 

@@ -9,11 +9,7 @@ export default async (req: Request, res: Response) => {
         const { error } = Validator.grant.createGrant.validate(req.body);
 
         if (error) {
-            return res.status(400).json({
-                success: false,
-                message: error.details,
-                data: null,
-            });
+            return res.status(400).json(new ApiResponse(false, error.message));
         }
     } catch (error) {
         return res.status(400).json(new ApiResponse(false, 'error at validating request'));
@@ -30,34 +26,27 @@ export default async (req: Request, res: Response) => {
                 opportunity_number: req.body.opportunity_number,
                 cfda: req.body.cfda,
                 tags: {
-                    connectOrCreate: req.body.tags.map((id: string) => ({
-                        where: { id },
-                        create: { id }
+                    connectOrCreate: req.body.tags.map((name: string) => ({
+                        where: { name },
+                        create: { name }
                     }))
                 }
+            },
+            include: {
+                tags: { select: { name: true } }
             }
         });
 
-        res.status(201).json({
-            success: true,
-            message: "Grant created successfully",
-            data: newGrant
-        });
+        res.status(201).json(new ApiResponse(true, "Grant created successfully", newGrant));
 
     } catch (error) {
-        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2022") {
-            return res.status(400).json({
-                success: false,
-                message: 'Not authorized to post grant',
-                data: error,
-            });
+        console.error("Error while posting news:", error);
+
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            if ( error.code === "P2022" )
+                return res.status(403).json(new ApiResponse(false, "not authorized to post blogs", error));
         }
 
-        console.error("Error while posting news:", error);
-        return res.status(500).json({
-            success: false,
-            message: "Error while posting grant",
-            data: error,
-        });
+        return res.status(500).json(new ApiResponse(false, "Error while posting grant"));
     }
 };

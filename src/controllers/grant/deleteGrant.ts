@@ -13,32 +13,25 @@ export default async (req: Request, res: Response) => {
     }
 
     try {
-        const newGrant = await prisma.client.grant.delete({
+        await prisma.client.grant.delete({
             where: {
-                id: req.body.id
+                id: parseInt( req.query.id as string )
             }
         });
 
-        res.status(201).json({
-            success: true,
-            message: "Grant deleted successfully",
-            data: newGrant
-        });
+        return res.status(204).json(new ApiResponse(true, "grant deleted successfully"));
 
     } catch (error) {
+        console.log(error);
 
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
-            return res.status(400).json({
-                success: false,
-                message: 'error while deleting grant',
-                data: error,
-            });
+            if ( error.code === "P2022" )
+            return res.status(403).json(new ApiResponse(false, "not authorized to post blogs", error));
+
+            if ( error.code === "P2025" )
+            return res.status(404).json(new ApiResponse(false, "resource to be deleted not found", error));
         }
 
-        return res.status(500).json({
-            success: false,
-            message: "Error while posting grant",
-            data: error,
-        });
+       return res.status(500).json(new ApiResponse(false, "Error while posting grant"));
     }
 }

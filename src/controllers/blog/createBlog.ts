@@ -22,40 +22,49 @@ export default async (req: Request, res: Response) => {
     try {
         let newBlog: any;
         if (req.auth?.role == "ADMIN" || req.auth?.role == "SUPER_ADMIN")
-            newBlog = await prisma.client.blog.create({
-                data: {
-                    title: req.body.title,
-                    overview: req.body.overview,
-                    body: req.body.body,
-                    verified_by: req.auth?.id as number,
-                    tags: {
-                        connectOrCreate: req.body.tags.map((id: string) => ({
-                            where: { id },
-                            create: { id }
-                        }))
-                    }
+        newBlog = await prisma.client.blog.create({
+            data: {
+                title: req.body.title,
+                overview: req.body.overview,
+                body: req.body.body,
+                verified_by: req.auth?.id as number,
+                tags: {
+                    connectOrCreate: req.body.tags.map((name: string) => ({
+                        where: { name },
+                        create: { name }
+                    }))
                 }
-            });
+            },
+            include: {
+                tags: { select: { name: true } }
+            }
+        });
 
         else
-            newBlog = await prisma.client.blog.create({
-                data: {
-                    title: req.body.title,
-                    overview: req.body.overview,
-                    body: req.body.body,
-                    posted_by: req.auth?.id as number,
-                    tags: {
-                        connectOrCreate: req.body.tags.map((id: string) => ({
-                            where: { id },
-                            create: { id }
-                        }))
-                    }
+        newBlog = await prisma.client.blog.create({
+            data: {
+                title: req.body.title,
+                overview: req.body.overview,
+                body: req.body.body,
+                posted_by: req.auth?.id as number,
+                tags: {
+                    connectOrCreate: req.body.tags.map((name: string) => ({
+                        where: { name },
+                        create: { name }
+                    }))
                 }
-            });
- 
+            },
+            include: {
+                tags: { select: { name: true } }
+            }
+
+        });
+
         res.status(201).json(new ApiResponse(true, "new blog created successfully", newBlog));
 
     } catch (error) {
+        console.log(error);
+
         if (
             error instanceof Prisma.PrismaClientKnownRequestError &&
                 error.code === "P2022"
@@ -63,7 +72,7 @@ export default async (req: Request, res: Response) => {
             return res.status(400).json(new ApiResponse(false, "not authorized to post blogs"));
         }
 
-        res.status(400).json(new ApiResponse(false, "error while creating blog"));
+        res.status(400).json(new ApiResponse(false, "error while creating blog", error));
     }
 
 }

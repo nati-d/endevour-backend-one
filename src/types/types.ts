@@ -199,8 +199,6 @@ export type Blog = {
   body: string;
   posted_by: number;
   verified_by: number;
-  created_at: Date;
-  updated_at: Date;
 };
 
 // exclusive-job.model.ts

@@ -17,8 +17,10 @@ const getBlog = joi.object({
     id: joi.number(),
     title: joi.string(),
     posted_by: joi.number().allow(null),
+    verified_by: joi.number().allow(null),
     tags: ARRAY_OF_STRINGS,
-    date: RANGE_OF_DATE
+    date: RANGE_OF_DATE,
+    page: joi.number().allow(null)
 })
 
 const updateBlog = joi.object({
