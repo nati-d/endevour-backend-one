@@ -6,25 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("../../../prisma/index"));
 const client_1 = require("@prisma/client");
 const index_2 = __importDefault(require("../../../validation/index"));
+const response_1 = __importDefault(require("../../../types/response"));
 exports.default = async (req, res) => {
-    try {
-        const { error } = index_2.default.job.jobCatagory.validate(req.body);
-        if (error) {
-            res.send({
-                success: false,
-                message: error.details,
-                data: null
-            });
-            return;
-        }
-    }
-    catch (error) {
-        console.error(error);
-        return res.status(400).send({
-            status: false,
-            message: "Error at request validation",
-            description: error
-        });
+    const { error } = index_2.default.job.jobCatagory.validate(req.body);
+    if (error) {
+        res.send(new response_1.default(false, "unidentified request content", error.details));
+        return;
     }
     let newCatagory;
     try {
@@ -36,22 +23,10 @@ exports.default = async (req, res) => {
     }
     catch (error) {
         if (error instanceof client_1.Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
-            return res.status(400).json({
-                status: false,
-                message: 'Duplicate catagory name',
-                error: error,
-            });
+            return res.status(400).json(new response_1.default(false, 'Duplicate catagory name', error));
         }
         console.error("Error inserting user:", error);
-        return res.status(500).send({
-            success: false,
-            message: 'Unknown error at registering user',
-            error: error,
-        });
+        return res.status(500).send(new response_1.default(false, 'Unknown error at registering user', error));
     }
-    res.send({
-        success: true,
-        message: "New job catagory is added",
-        data: newCatagory,
-    });
+    res.send(new response_1.default(true, "New job catagory is added", newCatagory));
 };

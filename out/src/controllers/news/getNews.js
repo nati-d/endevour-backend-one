@@ -6,26 +6,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("../../prisma/index"));
 const client_1 = require("@prisma/client");
 const index_2 = __importDefault(require("../../validation/index"));
+const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
+    const { error } = index_2.default.news.getNews.validate(req.body);
+    if (error)
+        return res.status(400).json(new response_1.default(false, "unidentified request content", error.details));
     try {
-        const { error } = index_2.default.news.getNews.validate(req.body);
-        if (error) {
-            return res.status(400).json({
-                success: false,
-                message: error.details,
-                data: null,
-            });
-        }
-    }
-    catch (error) {
-        return res.status(400).json({
-            success: false,
-            message: "Error at request validation",
-            data: error,
-        });
-    }
-    try {
-        const newNews = await index_1.default.client.news.findMany({
+        let news;
+        let totalPages = 0;
+        let page = req.body.page ? (req.body.page - 1) * 10 : 0;
+        news = await index_1.default.client.news.findMany({
+            take: 10,
+            skip: page,
             where: {
                 id: req.body.id,
                 title: req.body.title,
@@ -33,9 +25,7 @@ exports.default = async (req, res) => {
                     gte: req.body?.date?.lower_bound,
                     lte: req.body?.date?.upper_bound,
                 },
-                tags: req.body.tags && req.body.tags.length > 0
-                    ? { some: { name: { in: req.body.tags } } }
-                    : {},
+                tags: req.body.tags && req.body.tags.length > 0 ? { some: { name: { in: req.body.tags } } } : {}
             },
             include: {
                 tags: {
@@ -45,26 +35,25 @@ exports.default = async (req, res) => {
                 },
             },
         });
-        res.status(201).json({
-            success: true,
-            message: "News getted successfully",
-            data: newNews,
+        totalPages = await index_1.default.client.news.count({
+            where: {
+                id: req.body.id,
+                title: req.body.title,
+                created_at: {
+                    gte: req.body?.date?.lower_bound,
+                    lte: req.body?.date?.upper_bound,
+                },
+                tags: req.body.tags && req.body.tags.length > 0 ? { some: { name: { in: req.body.tags } } } : {}
+            }
         });
+        res.status(200).json(new response_1.default(true, "News getted successfully", { news: news, total_pages: totalPages }));
     }
     catch (error) {
-        if (error instanceof client_1.Prisma.PrismaClientKnownRequestError &&
-            error.code === "P2022") {
-            return res.status(400).json({
-                success: false,
-                message: "Not authorized to post news",
-                data: error,
-            });
-        }
         console.error("Error while posting news:", error);
-        return res.status(500).json({
-            success: false,
-            message: "Error while posting news",
-            data: error,
-        });
+        if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
+            if (error.code === "P2022")
+                return res.status(400).json(new response_1.default(false, "Not authorized to post news", error));
+        }
+        return res.status(500).json(new response_1.default(false, "Error while posting news", error));
     }
 };

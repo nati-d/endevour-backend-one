@@ -8,23 +8,18 @@ const client_1 = require("@prisma/client");
 const index_2 = __importDefault(require("../../validation/index"));
 const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
-    try {
-        const { error } = index_2.default.blog.getBlog.validate(req.body);
-        if (error) {
-            return res
-                .status(400)
-                .json(new response_1.default(false, "unidentified request content", error.details));
-        }
-    }
-    catch (error) {
-        return res
-            .status(400)
-            .json(new response_1.default(false, "error while validating request"));
+    const { error } = index_2.default.blog.getBlog.validate(req.body);
+    if (error) {
+        return res.status(400).json(new response_1.default(false, "unidentified request content", error.details));
     }
     try {
-        let newBlog;
-        if (req.auth?.role == "ADMIN" || req.auth?.role == "SUPER_ADMIN")
-            newBlog = await index_1.default.client.blog.findMany({
+        let blog;
+        let totalPages = 0;
+        let page = req.body.page ? (req.body.page - 1) * 10 : 0;
+        if (req.auth?.role == "ADMIN" || req.auth?.role == "SUPER_ADMIN") {
+            blog = await index_1.default.client.blog.findMany({
+                take: 10,
+                skip: page,
                 where: {
                     id: req.body.id,
                     title: req.body.title,
@@ -34,9 +29,7 @@ exports.default = async (req, res) => {
                         gte: req.body?.date?.lower_bound,
                         lte: req.body?.date?.upper_bound,
                     },
-                    tags: req.body.tags && req.body.tags.length > 0
-                        ? { some: { name: { in: req.body.tags } } }
-                        : {},
+                    tags: req.body.tags && req.body.tags.length > 0 ? { some: { name: { in: req.body.tags } } } : {}
                 },
                 include: {
                     tags: {
@@ -45,9 +38,29 @@ exports.default = async (req, res) => {
                         },
                     },
                 },
+                orderBy: {
+                    id: 'desc'
+                }
             });
+            totalPages = await index_1.default.client.blog.count({
+                where: {
+                    id: req.body.id,
+                    title: req.body.title,
+                    verified_by: req.body.verified_by,
+                    posted_by: req.body.posted_by,
+                    created_at: {
+                        gte: req.body?.date?.lower_bound,
+                        lte: req.body?.date?.upper_bound,
+                    },
+                    tags: req.body.tags && req.body.tags.length > 0 ? { some: { name: { in: req.body.tags } } } : {}
+                }
+            });
+            totalPages = Math.ceil(totalPages / 10);
+        }
         else
-            newBlog = await index_1.default.client.blog.findMany({
+            blog = await index_1.default.client.blog.findMany({
+                take: 1,
+                skip: 3,
                 where: {
                     id: req.body.id,
                     title: req.body.title,
@@ -56,22 +69,24 @@ exports.default = async (req, res) => {
                         gte: req.body?.date?.lower_bound,
                         lte: req.body?.date?.upper_bound,
                     },
-                    tags: req.body.tags && req.body.tags.length > 0
-                        ? { some: { name: { in: req.body.tags } } }
-                        : {},
+                    tags: req.body.tags && req.body.tags.length > 0 ? { some: { name: { in: req.body.tags } } } : {}
                 },
+                include: {
+                    tags: {
+                        select: {
+                            name: true,
+                        },
+                    },
+                }
             });
-        res
-            .status(201)
-            .json(new response_1.default(true, "blog gotted successfully", newBlog));
+        return res.status(200).json(new response_1.default(true, "blog gotted successfully", ({ blog, totalPages })));
     }
     catch (error) {
-        if (error instanceof client_1.Prisma.PrismaClientKnownRequestError &&
-            error.code === "P2022") {
-            return res
-                .status(400)
-                .json(new response_1.default(false, "not authorized to post blogs"));
+        console.error(error);
+        if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
+            if (error.code === "P2022")
+                return res.status(403).json(new response_1.default(false, "not authorized to get blogs"));
         }
-        res.status(400).json(new response_1.default(false, "error while getting blog"));
+        return res.status(400).json(new response_1.default(false, "error while getting blog"));
     }
 };

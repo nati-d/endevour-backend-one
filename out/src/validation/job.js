@@ -45,6 +45,8 @@ const getJobPost = joi_1.default.object({
     category: RANGE_OF_JOB_CATEGORY,
     closing_date: RANGE_OF_DATE,
     salary: SALARY,
+    created_at: RANGE_OF_DATE,
+    page: joi_1.default.number().allow(null)
 });
 const updateJobPost = joi_1.default.object({
     id: joi_1.default.number().positive().required(),

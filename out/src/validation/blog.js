@@ -19,8 +19,10 @@ const getBlog = joi_1.default.object({
     id: joi_1.default.number(),
     title: joi_1.default.string(),
     posted_by: joi_1.default.number().allow(null),
+    verified_by: joi_1.default.number().allow(null),
     tags: ARRAY_OF_STRINGS,
-    date: RANGE_OF_DATE
+    date: RANGE_OF_DATE,
+    page: joi_1.default.number().allow(null)
 });
 const updateBlog = joi_1.default.object({
     id: joi_1.default.number().required(),

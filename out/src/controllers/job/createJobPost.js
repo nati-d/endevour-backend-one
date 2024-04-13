@@ -7,23 +7,16 @@ const index_1 = __importDefault(require("../../prisma/index"));
 const client_1 = require("@prisma/client");
 const lodash_1 = __importDefault(require("lodash"));
 const index_2 = __importDefault(require("../../validation/index"));
+const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
     try {
         const { error } = index_2.default.job.jobPost.validate(req.body);
         if (error) {
-            return res.status(400).send({
-                success: false,
-                message: error.details,
-                data: null,
-            });
+            return res.status(400).send(new response_1.default(false, "unidentified request content", error.details));
         }
     }
     catch (error) {
-        return res.status(400).send({
-            status: false,
-            message: "Error at request validation",
-            description: error
-        });
+        return res.status(400).send(new response_1.default(false, "Error at request validation", error));
     }
     let jobId = 0;
     try {
@@ -50,16 +43,13 @@ exports.default = async (req, res) => {
                 currency: req.body.currency,
             }
         });
-        res.status(201).send(lodash_1.default.merge(newJobPost, salary));
+        res.status(201).json(new response_1.default(true, "job posted successfully", lodash_1.default.merge(newJobPost, salary)));
     }
     catch (error) {
+        console.log(error);
         if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
             if (error.code = "P2022") {
-                return res.status(400).json({
-                    status: false,
-                    message: 'Not authorized to post jobs',
-                    error: error,
-                });
+                return res.status(401).json(new response_1.default(false, 'Not authorized to post jobs', error));
             }
             ;
         }
@@ -74,11 +64,6 @@ exports.default = async (req, res) => {
         catch (error) {
             console.log(error);
         }
-        console.log(error);
-        return res.status(400).json({
-            status: false,
-            message: "error while creating job post",
-            data: error
-        });
+        return res.status(400).json(new response_1.default(false, "error while creating job post", error));
     }
 };

@@ -11,11 +11,7 @@ exports.default = async (req, res) => {
     try {
         const { error } = index_2.default.grant.createGrant.validate(req.body);
         if (error) {
-            return res.status(400).json({
-                success: false,
-                message: error.details,
-                data: null,
-            });
+            return res.status(400).json(new response_1.default(false, error.message));
         }
     }
     catch (error) {
@@ -32,32 +28,24 @@ exports.default = async (req, res) => {
                 opportunity_number: req.body.opportunity_number,
                 cfda: req.body.cfda,
                 tags: {
-                    connectOrCreate: req.body.tags.map((id) => ({
-                        where: { id },
-                        create: { id }
+                    connectOrCreate: req.body.tags.map((name) => ({
+                        where: { name },
+                        create: { name }
                     }))
                 }
+            },
+            include: {
+                tags: { select: { name: true } }
             }
         });
-        res.status(201).json({
-            success: true,
-            message: "Grant created successfully",
-            data: newGrant
-        });
+        res.status(201).json(new response_1.default(true, "Grant created successfully", newGrant));
     }
     catch (error) {
-        if (error instanceof client_1.Prisma.PrismaClientKnownRequestError && error.code === "P2022") {
-            return res.status(400).json({
-                success: false,
-                message: 'Not authorized to post grant',
-                data: error,
-            });
-        }
         console.error("Error while posting news:", error);
-        return res.status(500).json({
-            success: false,
-            message: "Error while posting grant",
-            data: error,
-        });
+        if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
+            if (error.code === "P2022")
+                return res.status(403).json(new response_1.default(false, "not authorized to post blogs", error));
+        }
+        return res.status(500).json(new response_1.default(false, "Error while posting grant"));
     }
 };

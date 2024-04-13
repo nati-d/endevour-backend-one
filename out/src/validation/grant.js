@@ -12,7 +12,6 @@ const RANGE_OF_DATE = joi_1.default.object({
 const createGrant = joi_1.default.object({
     title: joi_1.default.string().required(),
     overview: joi_1.default.string().required(),
-    thumbnail: joi_1.default.string(),
     body: joi_1.default.string().required(),
     opportunity_number: joi_1.default.string().required(),
     cfda: joi_1.default.string().required(),
@@ -22,13 +21,15 @@ const getGrant = joi_1.default.object({
     id: joi_1.default.number(),
     title: joi_1.default.string(),
     date: RANGE_OF_DATE,
-    tags: ARRAY_OF_STRINGS
+    opportunity_number: joi_1.default.string(),
+    cfda: joi_1.default.string(),
+    tags: ARRAY_OF_STRINGS,
+    page: joi_1.default.number(),
 });
 const updateGrant = joi_1.default.object({
     id: joi_1.default.number().required(),
     title: joi_1.default.string().required(),
     overview: joi_1.default.string().required(),
-    thumbnail: joi_1.default.string().required(),
     body: joi_1.default.string().required(),
     opportunity_number: joi_1.default.string().required(),
     cfda: joi_1.default.string().required(),

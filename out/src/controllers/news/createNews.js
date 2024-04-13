@@ -6,23 +6,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("../../prisma/index"));
 const client_1 = require("@prisma/client");
 const index_2 = __importDefault(require("../../validation/index"));
+const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
     try {
         const { error } = index_2.default.news.createNews.validate(req.body);
         if (error) {
-            return res.status(400).json({
-                success: false,
-                message: error.details,
-                data: null,
-            });
+            return res.status(400).json(new response_1.default(false, "unidentified request content", error.details));
         }
     }
     catch (error) {
-        return res.status(400).json({
-            success: false,
-            message: "Error at request validation",
-            data: error,
-        });
+        return res.status(400).json(new response_1.default(false, "Error at request validation"));
     }
     try {
         const newNews = await index_1.default.client.news.create({
@@ -32,32 +25,25 @@ exports.default = async (req, res) => {
                 body: req.body.body,
                 posted_by: req.auth?.id,
                 tags: {
-                    connectOrCreate: req.body.tags.map((id) => ({
-                        where: { id },
-                        create: { id }
+                    connectOrCreate: req.body.tags.map((name) => ({
+                        where: { name },
+                        create: { name }
                     }))
                 }
+            },
+            include: {
+                tags: { select: { name: true } }
             }
         });
-        res.status(201).json({
-            success: true,
-            message: "News created successfully",
-            data: newNews
-        });
+        res.status(201).json(new response_1.default(true, "news created successfully", newNews));
     }
     catch (error) {
-        if (error instanceof client_1.Prisma.PrismaClientKnownRequestError && error.code === "P2022") {
-            return res.status(400).json({
-                success: false,
-                message: 'Not authorized to post news',
-                data: error,
-            });
+        console.log(error);
+        if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
+            if (error.code === "P2022") {
+                return res.status(400).json(new response_1.default(false, "not authorized to post news", error));
+            }
         }
-        console.error("Error while posting news:", error);
-        return res.status(500).json({
-            success: false,
-            message: "Error while posting news",
-            data: error,
-        });
+        return res.status(500).json(new response_1.default(false, "Error while posting news"));
     }
 };

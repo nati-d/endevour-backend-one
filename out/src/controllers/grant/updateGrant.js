@@ -18,7 +18,7 @@ exports.default = async (req, res) => {
         return res.status(400).json(new response_1.default(false, "error at validating request"));
     }
     try {
-        const newGrant = await index_1.default.client.grant.update({
+        const grant = await index_1.default.client.grant.update({
             where: {
                 id: req.body.id
             },
@@ -31,33 +31,25 @@ exports.default = async (req, res) => {
                 opportunity_number: req.body.opportunity_number,
                 cfda: req.body.cfda,
                 tags: {
-                    connectOrCreate: req.body.tags.map((id) => ({
-                        where: { id },
-                        create: { id }
+                    connectOrCreate: req.body.tags.map((name) => ({
+                        where: { name },
+                        create: { name }
                     })),
-                    disconnect: req.body.tags_to_remove.map((id) => ({ id })),
+                    disconnect: req.body.tags_to_remove.map((name) => ({ name })),
                 }
-            }
+            },
+            include: { tags: { select: { name: true } } }
         });
-        res.status(201).json({
-            success: true,
-            message: "Grant updated successfully",
-            data: newGrant
-        });
+        res.status(200).json(new response_1.default(true, "grant updated successfully", grant));
     }
     catch (error) {
-        if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
-            return res.status(400).json({
-                success: false,
-                message: 'error while updating grant',
-                data: error,
-            });
-        }
         console.log(error);
-        return res.status(500).json({
-            success: false,
-            message: "Error while posting grant",
-            data: error,
-        });
+        if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
+            if (error.code === "P2022")
+                return res.status(403).json(new response_1.default(false, "not authorized to post blogs", error));
+            if (error.code === "P2016")
+                return res.status(404).json(new response_1.default(false, "resource to be updated not found", error));
+        }
+        return res.status(500).json(new response_1.default(false, "Error while posting "));
     }
 };

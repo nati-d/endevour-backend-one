@@ -31,11 +31,14 @@ exports.default = async (req, res) => {
                     body: req.body.body,
                     verified_by: req.auth?.id,
                     tags: {
-                        connectOrCreate: req.body.tags.map((id) => ({
-                            where: { id },
-                            create: { id }
+                        connectOrCreate: req.body.tags.map((name) => ({
+                            where: { name },
+                            create: { name }
                         }))
                     }
+                },
+                include: {
+                    tags: { select: { name: true } }
                 }
             });
         else
@@ -46,20 +49,24 @@ exports.default = async (req, res) => {
                     body: req.body.body,
                     posted_by: req.auth?.id,
                     tags: {
-                        connectOrCreate: req.body.tags.map((id) => ({
-                            where: { id },
-                            create: { id }
+                        connectOrCreate: req.body.tags.map((name) => ({
+                            where: { name },
+                            create: { name }
                         }))
                     }
+                },
+                include: {
+                    tags: { select: { name: true } }
                 }
             });
         res.status(201).json(new response_1.default(true, "new blog created successfully", newBlog));
     }
     catch (error) {
+        console.log(error);
         if (error instanceof client_1.Prisma.PrismaClientKnownRequestError &&
             error.code === "P2022") {
             return res.status(400).json(new response_1.default(false, "not authorized to post blogs"));
         }
-        res.status(400).json(new response_1.default(false, "error while creating blog"));
+        res.status(400).json(new response_1.default(false, "error while creating blog", error));
     }
 };

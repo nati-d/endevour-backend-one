@@ -7,14 +7,11 @@ const index_1 = __importDefault(require("../../prisma/index"));
 const client_1 = require("@prisma/client");
 const lodash_1 = __importDefault(require("lodash"));
 const index_2 = __importDefault(require("../../validation/index"));
+const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
     const { error } = index_2.default.job.updateJobPost.validate(req.body);
     if (error) {
-        return res.status(400).json({
-            success: false,
-            message: "Invalid request data",
-            error: error.details
-        });
+        return res.status(400).json(new response_1.default(false, "unidentified request content", error.details));
     }
     let updatedJobPost;
     let updatedJobPostSalary;
@@ -42,25 +39,16 @@ exports.default = async (req, res) => {
                 }
             });
         }
+        res.status(201).json(new response_1.default(true, "Job post updated successfully", lodash_1.default.merge(updatedJobPost, updatedJobPostSalary)));
     }
     catch (error) {
-        if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
-            return res.status(400).json({
-                status: false,
-                message: 'unknown database error',
-                error: error,
-            });
-        }
         console.error("Error while updating job post:", error);
-        res.status(500).json({
-            success: false,
-            message: "Unknown error at updating job post",
-            error: error
-        });
+        if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
+            if (error.code === "P2022")
+                return res.status(403).json(new response_1.default(false, "not authorized to post blogs", error));
+            if (error.code === "P2016")
+                return res.status(404).json(new response_1.default(false, "resource to be updated not found", error));
+        }
+        res.status(500).json(new response_1.default(false, "Unknown error at updating job post", error));
     }
-    res.status(201).json({
-        success: true,
-        message: "Job post updated successfully",
-        data: lodash_1.default.merge(updatedJobPost, updatedJobPostSalary)
-    });
 };
