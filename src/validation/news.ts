@@ -20,7 +20,7 @@ const getNews = joi.object({
     posted_by: joi.number(),
     date: RANGE_OF_DATE,
     tags: ARRAY_OF_STRINGS,
-    pages: joi.number()
+    page: joi.number()
 });
 
 const updateNews = joi.object({

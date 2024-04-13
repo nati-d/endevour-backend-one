@@ -17,11 +17,13 @@ const createNews = joi_1.default.object({
 });
 const getNews = joi_1.default.object({
     id: joi_1.default.number(),
+    id: joi_1.default.number(),
     title: joi_1.default.string(),
+    posted_by: joi_1.default.number(),
     posted_by: joi_1.default.number(),
     date: RANGE_OF_DATE,
     tags: ARRAY_OF_STRINGS,
-    pages: joi_1.default.number()
+    page: joi_1.default.number()
 });
 const updateNews = joi_1.default.object({
     id: joi_1.default.number().required(),
