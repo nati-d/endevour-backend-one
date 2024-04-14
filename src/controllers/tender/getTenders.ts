@@ -48,9 +48,3 @@ const getTenders = async (req: Request, res: Response) => {
 };
 
 export default getTenders;
-
-// How tenders can be filtered.
-// Based on tags
-// tags found in the relation table
-
-// Verfied
