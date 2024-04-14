@@ -29,7 +29,7 @@ const createTender = async (req: Request, res: Response) => {
         opening_date: req.body.opening_date,
         closing_date: req.body.closing_date,
         posted_by: req.body.posted_by,
-        verified_by: parseInt(req.body.verified_by),
+        verified_by: req.body.verified_by,
         files: {
           createMany: {
             data: files.map((file: Express.Multer.File) => ({
