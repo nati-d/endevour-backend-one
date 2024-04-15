@@ -12,6 +12,24 @@ export default async (req: Request, res: Response) => {
     return res.status(400).json(new ApiResponse(false, "unidentified request content", error.details));
 
     try {
+        let id = parseInt(req.query.id as string) || req.body.id;
+        let title = req.query.title as string || req.body.title;
+        let posted_by = parseInt(req.query.posted_by as string) || req.body.posted_by;
+        let date_lower_bound = (req.query.date_lower_bound as string) || req.body?.date?.lower_bound;
+        let date_upper_bound = (req.query.date_upper_bound as string) || req.body?.date?.upper_bound;
+        let tags = !req.query.tags ? undefined : JSON.parse(req.query.tags as string) || req.body.tags; 
+
+        let where = {
+            id,
+            title,
+            posted_by,
+            created_at: {
+                gte: date_lower_bound,
+                lte: date_upper_bound,
+            },
+            tags: tags && tags.length > 0 ? { some: { name: { in: tags } } } : {}
+        }
+
         let news: any;
         let totalPages: number = 0;
         let page: number = req.body.page ? ( req.body.page - 1) * 10 : 0;
@@ -19,35 +37,14 @@ export default async (req: Request, res: Response) => {
         news = await prisma.client.news.findMany({
             take: 10,
             skip: page,
-            where: {
-                id: req.body.id,
-                title: req.body.title,
-                created_at: {
-                    gte: req.body?.date?.lower_bound,
-                    lte: req.body?.date?.upper_bound,
-                },
-                tags: req.body.tags && req.body.tags.length > 0 ? { some: { name: { in: req.body.tags } } } : {}
-            },
-            include: {
-                tags: {
-                    select: {
-                        name: true,
-                    },
-                },
-            },
+            where,
+            include: { tags: { select: { name: true } } },
+            orderBy: { id: 'desc' }
         });
 
-        totalPages = await prisma.client.news.count({
-            where: {
-                id: req.body.id,
-                title: req.body.title,
-                created_at: {
-                    gte: req.body?.date?.lower_bound,
-                    lte: req.body?.date?.upper_bound,
-                },
-                tags: req.body.tags && req.body.tags.length > 0 ? { some: { name: { in: req.body.tags } } } : {}
-            }
-        })
+        totalPages = await prisma.client.news.count({ where });
+
+        totalPages = Math.ceil( totalPages / 10 );
 
         res.status(200).json(new ApiResponse(true, "News getted successfully", { news: news, total_pages: totalPages }));
 
