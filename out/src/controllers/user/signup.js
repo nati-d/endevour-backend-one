@@ -7,38 +7,16 @@ const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient
 const client_1 = require("@prisma/client");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const lodash_1 = __importDefault(require("lodash"));
 const index_1 = __importDefault(require("../../validation/index"));
+const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
-    try {
-        let { error } = index_1.default.user.userSignupSchema.validate(req.body);
-        if (error) {
-            return res.status(400).send({
-                status: false,
-                message: "Invalid value set",
-                description: error.details,
-            });
-        }
-    }
-    catch (error) {
-        return res.status(400).send({
-            status: false,
-            message: "Error at request validation",
-            description: error,
-        });
-    }
-    try {
-        req.body.password = await bcrypt_1.default.hash(req.body.password, 10);
-    }
-    catch (error) {
-        console.error(error);
-        return res.status(500).send({
-            status: false,
-            message: "Internal server error",
-            description: error,
-        });
-    }
+    let { error } = index_1.default.user.userSignupSchema.validate(req.body);
+    if (error)
+        return res.status(400).send(new response_1.default(false, "Invalid value set", error.details));
     let newUser;
     try {
+        req.body.password = await bcrypt_1.default.hash(req.body.password, 10);
         const { first_name, last_name, email, phone_number, location, password } = req.body;
         newUser = await prismaClient_1.default.user.create({
             data: {
@@ -55,28 +33,17 @@ exports.default = async (req, res) => {
         });
     }
     catch (error) {
-        if (error instanceof client_1.Prisma.PrismaClientKnownRequestError &&
-            error.code === "P2002") {
-            return res.status(400).json({
-                status: false,
-                message: "Duplicate entry for email or phone number",
-                error: error,
-            });
+        if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
+            if (error.code === "P2002") {
+                return res.status(400).json(new response_1.default(false, "Duplicate entry for email or phone number", error));
+            }
         }
-        console.error("Error inserting user:", error);
-        return res.status(500).send({
-            status: false,
-            message: "Unknown error at registering user",
-            error: error,
-        });
+        return res.status(500).json(new response_1.default(false, "Unknown error at registering user", error));
     }
     try {
+        lodash_1.default.omit(newUser, "password");
         const token = jsonwebtoken_1.default.sign(newUser, process.env.JWT_KEY);
-        return res.status(201).json({
-            status: true,
-            message: "User registered successfully",
-            token: token,
-        });
+        return res.status(201).json(new response_1.default(true, "User registered successfully", token));
     }
     catch (error) {
         console.error("Error signing JWT token:", error);
