@@ -53,7 +53,18 @@ export default async (req: Request, res: Response) => {
 
         totalPages = Math.ceil( totalPages / 10 );
 
-        return res.status(200).json(new ApiResponse(true, "grants fetched successfully", { grant: grant, total_pages: totalPages }));
+        let __tags = await prisma.client.tag.findMany({
+            where: {
+                grant: { some: { } }
+            },
+            select: {
+                name: true
+            }
+        });
+
+        let _tags = __tags.map(data => data.name);
+
+        return res.status(200).json(new ApiResponse(true, "grants fetched successfully", { grant: grant, total_pages: totalPages, tags: _tags }));
 
     } catch (error) {
         console.error("Error while posting grant:", error);

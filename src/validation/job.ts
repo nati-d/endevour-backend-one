@@ -1,5 +1,6 @@
 import joi from "joi";
 
+const ARRAY_OF_STRINGS = joi.array().items(joi.string());
 const CONTRACT_TYPE_SET = joi.string().valid("REMOTE", "PARTIME", "FULLTIME", "CONTRACT");
 const CURRENCY_SET = joi.string().valid("DOLLAR", "BIRR", "EURO");
 const PERIODICITY_SET = joi.string().valid("HOURLY", "MONTHLY", "WEEKLY", "DAILY");
@@ -37,6 +38,7 @@ const jobPost = joi.object({
     high_end: joi.number().positive(),
     periodicity: PERIODICITY_SET,
     currency: CURRENCY_SET,
+    tags: ARRAY_OF_STRINGS
 });
 
 const getJobPost = joi.object({

@@ -46,7 +46,18 @@ export default async (req: Request, res: Response) => {
 
         totalPages = Math.ceil( totalPages / 10 );
 
-        res.status(200).json(new ApiResponse(true, "News getted successfully", { news: news, total_pages: totalPages }));
+        let __tags = await prisma.client.tag.findMany({
+            where: {
+                news: { some: { } }
+            },
+            select: {
+                name: true
+            }
+        });
+
+        let _tags = __tags.map(data => data.name);
+
+        res.status(200).json(new ApiResponse(true, "News getted successfully", { news: news, total_pages: totalPages, tags: _tags }));
 
     } catch (error) {
 

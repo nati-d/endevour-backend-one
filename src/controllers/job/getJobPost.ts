@@ -16,20 +16,20 @@ export default async (req: Request, res: Response) => {
     try {
         let id = parseInt(req.query.id as string) || req.body.id;
         let contract_type = !req.query.contract_type ? undefined : JSON.parse(req.query.contract_type as string) || req.body.contract_type;
-        let category = !req.query.category ? undefined : JSON.parse(req.query.category as string) || req.body.category;
         let year_of_experience_lower_bound = parseInt(req.query.year_of_experience_lower_bound as string) || req.body?.year_of_experience?.lower_bound;
         let year_of_experience_upper_bound = parseInt(req.query.year_of_experience_upper_bound as string) || req.body?.year_of_experience?.upper_bound;
-        let date_lower_bound = (req.query.date_lower_bound as string) || req.body?.date?.lower_bound;
-        let date_upper_bound = (req.query.date_upper_bound as string) || req.body?.date?.upper_bound;
+        let category = !req.query.category ? undefined : JSON.parse(req.query.category as string) || req.body.category;
         let closing_date_lower_bound = (req.query.closing_date_lower_bound as string) || req.body?.closing_date?.lower_bound;
         let closing_date_upper_bound = (req.query.closing_date_upper_bound as string) || req.body?.closing_date?.upper_bound;
         let verified_by = parseInt(req.query.verified_by as string) || req.body.verified_by;
         let posted_by = parseInt(req.query.posted_by as string) || req.body.posted_by;
-        // let tags = !req.query.tags ? undefined : JSON.parse(req.query.tags as string) || req.body.tags;
         let salary_low_end = parseFloat(req.query.salary_low_end as string) || req.body?.salary?.low_end;
         let salary_high_end = parseFloat(req.query.salary_high_end as string) || req.body?.salary?.high_end;
         let periodicity = !req.query.periodicity ? undefined : JSON.parse(req.query.periodicity as string) || req.body.periodicity;
         let currency = !req.query.currency ? undefined : JSON.parse(req.query.currency as string) || req.body.currency;
+        let date_lower_bound = (req.query.date_lower_bound as string) || req.body?.date?.lower_bound;
+        let date_upper_bound = (req.query.date_upper_bound as string) || req.body?.date?.upper_bound;
+        let tags = !req.query.tags ? undefined : JSON.parse(req.query.tags as string) || req.body.tags;
 
         let where = {
             id,
@@ -49,6 +49,7 @@ export default async (req: Request, res: Response) => {
                 gte: date_lower_bound,
                 lte: date_upper_bound
             },
+            tags: tags && tags.length > 0 ? { some: { name: { in: tags } } } : {}
         }
 
         let jobPosts: any;
@@ -68,7 +69,8 @@ export default async (req: Request, res: Response) => {
                         periodicity: true,
                         currency: true
                     }
-                }
+                },
+                tags: { select: { name: true } }
             },
             orderBy: {
                 id: 'desc'
@@ -79,7 +81,18 @@ export default async (req: Request, res: Response) => {
 
         totalPages = Math.ceil( totalPages / 10 );
 
-        res.status(200).json(new ApiResponse(true, "jop posts fetched successfully", { job_post: jobPosts, total_pages: totalPages }));
+        let __tags = await prisma.client.tag.findMany({
+            where: {
+                job_post: { some: { } }
+            },
+            select: {
+                name: true
+            }
+        });
+
+        let _tags = __tags.map(data => data.name);
+
+        res.status(200).json(new ApiResponse(true, "jop posts fetched successfully", { job_post: jobPosts, total_pages: totalPages, tags: _tags }));
 
     } catch (error) {
 

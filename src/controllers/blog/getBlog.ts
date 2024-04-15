@@ -51,7 +51,7 @@ export default async (req: Request, res: Response) => {
                 orderBy: {
                     id: 'desc'
                 }
-            });
+            })
         }
 
         else
@@ -72,7 +72,18 @@ export default async (req: Request, res: Response) => {
 
         totalPages = Math.ceil( totalPages / 10 );
 
-        return res.status(200).json(new ApiResponse(true, "blog gotted successfully", ({blog, totalPages})));
+        let __tags = await prisma.client.tag.findMany({
+            where: {
+                blog: { some: { } }
+            },
+            select: {
+                name: true
+            }
+        });
+
+        let _tags = __tags.map(data => data.name);
+
+        return res.status(200).json(new ApiResponse(true, "blog fetched successfully", ({ blog, total_pages: totalPages, tags: _tags })));
 
     } catch (error) {
         console.error(error);
