@@ -30,7 +30,7 @@ exports.default = async (req, res) => {
         };
         let news;
         let totalPages = 0;
-        let page = req.body.page ? (req.body.page - 1) * 10 : 0;
+        let page = req.query.page ? (parseInt(req.query.page) - 1) * 10 : req.body.page ? (req.body.page - 1) * 10 : 0;
         news = await index_1.default.client.news.findMany({
             take: 10,
             skip: page,

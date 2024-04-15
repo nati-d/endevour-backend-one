@@ -32,7 +32,7 @@ export default async (req: Request, res: Response) => {
 
         let news: any;
         let totalPages: number = 0;
-        let page: number = req.body.page ? ( req.body.page - 1) * 10 : 0;
+        let page = req.query.page ? ( parseInt(req.query.page as string) - 1 ) * 10 :req.body.page ? ( req.body.page - 1 ) * 10 : 0;
 
         news = await prisma.client.news.findMany({
             take: 10,
