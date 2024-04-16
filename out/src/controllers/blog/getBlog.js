@@ -67,7 +67,16 @@ exports.default = async (req, res) => {
             });
         totalPages = await index_1.default.client.blog.count({ where });
         totalPages = Math.ceil(totalPages / 10);
-        return res.status(200).json(new response_1.default(true, "blog gotted successfully", ({ blog, totalPages })));
+        let __tags = await index_1.default.client.tag.findMany({
+            where: {
+                blog: { some: {} }
+            },
+            select: {
+                name: true
+            }
+        });
+        let _tags = __tags.map(data => data.name);
+        return res.status(200).json(new response_1.default(true, "blog fetched successfully", ({ blog, total_pages: totalPages, tags: _tags })));
     }
     catch (error) {
         console.error(error);

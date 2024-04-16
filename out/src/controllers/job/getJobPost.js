@@ -14,20 +14,20 @@ exports.default = async (req, res) => {
     try {
         let id = parseInt(req.query.id) || req.body.id;
         let contract_type = !req.query.contract_type ? undefined : JSON.parse(req.query.contract_type) || req.body.contract_type;
-        let category = !req.query.category ? undefined : JSON.parse(req.query.category) || req.body.category;
         let year_of_experience_lower_bound = parseInt(req.query.year_of_experience_lower_bound) || req.body?.year_of_experience?.lower_bound;
         let year_of_experience_upper_bound = parseInt(req.query.year_of_experience_upper_bound) || req.body?.year_of_experience?.upper_bound;
-        let date_lower_bound = req.query.date_lower_bound || req.body?.date?.lower_bound;
-        let date_upper_bound = req.query.date_upper_bound || req.body?.date?.upper_bound;
+        let category = !req.query.category ? undefined : JSON.parse(req.query.category) || req.body.category;
         let closing_date_lower_bound = req.query.closing_date_lower_bound || req.body?.closing_date?.lower_bound;
         let closing_date_upper_bound = req.query.closing_date_upper_bound || req.body?.closing_date?.upper_bound;
         let verified_by = parseInt(req.query.verified_by) || req.body.verified_by;
         let posted_by = parseInt(req.query.posted_by) || req.body.posted_by;
-        // let tags = !req.query.tags ? undefined : JSON.parse(req.query.tags as string) || req.body.tags;
         let salary_low_end = parseFloat(req.query.salary_low_end) || req.body?.salary?.low_end;
         let salary_high_end = parseFloat(req.query.salary_high_end) || req.body?.salary?.high_end;
         let periodicity = !req.query.periodicity ? undefined : JSON.parse(req.query.periodicity) || req.body.periodicity;
         let currency = !req.query.currency ? undefined : JSON.parse(req.query.currency) || req.body.currency;
+        let date_lower_bound = req.query.date_lower_bound || req.body?.date?.lower_bound;
+        let date_upper_bound = req.query.date_upper_bound || req.body?.date?.upper_bound;
+        let tags = !req.query.tags ? undefined : JSON.parse(req.query.tags) || req.body.tags;
         let where = {
             id,
             contract_type: { in: contract_type },
@@ -46,6 +46,7 @@ exports.default = async (req, res) => {
                 gte: date_lower_bound,
                 lte: date_upper_bound
             },
+            tags: tags && tags.length > 0 ? { some: { name: { in: tags } } } : {}
         };
         let jobPosts;
         let totalPages = 0;
@@ -63,7 +64,8 @@ exports.default = async (req, res) => {
                         periodicity: true,
                         currency: true
                     }
-                }
+                },
+                tags: { select: { name: true } }
             },
             orderBy: {
                 id: 'desc'
@@ -71,7 +73,16 @@ exports.default = async (req, res) => {
         });
         totalPages = await index_1.default.client.job_post.count({ where });
         totalPages = Math.ceil(totalPages / 10);
-        res.status(200).json(new response_1.default(true, "jop posts fetched successfully", { job_post: jobPosts, total_pages: totalPages }));
+        let __tags = await index_1.default.client.tag.findMany({
+            where: {
+                job_post: { some: {} }
+            },
+            select: {
+                name: true
+            }
+        });
+        let _tags = __tags.map(data => data.name);
+        res.status(200).json(new response_1.default(true, "jop posts fetched successfully", { job_post: jobPosts, total_pages: totalPages, tags: _tags }));
     }
     catch (error) {
         console.log(error);

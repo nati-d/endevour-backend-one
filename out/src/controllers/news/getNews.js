@@ -40,7 +40,16 @@ exports.default = async (req, res) => {
         });
         totalPages = await index_1.default.client.news.count({ where });
         totalPages = Math.ceil(totalPages / 10);
-        res.status(200).json(new response_1.default(true, "News getted successfully", { news: news, total_pages: totalPages }));
+        let __tags = await index_1.default.client.tag.findMany({
+            where: {
+                news: { some: {} }
+            },
+            select: {
+                name: true
+            }
+        });
+        let _tags = __tags.map(data => data.name);
+        res.status(200).json(new response_1.default(true, "News getted successfully", { news: news, total_pages: totalPages, tags: _tags }));
     }
     catch (error) {
         console.error("Error while posting news:", error);

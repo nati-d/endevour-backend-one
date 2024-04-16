@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const joi_1 = __importDefault(require("joi"));
+const ARRAY_OF_STRINGS = joi_1.default.array().items(joi_1.default.string());
 const CONTRACT_TYPE_SET = joi_1.default.string().valid("REMOTE", "PARTIME", "FULLTIME", "CONTRACT");
 const CURRENCY_SET = joi_1.default.string().valid("DOLLAR", "BIRR", "EURO");
 const PERIODICITY_SET = joi_1.default.string().valid("HOURLY", "MONTHLY", "WEEKLY", "DAILY");
@@ -37,6 +38,7 @@ const jobPost = joi_1.default.object({
     high_end: joi_1.default.number().positive(),
     periodicity: PERIODICITY_SET,
     currency: CURRENCY_SET,
+    tags: ARRAY_OF_STRINGS
 });
 const getJobPost = joi_1.default.object({
     id: joi_1.default.number(),
