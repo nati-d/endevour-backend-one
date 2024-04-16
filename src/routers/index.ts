@@ -12,17 +12,17 @@ import _blog from "./blog.routes";
 import _sp from "./sp.routes";
 import _tag from "./tag.routes";
 namespace Routers {
-  export const adminRoutes = _admin;
-  export const user = _user;
-  export const job = _job;
-  export const tender = _tender;
-  export const news = _news;
-  export const exclusiveJob = _exclusiveJob;
-  export const common = _common;
-  export const grant = _grant;
-  export const blog = _blog;
+    export const adminRoutes = _admin;
+    export const user = _user;
+    export const job = _job;
+    export const tender = _tender;
+    export const news = _news;
+    export const exclusiveJob = _exclusiveJob;
+    export const common = _common;
+    export const grant = _grant;
+    export const blog = _blog;
     export const sp = _sp;
-  export const tag = _tag;
+    export const tag = _tag;
 }
 
 export default Routers;

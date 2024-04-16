@@ -43,72 +43,72 @@ import _createSp from "./service_provider/createSp";
 // import _deleteSp from "./service_provider/deleteSp";
 
 namespace Controller {
-  export const addAdmin = _addAdmin;
+    export const addAdmin = _addAdmin;
 
-  export const adminLogin = _adminLogin;
+    export const adminLogin = _adminLogin;
 
-  export const getAdmins = _getAdmins;
+    export const getAdmins = _getAdmins;
 
-  export const confirmPassword = _confirmPassword;
+    export const confirmPassword = _confirmPassword;
 
-  export const adminProfileImgUpload = _adminProfileImgUpload;
+    export const adminProfileImgUpload = _adminProfileImgUpload;
 
-  // -- User -- //
-  export const userSignup = _userSignup;
+    // -- User -- //
+    export const userSignup = _userSignup;
 
-  // -- Job post -- //
-  export const insertJobPost = _insertJobPost;
+    // -- Job post -- //
+    export const insertJobPost = _insertJobPost;
 
-  export const getJobPost = _getJobPost;
+    export const getJobPost = _getJobPost;
 
     export const getJobPostById = _getJobPostById;
 
-  export const updateJobPost = _updateJobPost;
+    export const updateJobPost = _updateJobPost;
 
-  export const deleteJobPost = _deleteJobPost;
+    export const deleteJobPost = _deleteJobPost;
 
-  // -- Job category -- //
-  export const insertJobCategory = _insertJobCategory;
+    // -- Job category -- //
+    export const insertJobCategory = _insertJobCategory;
 
-  export const getJobCategory = _getJobCategory;
+    export const getJobCategory = _getJobCategory;
 
     export const getJobCategoryById = _getJobCategoryById;
 
     export const updateJobCategory = _updateJobCategory;
 
     export const deleteJobCategory = _deleteJobCategory;
-  // -- News -- //
-  export const createNews = _createNews;
+    // -- News -- //
+    export const createNews = _createNews;
 
-  export const getNews = _getNews;
+    export const getNews = _getNews;
 
     export const getNewsById = _getNewsById;
 
-  export const updateNews = _updateNews;
+    export const updateNews = _updateNews;
 
-  export const deleteNews = _deleteNews;
+    export const deleteNews = _deleteNews;
 
-  // -- Grant -- //
-  export const createGrant = _createGrant;
+    // -- Grant -- //
+    export const createGrant = _createGrant;
 
-  export const getGrant = _getGrant;
+    export const getGrant = _getGrant;
 
     export const getGrantById = _getGrantById;
 
-  export const updateGrant = _updateGrant;
+    export const updateGrant = _updateGrant;
 
-  export const deleteGrant = _deleteGrant;
+    export const deleteGrant = _deleteGrant;
 
-  // -- Blog -- //
-  export const createBlog = _createBlog;
+    // -- Blog -- //
+    export const createBlog = _createBlog;
 
-  export const getBlog = _getBlog;
+    export const getBlog = _getBlog;
 
     export const getBlogById = _getBlogById;
 
-  export const updateBlog = _updateBlog;
+    export const updateBlog = _updateBlog;
 
-  export const deleteBlog = _deleteBlog;
+    export const deleteBlog = _deleteBlog;
 
     // -- Service Provider -- //
 
