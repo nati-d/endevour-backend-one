@@ -33,8 +33,12 @@ model Admin {
   recommender      Recommender[]
   tender_category  Tender_category[]
   tag              Tag[]
+  service_provider_category     Service_provider_category[]
 
   @@index([first_name, last_name])
+  @@index([created_at])
+  @@index([phone_number])
+  @@index([role])
 }
 
 enum Admin_role {
@@ -131,30 +135,31 @@ model Saved_organization {
 
 // -- ---- -- Service_provider -- ---- -- //
 model Service_provider_category {
-  id         Int      @id @default(autoincrement())
-  name       String   @unique @db.VarChar(100)
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
+  name           String       @id
+  verified_by    Int
+  created_at     DateTime     @default(now())
+  updated_at     DateTime     @default(now()) @updatedAt
 
   service_provider Service_provider[]
+  admin            Admin                @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Service_provider {
   id          Int      @id @default(autoincrement())
   name        String   @unique @db.VarChar(100)
-  category    Int
+  phone       String?
+  email       String
   about       String   @db.Text
-  verified_by Int
+  verified_by Int?
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
 
-  service_category       Service_provider_category @relation(fields: [category], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  admin                  Admin                     @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  service_category       Service_provider_category[]
+  admin                  Admin?                     @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   post                   Service_provider_post[]
   Saved_service_provider Saved_service_provider[]
 
   @@index([verified_by])
-  @@index([category])
 }
 
 model Service_provider_post {
