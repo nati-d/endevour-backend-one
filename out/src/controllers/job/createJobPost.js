@@ -31,7 +31,14 @@ exports.default = async (req, res) => {
                 closing_date: new Date(req.body.closing_date),
                 verified_at: new Date(),
                 verified_by: req.auth?.id,
-            }
+                tags: {
+                    connectOrCreate: req.body.tags.map((name) => ({
+                        where: { name },
+                        create: { name }
+                    }))
+                }
+            },
+            include: { tags: { select: { name: true } } }
         });
         jobId = newJobPost.id;
         const salary = await index_1.default.client.salary.create({

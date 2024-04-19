@@ -8,6 +8,8 @@ router.post("/create-grant", [Middleware.tokenAuth, Middleware.adminAuth], Contr
 
 router.get("/get-grant", [Middleware.tokenAuth], Controller.getGrant);
 
+router.get("/get-grant-by-id", [Middleware.tokenAuth], Controller.getGrantById);
+
 router.put("/update-grant", [Middleware.tokenAuth, Middleware.adminAuth], Controller.updateGrant);
 
 router.delete("/delete-grant", [Middleware.tokenAuth, Middleware.adminAuth], Controller.deleteGrant);

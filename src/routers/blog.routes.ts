@@ -8,6 +8,8 @@ router.post("/create-blog", [Middleware.tokenAuth, Middleware.adminAuth], Contro
 
 router.get("/get-blog", [Middleware.tokenAuth], Controller.getBlog);
 
+router.get("/get-blog-by-id", [Middleware.tokenAuth], Controller.getBlogById);
+
 router.put("/update-blog", [Middleware.tokenAuth, Middleware.adminAuth], Controller.updateBlog);
 
 router.delete("/delete-blog", [Middleware.tokenAuth, Middleware.adminAuth], Controller.deleteBlog);

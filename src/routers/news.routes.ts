@@ -8,6 +8,8 @@ router.post("/create-news", [Middleware.tokenAuth, Middleware.adminAuth], Contro
 
 router.get("/get-news", [Middleware.tokenAuth], Controller.getNews);
 
+router.get("/get-news-by-id", [Middleware.tokenAuth], Controller.getNewsById);
+
 router.put("/update-news", [Middleware.tokenAuth, Middleware.adminAuth], Controller.updateNews);
 
 router.delete("/delete-news", [Middleware.tokenAuth, Middleware.adminAuth], Controller.deleteNews);

@@ -12,24 +12,35 @@ export default async (req: Request, res: Response) => {
     }
 
     try {
+        let id = parseInt(req.query.id as string) || req.body.id;
+        let title = req.query.title as string || req.body.title;
+        let verified_by = parseInt(req.query.verified_by as string) || req.body.verified_by;
+        let opportunity_number = req.query.opportunity_number as string || req.body.opportunity_number;
+        let cfda = req.query.cfda as string || req.body.cfda;
+        let date_lower_bound = (req.query.date_lower_bound as string) || req.body?.date?.lower_bound;
+        let date_upper_bound = (req.query.date_upper_bound as string) || req.body?.date?.upper_bound;
+        let tags = !req.query.tags ? undefined : JSON.parse(req.query.tags as string) || req.body.tags; 
+        let where = {
+            id,
+            title,
+            opportunity_number,
+            cfda,
+            verified_by,
+            created_at: {
+                gte: date_lower_bound,
+                lte: date_upper_bound,
+            },
+            tags: tags && tags.length > 0 ? { some: { name: { in: tags } } } : {}
+        }
+
         let grant: any;
         let totalPages: number = 0;
-        let page: number = req.body.page ? ( req.body.page - 1) * 10 : 0;
+        let page = req.query.page ? ( parseInt(req.query.page as string) - 1 ) * 10 :req.body.page ? ( req.body.page - 1 ) * 10 : 0;
 
         grant = await prisma.client.grant.findMany({
             take: 10,
             skip: page,
-            where: {
-                id: req.body.id,
-                title: req.body.title,
-                opportunity_number: req.body.opportunity_number,
-                cfda: req.body.cdfa,
-                created_at: {
-                    gte: req.body?.date?.lower_bound,
-                    lte: req.body?.date?.upper_bound,
-                },
-                tags: req.body.tags && req.body.tags.length > 0 ? { some: { name: { in: req.body.tags } } } : {}
-            },
+            where,
             include: {
                 tags: { select: { name: true } }
             },
@@ -38,21 +49,22 @@ export default async (req: Request, res: Response) => {
             }
         });
 
-        totalPages = await prisma.client.grant.count({
-            where: {
-                id: req.body.id,
-                title: req.body.title,
-                opportunity_number: req.body.opportunity_number,
-                cfda: req.body.cdfa,
-                created_at: {
-                    gte: req.body?.date?.lower_bound,
-                    lte: req.body?.date?.upper_bound,
-                },
-                tags: req.body.tags && req.body.tags.length > 0 ? { some: { name: { in: req.body.tags } } } : {}
-            },
-        })
+        totalPages = await prisma.client.blog.count({ where });
 
-        return res.status(200).json(new ApiResponse(true, "grants fetched successfully", { grant: grant, total_pages: totalPages }));
+        totalPages = Math.ceil( totalPages / 10 );
+
+        let __tags = await prisma.client.tag.findMany({
+            where: {
+                grant: { some: { } }
+            },
+            select: {
+                name: true
+            }
+        });
+
+        let _tags = __tags.map(data => data.name);
+
+        return res.status(200).json(new ApiResponse(true, "grants fetched successfully", { grant: grant, total_pages: totalPages, tags: _tags }));
 
     } catch (error) {
         console.error("Error while posting grant:", error);

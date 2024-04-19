@@ -10,6 +10,7 @@ const news_1 = __importDefault(require("./news"));
 const grant_1 = __importDefault(require("./grant"));
 const exclusiveJob_1 = __importDefault(require("./exclusiveJob"));
 const blog_1 = __importDefault(require("./blog"));
+const sp_1 = __importDefault(require("./sp"));
 var Validator;
 (function (Validator) {
     Validator.user = user_1.default;
@@ -19,5 +20,6 @@ var Validator;
     Validator.recommender = exclusiveJob_1.default;
     Validator.grant = grant_1.default;
     Validator.blog = blog_1.default;
+    Validator.sp = sp_1.default;
 })(Validator || (Validator = {}));
 exports.default = Validator;
