@@ -1,5 +1,5 @@
-// import express, { Router } from "express";
 import _user from "./user.routes";
+export * from "./user.routes";
 import _admin from "./admin.routes";
 import _job from "./job.routes";
 import _tender from "./tender.routes";

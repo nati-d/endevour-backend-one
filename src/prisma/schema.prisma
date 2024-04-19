@@ -21,19 +21,20 @@ model Admin {
   created_at    DateTime   @default(now())
   updated_at    DateTime   @default(now()) @updatedAt
 
-  user             User[]
-  organization     Organization[]
-  service_provider Service_provider[]
-  job_post         Job_post[]
-  news             News[]
-  tender           Tender[]
-  grant            Grant[]
-  blog             Blog[]
-  exclusive_job    Exclusive_job[]
-  recommender      Recommender[]
-  tender_category  Tender_category[]
-  tag              Tag[]
-  service_provider_category     Service_provider_category[]
+  user                      User[]
+  organization              Organization[]
+  service_provider          Service_provider[]
+  job_post                  Job_post[]
+  news                      News[]
+  tender                    Tender[]
+  grant                     Grant[]
+  blog                      Blog[]
+  exclusive_job             Exclusive_job[]
+  recommender               Recommender[]
+  tender_category           Tender_category[]
+  tag                       Tag[]
+  recommended_applicant     Recommended_applicant[]
+  service_provider_category Service_provider_category[]
 
   @@index([first_name, last_name])
   @@index([created_at])
@@ -135,13 +136,13 @@ model Saved_organization {
 
 // -- ---- -- Service_provider -- ---- -- //
 model Service_provider_category {
-  name           String       @id
-  verified_by    Int
-  created_at     DateTime     @default(now())
-  updated_at     DateTime     @default(now()) @updatedAt
+  name        String   @id
+  verified_by Int
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
 
   service_provider Service_provider[]
-  admin            Admin                @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  admin            Admin              @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Service_provider {
@@ -155,7 +156,7 @@ model Service_provider {
   updated_at  DateTime @default(now()) @updatedAt
 
   service_category       Service_provider_category[]
-  admin                  Admin?                     @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  admin                  Admin?                      @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   post                   Service_provider_post[]
   Saved_service_provider Saved_service_provider[]
 
@@ -420,18 +421,19 @@ model Saved_blog {
 
 // -- ---- -- Exclusiv job -- ---- -- //
 model Exclusive_job {
-  id          Int     @id @default(autoincrement())
-  title       String
-  overview    String  @db.Text
-  file        String?
-  verified_by Int
+  id           Int      @id @default(autoincrement())
+  title        String
+  overview     String   @db.Text
+  file         String?
+  closing_date DateTime
+  verified_by  Int
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
   recommenders           Recommender[]
-  admin                  Admin                    @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  recommended_applicants Recommended_Applicants[]
+  admin                  Admin                   @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  recommended_applicants Recommended_applicant[]
 }
 
 model Recommender {
@@ -444,23 +446,28 @@ model Recommender {
   updated_at  DateTime @default(now()) @updatedAt
 
   exclusive_jobs         Exclusive_job[]
-  admin                  Admin                    @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  recommended_applicants Recommended_Applicants[]
+  admin                  Admin                   @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  recommended_applicants Recommended_applicant[]
 }
 
-model Recommended_Applicants {
-  id                    Int      @id @default(autoincrement())
-  first_name            String   @db.VarChar(30)
-  last_name             String   @db.VarChar(30)
-  cv                    String
-  job                   Int
-  recommender           Int
-  recommendation_letter String
-  created_at            DateTime @default(now())
-  updated_at            DateTime @default(now()) @updatedAt
+model Recommended_applicant {
+  id          Int      @id @default(autoincrement())
+  email       String
+  first_name  String   @db.VarChar(30)
+  last_name   String   @db.VarChar(30)
+  cv          String
+  accepted    Boolean?
+  job         Int
+  recommender Int
+  verified_by Int?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
 
   exclusive_job Exclusive_job @relation(fields: [job], references: [id], onUpdate: Cascade, onDelete: Cascade)
   recommender_  Recommender   @relation(fields: [recommender], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  admin         Admin?        @relation(fields: [verified_by], references: [id])
+
+  @@unique([email, job])
 }
 
 model Password_reset {

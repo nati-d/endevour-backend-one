@@ -7,14 +7,13 @@ import { Exclusive_job } from "../../types/types";
 const createExclusiveJob = async (req: Request, res: Response) => {
   if (!req.auth) return;
 
-  const { title, overview } = req.body;
+  const { title, overview, recommenders_id, closing_date } = req.body;
   const file = req.file?.filename;
   const verifiedBy = req.auth?.id;
   let createdExclusiveJob: Exclusive_job;
+  if (!file)
+    return res.status(400).json(new ApiResponse(false, "File not provided."));
 
-  if (!file) res.status(400).json(new ApiResponse(false, "File not provided."));
-
-  const recommenders = req.body.recommenders;
   try {
     createdExclusiveJob = await prisma.exclusive_job.create({
       data: {
@@ -22,9 +21,14 @@ const createExclusiveJob = async (req: Request, res: Response) => {
         overview,
         file,
         verified_by: verifiedBy,
+        closing_date,
+        recommenders: {
+          connect: JSON.parse(recommenders_id),
+        },
       },
     });
   } catch (error) {
+    console.log(error);
     return res
       .status(500)
       .json(
@@ -54,8 +58,18 @@ const createExclusiveJob = async (req: Request, res: Response) => {
   };
 
   try {
+    const recommenders = await prisma.exclusive_job.findUnique({
+      where: { id: createdExclusiveJob.id },
+      include: {
+        recommenders: true,
+      },
+    });
+    const recommendersEmail = recommenders?.recommenders
+      .map((recommender) => recommender.email)
+      .join(", ");
+
     await sendEmail(
-      recommenders,
+      recommendersEmail ? recommendersEmail : "",
       "Recommend your best for the best.",
       htmlTemplate(),
       [attachment_file]
