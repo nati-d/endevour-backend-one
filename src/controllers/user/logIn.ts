@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import ApiResponse from '../../types/response';
 
 export default async (req: Request, res: Response) => {
-    console.log("sessions-: ", req)
+    // console.log("sessions-: ", req)
 
     let user: any = req.user;
     try {

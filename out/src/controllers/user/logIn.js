@@ -7,7 +7,7 @@ const prisma_1 = __importDefault(require("../../prisma/"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
-    console.log("sessions-: ", req);
+    // console.log("sessions-: ", req)
     let user = req.user;
     try {
         user = await prisma_1.default.client.user.findFirst({

@@ -9,6 +9,8 @@ const deleteRecommender_1 = __importDefault(require("./recommender/deleteRecomme
 const getRecommender_1 = __importDefault(require("./recommender/getRecommender"));
 const getRecommenders_1 = __importDefault(require("./recommender/getRecommenders"));
 const createExclusiveJob_1 = __importDefault(require("./createExclusiveJob"));
+const createRecommendedApplicant_1 = __importDefault(require("./recommended_applicants/createRecommendedApplicant"));
+const getRecommendedApplicant_1 = __importDefault(require("./recommended_applicants/getRecommendedApplicant"));
 var ExclusiveJob;
 (function (ExclusiveJob) {
     ExclusiveJob.createRecommender = createRecommender_1.default;
@@ -17,5 +19,7 @@ var ExclusiveJob;
     ExclusiveJob.getRecommender = getRecommender_1.default;
     ExclusiveJob.getRecommenders = getRecommenders_1.default;
     ExclusiveJob.createExclusiveJob = createExclusiveJob_1.default;
+    ExclusiveJob.createRecommendedApplicant = createRecommendedApplicant_1.default;
+    ExclusiveJob.getRecommendedApplicant = getRecommendedApplicant_1.default;
 })(ExclusiveJob || (ExclusiveJob = {}));
 exports.default = ExclusiveJob;

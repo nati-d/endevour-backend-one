@@ -9,13 +9,12 @@ const sendEmail_1 = __importDefault(require("../../services/notifications/sendEm
 const createExclusiveJob = async (req, res) => {
     if (!req.auth)
         return;
-    const { title, overview } = req.body;
+    const { title, overview, recommenders_id, closing_date } = req.body;
     const file = req.file?.filename;
     const verifiedBy = req.auth?.id;
     let createdExclusiveJob;
     if (!file)
-        res.status(400).json(new response_1.default(false, "File not provided."));
-    const recommenders = req.body.recommenders;
+        return res.status(400).json(new response_1.default(false, "File not provided."));
     try {
         createdExclusiveJob = await prismaClient_1.default.exclusive_job.create({
             data: {
@@ -23,10 +22,15 @@ const createExclusiveJob = async (req, res) => {
                 overview,
                 file,
                 verified_by: verifiedBy,
+                closing_date,
+                recommenders: {
+                    connect: JSON.parse(recommenders_id),
+                },
             },
         });
     }
     catch (error) {
+        console.log(error);
         return res
             .status(500)
             .json(new response_1.default(false, "Failed to create exclusive job please try again."));
@@ -48,7 +52,16 @@ const createExclusiveJob = async (req, res) => {
         path: `https://api.endevour.org/public/files/exclusive_job/${file}`,
     };
     try {
-        await (0, sendEmail_1.default)(recommenders, "Recommend your best for the best.", htmlTemplate(), [attachment_file]);
+        const recommenders = await prismaClient_1.default.exclusive_job.findUnique({
+            where: { id: createdExclusiveJob.id },
+            include: {
+                recommenders: true,
+            },
+        });
+        const recommendersEmail = recommenders?.recommenders
+            .map((recommender) => recommender.email)
+            .join(", ");
+        await (0, sendEmail_1.default)(recommendersEmail ? recommendersEmail : "", "Recommend your best for the best.", htmlTemplate(), [attachment_file]);
         return res
             .status(201)
             .json(new response_1.default(true, "Emails send successfully to the recommenders.", createdExclusiveJob));
