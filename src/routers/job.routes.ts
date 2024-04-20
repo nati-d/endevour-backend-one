@@ -1,6 +1,6 @@
 import express, { Router } from "express";
-import Middleware from "../middlewares/index";
-import Controller from "../controllers/index";
+import Middleware from "../middlewares";
+import Controller from "../controllers";
 
 const router: Router = express.Router();
 
@@ -23,5 +23,7 @@ router.get("/get-job-post-by-id", [Middleware.tokenAuth], Controller.getJobPostB
 router.put("/update-job-post", [Middleware.tokenAuth, Middleware.adminAuth], Controller.updateJobPost);
 
 router.delete("/delete-job-post", [ Middleware.tokenAuth, Middleware.adminAuth ], Controller.deleteJobPost);
+
+router.get("/user/get-job-category", [Middleware.userAuth], Controller.getJobCategory);
 
 export default router;

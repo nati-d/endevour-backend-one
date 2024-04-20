@@ -5,6 +5,7 @@ import _confirmPassword from "./admin/confirmPassword";
 import _adminProfileImgUpload from "./admin/uploadProfileImg";
 
 import _userSignup from "./user/signup";
+import _userLogin from "./user/logIn";
 
 import _insertJobPost from "./job/createJobPost";
 import _getJobPost from "./job/getJobPost";
@@ -55,6 +56,8 @@ namespace Controller {
 
     // -- User -- //
     export const userSignup = _userSignup;
+
+    export const userLogin = _userLogin;
 
     // -- Job post -- //
     export const insertJobPost = _insertJobPost;

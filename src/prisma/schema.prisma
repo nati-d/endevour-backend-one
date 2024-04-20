@@ -49,24 +49,25 @@ enum Admin_role {
 
 // -- ---- -- User -- ---- -- //
 model User {
-  id            Int      @id @default(autoincrement())
-  username      String?  @db.VarChar(30)
-  first_name    String   @db.VarChar(30)
-  last_name     String   @db.VarChar(30)
-  email         String   @unique @db.VarChar(60)
-  phone_number  String?  @unique @db.Char(12)
-  profile_image String?
-  location      Json?
-  verified_by   Int?
-  password      String
-  token         String?
-  created_at    DateTime @default(now())
-  updated_at    DateTime @default(now()) @updatedAt
+  id                Int          @id @default(autoincrement())
+  username          String?      @db.VarChar(30)
+  first_name        String       @db.VarChar(30)
+  last_name         String       @db.VarChar(30)
+  email             String       @unique @db.VarChar(60)
+  phone_number      String?      @unique @db.Char(12)
+  profile_image     String?
+  location          Json?
+  verified_by       Int?
+  password          String?
+  token             String?
+  created_at        DateTime     @default(now())
+  updated_at        DateTime     @default(now()) @updatedAt
 
   admin                  Admin?                   @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   job_post               Job_post[]
   tender                 Tender[]
   blog                   Blog[]
+  user_credential        User_credential?
   saved_organization     Saved_organization[]
   saved_service_provider Saved_service_provider[]
   saved_grant            Saved_grant[]
@@ -76,6 +77,22 @@ model User {
   saved_job              Saved_job[]
 
   @@index([first_name, last_name])
+}
+
+model User_credential {
+    user_id         Int?
+    credential_id   String
+    provider        String
+
+    @@unique([user_id])
+    @@id([credential_id, provider])
+
+    user            User?       @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
+
+enum Credential_provider {
+    google
+    facebook
 }
 
 // -- ---- -- Tag -- ---- -- //

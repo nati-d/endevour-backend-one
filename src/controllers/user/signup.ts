@@ -3,7 +3,6 @@ import prisma from "../../prisma/client/prismaClient";
 import { Prisma } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import _ from "lodash";
 import Validator from "../../validation/index";
 import ApiResponse from "../../types/response";
 
@@ -45,7 +44,7 @@ export default async (req: Request, res: Response) => {
     }
 
     try {
-        _.omit(newUser, "password");
+        newUser.password;
 
         const token = jwt.sign(newUser, process.env.JWT_KEY as string);
 

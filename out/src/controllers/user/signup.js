@@ -7,7 +7,6 @@ const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient
 const client_1 = require("@prisma/client");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const lodash_1 = __importDefault(require("lodash"));
 const index_1 = __importDefault(require("../../validation/index"));
 const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
@@ -41,7 +40,7 @@ exports.default = async (req, res) => {
         return res.status(500).json(new response_1.default(false, "Unknown error at registering user", error));
     }
     try {
-        lodash_1.default.omit(newUser, "password");
+        newUser.password;
         const token = jsonwebtoken_1.default.sign(newUser, process.env.JWT_KEY);
         return res.status(201).json(new response_1.default(true, "User registered successfully", token));
     }
