@@ -1,11 +1,24 @@
 import express from "express";
+import session from "express-session";
 import cors from "cors";
-import Router from "./src/routers/index";
+import passport from "passport";
+import Router from "./src/routers";
+import Config from "./src/configs"
+require( "./src/services" );
+
 const app = express();
 
+app.use(session(Config.cookie));
 app.use(cors());
 app.use(express.json());
 app.use("/public", express.static("public"));
+app.set('trust proxy', 1);
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.use("/auth", Router.auth);
+
 app.use("/api/user", Router.user);
 
 app.use("/api/admin", Router.adminRoutes);
@@ -27,5 +40,6 @@ app.use("/api/common", Router.common);
 app.use("/api/blog", Router.blog);
 
 app.use("/api/tag", Router.tag);
+
 const port = 3000;
 app.listen(port, () => console.log("Server started at port", port));

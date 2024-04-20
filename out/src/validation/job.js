@@ -38,7 +38,7 @@ const jobPost = joi_1.default.object({
     high_end: joi_1.default.number().positive(),
     periodicity: PERIODICITY_SET,
     currency: CURRENCY_SET,
-    tags: ARRAY_OF_STRINGS
+    tags: ARRAY_OF_STRINGS,
 });
 const getJobPost = joi_1.default.object({
     id: joi_1.default.number(),
@@ -63,6 +63,8 @@ const updateJobPost = joi_1.default.object({
     high_end: joi_1.default.number().positive(),
     periodicity: PERIODICITY_SET,
     currency: CURRENCY_SET,
+    tags: ARRAY_OF_STRINGS,
+    tags_to_remove: ARRAY_OF_STRINGS
 });
 const deleteJobPost = joi_1.default.object({
     id: joi_1.default.number().positive().required(),

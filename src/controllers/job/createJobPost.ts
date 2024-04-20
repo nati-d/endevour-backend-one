@@ -32,6 +32,7 @@ export default async (req: Request, res: Response) => {
                 closing_date: new Date(req.body.closing_date),
                 verified_at: new Date(), 
                 verified_by: req.auth?.id,
+                posted_by: req.userAuth?.id,
                 tags: {
                     connectOrCreate: req.body.tags.map((name: string) => ({
                         where: { name },

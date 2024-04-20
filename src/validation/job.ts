@@ -38,7 +38,7 @@ const jobPost = joi.object({
     high_end: joi.number().positive(),
     periodicity: PERIODICITY_SET,
     currency: CURRENCY_SET,
-    tags: ARRAY_OF_STRINGS
+    tags: ARRAY_OF_STRINGS,
 });
 
 const getJobPost = joi.object({
@@ -65,6 +65,8 @@ const updateJobPost = joi.object({
     high_end: joi.number().positive(),
     periodicity: PERIODICITY_SET,
     currency: CURRENCY_SET,
+    tags: ARRAY_OF_STRINGS,
+    tags_to_remove: ARRAY_OF_STRINGS
 })
 
 const deleteJobPost = joi.object({

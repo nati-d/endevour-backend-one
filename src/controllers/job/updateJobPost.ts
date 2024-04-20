@@ -28,6 +28,52 @@ export default async (req: Request, res: Response) => {
                     year_of_experience: req.body.year_of_experience,
                     category: req.body.category,
                     closing_date: new Date(req.body.closing_date),
+                    tags: {
+                        connectOrCreate: req.body.tags.map((name: string) => ({
+                            where: { name },
+                            create: { name }
+                        })),
+                        disconnect: req.body.tags_to_remove.map((name: string) => ({ name })),
+                    },
+                }
+            });
+
+            updatedJobPostSalary = await prisma.client.salary.update({
+                where: { id: req.body.id },
+                data: {
+                    low_end: req.body.low_end,
+                    high_end: req.body.high_end,
+                    periodicity: req.body.periodicity,
+                    currency: req.body.currency,
+
+                }
+            })
+        }
+
+        if (req.userAuth?.id) {
+            const ownership = await prisma.client.job_post.findFirst({ where: { id: req.body.id }, select: { posted_by: true } })
+
+            if(ownership?.posted_by != req.userAuth?.id)
+            return res.status(403).json(new ApiResponse(false, "unable to update job post due to ownership of the post!"));
+
+            updatedJobPost = await prisma.client.job_post.update({
+                where: { id: req.body.id },
+                data: {
+                    title: req.body.title,
+                    overview: req.body.overview,
+                    body: req.body.body,
+                    contract_type: req.body.contract_type,
+                    year_of_experience: req.body.year_of_experience,
+                    category: req.body.category,
+                    closing_date: new Date(req.body.closing_date),
+                    tags: {
+                        connectOrCreate: req.body.tags.map((name: string) => ({
+                            where: { name },
+                            create: { name }
+                        })),
+                        disconnect: req.body.tags_to_remove.map((name: string) => ({ name })),
+                    },
+ 
                 }
             });
 
