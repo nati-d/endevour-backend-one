@@ -29,6 +29,20 @@ exports.default = async (req, res) => {
                 },
                 password,
             },
+            select: {
+                password: false,
+                id: true,
+                username: true,
+                first_name: true,
+                last_name: true,
+                email: true,
+                phone_number: true,
+                profile_image: true,
+                location: true,
+                verified_by: true,
+                created_at: true,
+                updated_at: true
+            }
         });
     }
     catch (error) {
@@ -40,7 +54,6 @@ exports.default = async (req, res) => {
         return res.status(500).json(new response_1.default(false, "Unknown error at registering user", error));
     }
     try {
-        newUser.password;
         const token = jsonwebtoken_1.default.sign(newUser, 'jwtsecretkey');
         return res.header('authorization', token).status(201).json(new response_1.default(true, "User registered successfully", newUser));
     }

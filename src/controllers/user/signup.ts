@@ -31,6 +31,20 @@ export default async (req: Request, res: Response) => {
                 },
                 password,
             },
+            select: {
+                password: false,
+                id: true,
+                username: true,
+                first_name: true,
+                last_name: true,
+                email: true,
+                phone_number: true,
+                profile_image: true,
+                location: true,
+                verified_by: true,
+                created_at: true,
+                updated_at: true
+            }
         });
 
     } catch (error) {
@@ -44,8 +58,6 @@ export default async (req: Request, res: Response) => {
     }
 
     try {
-        newUser.password;
-
         const token = jwt.sign(newUser, 'jwtsecretkey');
 
         return res.header('authorization', token).status(201).json(new ApiResponse(true, "User registered successfully", newUser));
