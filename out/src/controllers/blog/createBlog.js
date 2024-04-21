@@ -8,6 +8,7 @@ const client_1 = require("@prisma/client");
 const index_2 = __importDefault(require("../../validation/index"));
 const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
+    console.log(req.userAuth);
     try {
         const { error } = index_2.default.blog.createBlog.validate(req.body);
         if (error) {
@@ -23,42 +24,24 @@ exports.default = async (req, res) => {
     }
     try {
         let newBlog;
-        if (req.auth?.role == "ADMIN" || req.auth?.role == "SUPER_ADMIN")
-            newBlog = await index_1.default.client.blog.create({
-                data: {
-                    title: req.body.title,
-                    overview: req.body.overview,
-                    body: req.body.body,
-                    verified_by: req.auth?.id,
-                    tags: {
-                        connectOrCreate: req.body.tags.map((name) => ({
-                            where: { name },
-                            create: { name }
-                        }))
-                    }
-                },
-                include: {
-                    tags: { select: { name: true } }
+        newBlog = await index_1.default.client.blog.create({
+            data: {
+                title: req.body.title,
+                overview: req.body.overview,
+                body: req.body.body,
+                verified_by: req.auth?.id,
+                posted_by: req.userAuth?.id,
+                tags: {
+                    connectOrCreate: req.body.tags.map((name) => ({
+                        where: { name },
+                        create: { name }
+                    }))
                 }
-            });
-        else
-            newBlog = await index_1.default.client.blog.create({
-                data: {
-                    title: req.body.title,
-                    overview: req.body.overview,
-                    body: req.body.body,
-                    posted_by: req.auth?.id,
-                    tags: {
-                        connectOrCreate: req.body.tags.map((name) => ({
-                            where: { name },
-                            create: { name }
-                        }))
-                    }
-                },
-                include: {
-                    tags: { select: { name: true } }
-                }
-            });
+            },
+            include: {
+                tags: { select: { name: true } }
+            }
+        });
         res.status(201).json(new response_1.default(true, "new blog created successfully", newBlog));
     }
     catch (error) {

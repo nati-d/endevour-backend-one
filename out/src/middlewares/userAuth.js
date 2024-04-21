@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const prisma_1 = __importDefault(require("../prisma/"));
 const response_1 = __importDefault(require("../types/response"));
 exports.default = async (req, res, next) => {
     // console.log('**user_auth: ', req)
@@ -20,24 +19,23 @@ exports.default = async (req, res, next) => {
         next();
         return;
     }
-    let user = req.user;
-    try {
-        const sessionId = req.sessionID;
-        if (!sessionId)
-            return res.redirect('/auth/google');
-        user = await prisma_1.default.client.user.findFirst({
-            where: {
-                user_credential: {
-                    credential_id: user.id
-                }
-            }
-        });
-    }
-    catch (error) {
-        console.error(error);
-        return res.status(401).redirect('/auth/google');
-    }
-    res.setHeader('authorization', jsonwebtoken_1.default.sign(user, 'jwtsecretkey'));
-    next();
-    return;
+    // let user: any = req.user;
+    // try {
+    //     const sessionId: string = req.sessionID;
+    //     if (!sessionId)
+    //     return res.redirect('/auth/google');
+    //     user = await prisma.client.user.findFirst({
+    //         where: {
+    //             user_credential: {
+    //                 credential_id: user.id
+    //             }
+    //         }
+    //     })
+    // } catch(error) {
+    //     console.error(error);
+    // return res.status(401).redirect('/auth/google');
+    // }
+    // res.setHeader('authorization', jwt.sign(user as Object, 'jwtsecretkey'));
+    // next();
+    // return;
 };

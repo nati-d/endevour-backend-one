@@ -28,29 +28,29 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         return;
     }
 
-    let user: any = req.user;
+    // let user: any = req.user;
 
-    try {
+    // try {
 
-        const sessionId: string = req.sessionID;
+    //     const sessionId: string = req.sessionID;
 
-        if (!sessionId)
-        return res.redirect('/auth/google');
+    //     if (!sessionId)
+    //     return res.redirect('/auth/google');
 
-        user = await prisma.client.user.findFirst({
-            where: {
-                user_credential: {
-                    credential_id: user.id
-                }
-            }
-        })
+    //     user = await prisma.client.user.findFirst({
+    //         where: {
+    //             user_credential: {
+    //                 credential_id: user.id
+    //             }
+    //         }
+    //     })
 
-    } catch(error) {
-        console.error(error);
-        return res.status(401).redirect('/auth/google');
-    }
+    // } catch(error) {
+    //     console.error(error);
+        // return res.status(401).redirect('/auth/google');
+    // }
 
-    res.setHeader('authorization', jwt.sign(user as Object, 'jwtsecretkey'));
-    next();
-    return;
+    // res.setHeader('authorization', jwt.sign(user as Object, 'jwtsecretkey'));
+    // next();
+    // return;
 } 

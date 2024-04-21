@@ -5,6 +5,7 @@ import Validator from "../../validation/index";
 import ApiResponse from "../../types/response";
 
 export default async (req: Request, res: Response) => {
+    console.log(req.userAuth)
     try {
         const { error } = Validator.blog.createBlog.validate(req.body);
 
@@ -21,13 +22,13 @@ export default async (req: Request, res: Response) => {
 
     try {
         let newBlog: any;
-        if (req.auth?.role == "ADMIN" || req.auth?.role == "SUPER_ADMIN")
         newBlog = await prisma.client.blog.create({
             data: {
                 title: req.body.title,
                 overview: req.body.overview,
                 body: req.body.body,
                 verified_by: req.auth?.id as number,
+                posted_by: req.userAuth?.id as number,
                 tags: {
                     connectOrCreate: req.body.tags.map((name: string) => ({
                         where: { name },
@@ -38,26 +39,6 @@ export default async (req: Request, res: Response) => {
             include: {
                 tags: { select: { name: true } }
             }
-        });
-
-        else
-        newBlog = await prisma.client.blog.create({
-            data: {
-                title: req.body.title,
-                overview: req.body.overview,
-                body: req.body.body,
-                posted_by: req.auth?.id as number,
-                tags: {
-                    connectOrCreate: req.body.tags.map((name: string) => ({
-                        where: { name },
-                        create: { name }
-                    }))
-                }
-            },
-            include: {
-                tags: { select: { name: true } }
-            }
-
         });
 
         res.status(201).json(new ApiResponse(true, "new blog created successfully", newBlog));

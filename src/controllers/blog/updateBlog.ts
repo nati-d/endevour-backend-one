@@ -38,29 +38,35 @@ export default async (req: Request, res: Response) => {
                     })),
                     disconnect: req.body.tags_to_remove.map((name: string) => ({ name })),
                 }
-            }
+            },
+            include: { tags: { select: { name: true } } },
         });
 
-        else
-        newBlog = await prisma.client.blog.update({
-            where: {
-                id: req.body.id,
-            },
-            data: {
-                title: req.body.title,
-                overview: req.body.overview,
-                body: req.body.body,
-                posted_by: req.auth?.id as number,
-                tags: {
-                    connectOrCreate: req.body.tags.map((name: string) => ({
-                        where: { name },
-                        create: { name }
-                    })),
-                     disconnect: req.body.tags_to_remove.map((name: string) => ({ name })),
-                }
-            },
-            include: { tags: { select: { name: true } } }
-        });
+        else if (req.userAuth.id) {
+            const blogToBeUpdated = await prisma.client.blog.findFirst({ where: { id: req.body.id } } );
+
+            if(blogToBeUpdated?.posted_by != req.userAuth?.id)
+            return res.status(403).json(new ApiResponse(false, "unable to update blog due to ownership of the post!"));
+
+            newBlog = await prisma.client.blog.update({
+                where: {
+                    id: req.body.id,
+                },
+                data: {
+                    title: req.body.title,
+                    overview: req.body.overview,
+                    body: req.body.body,
+                    tags: {
+                        connectOrCreate: req.body.tags.map((name: string) => ({
+                            where: { name },
+                            create: { name }
+                        })),
+                        disconnect: req.body.tags_to_remove.map((name: string) => ({ name })),
+                    }
+                },
+                include: { tags: { select: { name: true } } }
+            });
+        }
 
         res.status(200).json(new ApiResponse(true, "new blog created successfully", newBlog));
 
@@ -69,10 +75,10 @@ export default async (req: Request, res: Response) => {
 
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
             if ( error.code === "P2022" )
-                return res.status(403).json(new ApiResponse(false, "not authorized to post blogs", error));
+            return res.status(403).json(new ApiResponse(false, "not authorized to post blogs", error));
 
             if ( error.code === "P2016" )
-                return res.status(404).json(new ApiResponse(false, "resource to be updated not found", error));
+            return res.status(404).json(new ApiResponse(false, "resource to be updated not found", error));
         }
 
         res.status(500).json(new ApiResponse(false, "error while creating blog"));
