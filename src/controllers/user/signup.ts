@@ -46,7 +46,7 @@ export default async (req: Request, res: Response) => {
     try {
         newUser.password;
 
-        const token = jwt.sign(newUser, process.env.JWT_KEY as string);
+        const token = jwt.sign(newUser, 'jwtsecretkey');
 
         return res.header('authorization', token).status(201).json(new ApiResponse(true, "User registered successfully", newUser));
     } catch (error) {
