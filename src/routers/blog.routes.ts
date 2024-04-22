@@ -4,14 +4,14 @@ import Middleware from "../middlewares/index";
 
 const router: Router = express.Router();
 
-router.post("/create-blog", [Middleware.tokenAuth, Middleware.adminAuth], Controller.createBlog);
+router.post("/create-blog", [ Middleware.tokenAuth ], Controller.createBlog);
 
-router.get("/get-blog", [Middleware.tokenAuth], Controller.getBlog);
+router.get("/get-blog", Controller.getBlog);
 
-router.get("/get-blog-by-id", [Middleware.tokenAuth], Controller.getBlogById);
+router.get("/get-blog-by-id", Controller.getBlogById);
 
-router.put("/update-blog", [Middleware.tokenAuth, Middleware.adminAuth], Controller.updateBlog);
+router.put("/update-blog", [ Middleware.tokenAuth ], Controller.updateBlog);
 
-router.delete("/delete-blog", [Middleware.tokenAuth, Middleware.adminAuth], Controller.deleteBlog);
+router.delete("/delete-blog", [ Middleware.tokenAuth ], Controller.deleteBlog);
 
 export default router;

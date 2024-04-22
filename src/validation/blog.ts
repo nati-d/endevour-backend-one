@@ -29,7 +29,8 @@ const updateBlog = joi.object({
     overview: joi.string().required(),
     body: joi.string().required(),
     tags: ARRAY_OF_STRINGS,
-    tags_to_remove: ARRAY_OF_STRINGS
+    tags_to_remove: ARRAY_OF_STRINGS,
+    verify: joi.boolean()
 });
 
 const deleteBlog = joi.object({

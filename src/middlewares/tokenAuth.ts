@@ -1,12 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import ApiResponse from "../types/response";
-import { Admin } from "../types/types";
 
 declare global {
   namespace Express {
     interface Request {
-      auth?: Admin;
+      auth?: any;
     }
   }
 }
@@ -20,11 +19,10 @@ const tokenAuth = (req: Request, res: Response, next: NextFunction) => {
       .json(new ApiResponse(false, "Access denied. Token not provided"));
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_KEY || "") as Admin;
+    const decoded = jwt.verify(token, "jwtprivatekey");
     req.auth = decoded;
     next();
   } catch (error) {
-    console.log(error);
 
     return res
       .status(400)

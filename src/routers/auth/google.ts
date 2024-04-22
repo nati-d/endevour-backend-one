@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
 import passport from "passport";
 
 const router = Router();
@@ -9,7 +9,7 @@ router.get('/',
 
 router.get('/callback',
     passport.authenticate( 'google', {
-        successRedirect: '/api/user/home',
+        successRedirect: 'https://endevour.org',
         failureRedirect: '/auth/google'
     })
 );

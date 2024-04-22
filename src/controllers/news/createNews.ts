@@ -21,7 +21,7 @@ export default async (req: Request, res: Response) => {
                 title: req.body.title,
                 overview: req.body.overview,
                 body: req.body.body,
-                posted_by: req.auth?.id as number,
+                posted_by: req.auth?.id,
                 tags: {
                     connectOrCreate: req.body.tags.map((name: string) => ({
                         where: { name },

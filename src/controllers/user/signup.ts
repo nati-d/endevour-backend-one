@@ -12,14 +12,14 @@ export default async (req: Request, res: Response) => {
 
     if (error) return res.status(400).send(new ApiResponse(false, "Invalid value set", error.details));
 
-    let newUser;
+    let user: any;
 
     try {
         req.body.password = await bcrypt.hash(req.body.password, 10);
 
-        const { first_name, last_name, email, phone_number, location, password } = req.body;
+        const { first_name, last_name, email, phone_number, location } = req.body;
 
-        newUser = await prisma.user.create({
+        user = await prisma.user.create({
             data: {
                 first_name,
                 last_name,
@@ -29,7 +29,7 @@ export default async (req: Request, res: Response) => {
                     x: location.x,
                     y: location.y,
                 },
-                password,
+                password: req.body.password,
             },
             select: {
                 password: false,
@@ -47,6 +47,7 @@ export default async (req: Request, res: Response) => {
             }
         });
 
+        user.is_admin = false;
     } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
             if ( error.code === "P2002" ) {
@@ -58,9 +59,10 @@ export default async (req: Request, res: Response) => {
     }
 
     try {
-        const token = jwt.sign(newUser, 'jwtsecretkey');
 
-        return res.header('authorization', token).status(201).json(new ApiResponse(true, "User registered successfully", newUser));
+        const token = jwt.sign(user, 'jwtprivatekey');
+
+        return res.header('authorization', token).status(201).json(new ApiResponse(true, "User registered successfully", user));
     } catch (error) {
         console.error("Error signing JWT token:", error);
 

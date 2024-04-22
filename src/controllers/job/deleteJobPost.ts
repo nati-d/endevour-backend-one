@@ -9,13 +9,23 @@ export default async (req: Request, res: Response) => {
 
     try {
 
-        if (req?.auth?.role == "ADMIN" || req?.auth?.role == "SUPER_ADMIN")
-        deletedJobPost = await prisma.client.job_post.delete({
-            where: { id: parseInt( req.query.id as string ) }
-        });
+        if (req.auth?.role == 'SUPER_ADMIN' || req.auth?.role == 'ADMIN') {
+            deletedJobPost = await prisma.client.job_post.delete({
+                where: { id: parseInt( req.query.id as string ) }
+            });
+
+        }
+        if (!req.auth.is_admin) {
+            const jobToBeDeleted = await prisma.client.job_post.findFirst({ where: { id: parseInt( req.query.id as string ) } } ) 
+
+            if (jobToBeDeleted?.posted_by == req.auth.id)
+
+            deletedJobPost = await prisma.client.job_post.delete({
+                where: { id: parseInt( req.query.id as string ) }
+            });
+        }
 
         return res.status(204).json(new ApiResponse(true, "job post deleted successfully", deletedJobPost));
-
     } catch (error) {
 
         if (error instanceof Prisma.PrismaClientKnownRequestError) {

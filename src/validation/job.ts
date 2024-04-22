@@ -66,7 +66,8 @@ const updateJobPost = joi.object({
     periodicity: PERIODICITY_SET,
     currency: CURRENCY_SET,
     tags: ARRAY_OF_STRINGS,
-    tags_to_remove: ARRAY_OF_STRINGS
+    tags_to_remove: ARRAY_OF_STRINGS,
+    verify: joi.boolean(),
 })
 
 const deleteJobPost = joi.object({

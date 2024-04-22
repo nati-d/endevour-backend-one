@@ -5,19 +5,10 @@ import Validator from "../../validation/index";
 import ApiResponse from "../../types/response";
 
 export default async (req: Request, res: Response) => {
-    console.log(req.userAuth)
-    try {
-        const { error } = Validator.blog.createBlog.validate(req.body);
+    const { error } = Validator.blog.createBlog.validate(req.body);
 
-        if (error) {
-            return res.status(400).json(new ApiResponse(false, "unidentified request content", error.details));
-        }
-    } catch (error) {
-        return res.status(400).json({
-            success: false,
-            message: "Error at request validation",
-            data: error,
-        });
+    if (error) {
+        return res.status(400).json(new ApiResponse(false, "unidentified request content", error.details));
     }
 
     try {
@@ -27,8 +18,8 @@ export default async (req: Request, res: Response) => {
                 title: req.body.title,
                 overview: req.body.overview,
                 body: req.body.body,
-                verified_by: req.auth?.id as number,
-                posted_by: req.userAuth?.id as number,
+                verified_by: req.auth?.is_admin == true ? req.auth?.id : null,
+                posted_by: req.auth?.is_admin == false ? req.auth?.id: null,
                 tags: {
                     connectOrCreate: req.body.tags.map((name: string) => ({
                         where: { name },

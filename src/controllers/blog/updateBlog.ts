@@ -5,32 +5,21 @@ import Validator from "../../validation/index";
 import ApiResponse from "../../types/response";
 
 export default async (req: Request, res: Response) => {
-    try {
-        const { error } = Validator.blog.updateBlog.validate(req.body);
+    const { error } = Validator.blog.updateBlog.validate(req.body);
 
-        if (error) {
-            return res.status(400).json(new ApiResponse(false, "unidentified request content", error.details));
-        }
-    } catch (error) {
-        return res.status(400).json({
-            success: false,
-            message: "Error at request validation",
-            data: error,
-        });
+    if (error) {
+        return res.status(400).json(new ApiResponse(false, "unidentified request content", error.details));
     }
 
     try {
-        let newBlog: any;
+        let blog: any;
         if (req.auth?.role == "ADMIN" || req.auth?.role == "SUPER_ADMIN")
-        newBlog = await prisma.client.blog.update({
+        blog = await prisma.client.blog.update({
             where: {
                 id: req.body.id
             },
             data: {
-                title: req.body.title,
-                overview: req.body.overview,
-                body: req.body.body,
-                verified_by: req.auth?.id as number,
+                verified_by: req.body.verify ? req.auth?.id : req.body.verify == false ? null : undefined,
                 tags: {
                     connectOrCreate: req.body.tags.map((name: string) => ({
                         where: { name },
@@ -42,13 +31,13 @@ export default async (req: Request, res: Response) => {
             include: { tags: { select: { name: true } } },
         });
 
-        else if (req.userAuth.id) {
+        else if (!req.auth.is_admin) {
             const blogToBeUpdated = await prisma.client.blog.findFirst({ where: { id: req.body.id } } );
 
-            if(blogToBeUpdated?.posted_by != req.userAuth?.id)
+            if(blogToBeUpdated?.posted_by != req.auth?.id)
             return res.status(403).json(new ApiResponse(false, "unable to update blog due to ownership of the post!"));
 
-            newBlog = await prisma.client.blog.update({
+            blog = await prisma.client.blog.update({
                 where: {
                     id: req.body.id,
                 },
@@ -68,20 +57,19 @@ export default async (req: Request, res: Response) => {
             });
         }
 
-        res.status(200).json(new ApiResponse(true, "new blog created successfully", newBlog));
+        res.status(200).json(new ApiResponse(true, "new blog updated successfully", blog));
 
     } catch (error) {
-        console.error(error);
 
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
             if ( error.code === "P2022" )
-            return res.status(403).json(new ApiResponse(false, "not authorized to post blogs", error));
+            return res.status(403).json(new ApiResponse(false, "not authorized to update blogs", error));
 
             if ( error.code === "P2016" )
             return res.status(404).json(new ApiResponse(false, "resource to be updated not found", error));
         }
 
-        res.status(500).json(new ApiResponse(false, "error while creating blog"));
+        res.status(500).json(new ApiResponse(false, "error while updating blog"));
     }
 
 }
