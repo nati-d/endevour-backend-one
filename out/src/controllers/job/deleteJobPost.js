@@ -9,10 +9,18 @@ const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
     let deletedJobPost;
     try {
-        if (req?.auth?.role == "ADMIN" || req?.auth?.role == "SUPER_ADMIN")
+        if (req.auth?.role == 'SUPER_ADMIN' || req.auth?.role == 'ADMIN') {
             deletedJobPost = await index_1.default.client.job_post.delete({
                 where: { id: parseInt(req.query.id) }
             });
+        }
+        if (!req.auth.is_admin) {
+            const jobToBeDeleted = await index_1.default.client.job_post.findFirst({ where: { id: parseInt(req.query.id) } });
+            if (jobToBeDeleted?.posted_by == req.auth.id)
+                deletedJobPost = await index_1.default.client.job_post.delete({
+                    where: { id: parseInt(req.query.id) }
+                });
+        }
         return res.status(204).json(new response_1.default(true, "job post deleted successfully", deletedJobPost));
     }
     catch (error) {

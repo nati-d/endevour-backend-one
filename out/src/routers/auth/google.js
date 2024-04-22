@@ -8,7 +8,7 @@ const passport_1 = __importDefault(require("passport"));
 const router = (0, express_1.Router)();
 router.get('/', passport_1.default.authenticate('google'));
 router.get('/callback', passport_1.default.authenticate('google', {
-    successRedirect: '/api/user/home',
+    successRedirect: 'https://endevour.org',
     failureRedirect: '/auth/google'
 }));
 router.get('/failure', (req, res) => {

@@ -30,8 +30,8 @@ exports.default = async (req, res) => {
                 category: parseInt(req.body.category),
                 closing_date: new Date(req.body.closing_date),
                 verified_at: new Date(),
-                verified_by: req.auth?.id,
-                posted_by: req.userAuth?.id,
+                verified_by: req.auth.is_admin == true ? req.auth?.id : null,
+                posted_by: req.auth.is_admin == false ? req.auth?.id : null,
                 tags: {
                     connectOrCreate: req.body.tags.map((name) => ({
                         where: { name },

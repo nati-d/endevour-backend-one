@@ -46,7 +46,6 @@ const createExclusiveJob = async (req, res, next) => {
     }
     catch (error) {
         console.log(error);
-        console.log(error);
         return res
             .status(500)
             .json(new response_1.default(false, "Failed to create exclusive job please try again."));

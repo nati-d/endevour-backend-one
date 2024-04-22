@@ -9,7 +9,7 @@ const getAdmins_1 = __importDefault(require("./admin/getAdmins"));
 const confirmPassword_1 = __importDefault(require("./admin/confirmPassword"));
 const uploadProfileImg_1 = __importDefault(require("./admin/uploadProfileImg"));
 const signup_1 = __importDefault(require("./user/signup"));
-const logIn_1 = __importDefault(require("./user/logIn"));
+const signin_1 = __importDefault(require("./user/signin"));
 const createJobPost_1 = __importDefault(require("./job/createJobPost"));
 const getJobPost_1 = __importDefault(require("./job/getJobPost"));
 const getJobPostById_1 = __importDefault(require("./job/getJobPostById"));
@@ -48,7 +48,7 @@ var Controller;
     Controller.adminProfileImgUpload = uploadProfileImg_1.default;
     // -- User -- //
     Controller.userSignup = signup_1.default;
-    Controller.userLogin = logIn_1.default;
+    Controller.userSignin = signin_1.default;
     // -- Job post -- //
     Controller.insertJobPost = createJobPost_1.default;
     Controller.getJobPost = getJobPost_1.default;

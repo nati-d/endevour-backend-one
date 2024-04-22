@@ -30,7 +30,8 @@ const updateBlog = joi_1.default.object({
     overview: joi_1.default.string().required(),
     body: joi_1.default.string().required(),
     tags: ARRAY_OF_STRINGS,
-    tags_to_remove: ARRAY_OF_STRINGS
+    tags_to_remove: ARRAY_OF_STRINGS,
+    verify: joi_1.default.boolean()
 });
 const deleteBlog = joi_1.default.object({
     id: joi_1.default.number().required()

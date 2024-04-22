@@ -24,6 +24,6 @@ router.put("/update-job-post", [  Middleware.tokenAuth ], Controller.updateJobPo
 
 router.delete("/delete-job-post", [  Middleware.tokenAuth ], Controller.deleteJobPost);
 
-router.get("/user/get-job-category", [ Middleware.userAuth ], Controller.getJobCategory);
+router.get("/user/get-job-category", [ Middleware.tokenAuth ], Controller.getJobCategory);
 
 export default router;

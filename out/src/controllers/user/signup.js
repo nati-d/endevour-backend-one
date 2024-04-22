@@ -13,11 +13,11 @@ exports.default = async (req, res) => {
     let { error } = index_1.default.user.userSignupSchema.validate(req.body);
     if (error)
         return res.status(400).send(new response_1.default(false, "Invalid value set", error.details));
-    let newUser;
+    let user;
     try {
         req.body.password = await bcrypt_1.default.hash(req.body.password, 10);
-        const { first_name, last_name, email, phone_number, location, password } = req.body;
-        newUser = await prismaClient_1.default.user.create({
+        const { first_name, last_name, email, phone_number, location } = req.body;
+        user = await prismaClient_1.default.user.create({
             data: {
                 first_name,
                 last_name,
@@ -27,7 +27,7 @@ exports.default = async (req, res) => {
                     x: location.x,
                     y: location.y,
                 },
-                password,
+                password: req.body.password,
             },
             select: {
                 password: false,
@@ -44,6 +44,7 @@ exports.default = async (req, res) => {
                 updated_at: true
             }
         });
+        user.is_admin = false;
     }
     catch (error) {
         if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
@@ -54,8 +55,8 @@ exports.default = async (req, res) => {
         return res.status(500).json(new response_1.default(false, "Unknown error at registering user", error));
     }
     try {
-        const token = jsonwebtoken_1.default.sign(newUser, 'jwtsecretkey');
-        return res.header('authorization', token).status(201).json(new response_1.default(true, "User registered successfully", newUser));
+        const token = jsonwebtoken_1.default.sign(user, 'jwtprivatekey');
+        return res.header('authorization', token).status(201).json(new response_1.default(true, "User registered successfully", user));
     }
     catch (error) {
         console.error("Error signing JWT token:", error);

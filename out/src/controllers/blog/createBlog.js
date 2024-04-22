@@ -8,19 +8,9 @@ const client_1 = require("@prisma/client");
 const index_2 = __importDefault(require("../../validation/index"));
 const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
-    console.log(req.userAuth);
-    try {
-        const { error } = index_2.default.blog.createBlog.validate(req.body);
-        if (error) {
-            return res.status(400).json(new response_1.default(false, "unidentified request content", error.details));
-        }
-    }
-    catch (error) {
-        return res.status(400).json({
-            success: false,
-            message: "Error at request validation",
-            data: error,
-        });
+    const { error } = index_2.default.blog.createBlog.validate(req.body);
+    if (error) {
+        return res.status(400).json(new response_1.default(false, "unidentified request content", error.details));
     }
     try {
         let newBlog;
@@ -29,8 +19,8 @@ exports.default = async (req, res) => {
                 title: req.body.title,
                 overview: req.body.overview,
                 body: req.body.body,
-                verified_by: req.auth?.id,
-                posted_by: req.userAuth?.id,
+                verified_by: req.auth?.is_admin == true ? req.auth?.id : null,
+                posted_by: req.auth?.is_admin == false ? req.auth?.id : null,
                 tags: {
                     connectOrCreate: req.body.tags.map((name) => ({
                         where: { name },

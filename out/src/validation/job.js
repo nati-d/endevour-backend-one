@@ -64,7 +64,8 @@ const updateJobPost = joi_1.default.object({
     periodicity: PERIODICITY_SET,
     currency: CURRENCY_SET,
     tags: ARRAY_OF_STRINGS,
-    tags_to_remove: ARRAY_OF_STRINGS
+    tags_to_remove: ARRAY_OF_STRINGS,
+    verify: joi_1.default.boolean(),
 });
 const deleteJobPost = joi_1.default.object({
     id: joi_1.default.number().positive().required(),

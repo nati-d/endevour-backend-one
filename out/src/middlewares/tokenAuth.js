@@ -17,7 +17,6 @@ const tokenAuth = (req, res, next) => {
         next();
     }
     catch (error) {
-        console.log(error);
         return res
             .status(400)
             .json(new response_1.default(false, "Access denied. Invalid token"));
