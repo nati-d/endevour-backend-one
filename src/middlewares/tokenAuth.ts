@@ -10,6 +10,7 @@ declare global {
     }
   }
 }
+
 const tokenAuth = (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers.authorization;
 
@@ -19,7 +20,7 @@ const tokenAuth = (req: Request, res: Response, next: NextFunction) => {
       .json(new ApiResponse(false, "Access denied. Token not provided"));
 
   try {
-    const decoded = jwt.verify(token, "jwtprivatekey") as Admin;
+    const decoded = jwt.verify(token, process.env.JWT_KEY || "") as Admin;
     req.auth = decoded;
     next();
   } catch (error) {

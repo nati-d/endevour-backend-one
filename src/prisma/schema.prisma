@@ -422,9 +422,7 @@ model Saved_blog {
 // -- ---- -- Exclusiv job -- ---- -- //
 model Exclusive_job {
   id           Int      @id @default(autoincrement())
-  title        String
-  overview     String   @db.Text
-  file         String?
+  description  String   @db.LongText
   closing_date DateTime
   verified_by  Int
 

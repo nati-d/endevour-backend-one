@@ -16,14 +16,25 @@ const getRecommendedApplicants = async (req: Request, res: Response) => {
 
     return res
       .status(200)
-      .json(new ApiResponse(true, "Applicans for this job: ", getApplicants));
+      .json(
+        new ApiResponse(
+          true,
+          "Applicants for this job getted successfully. ",
+          getApplicants
+        )
+      );
   } catch (error) {
     console.log(error);
 
     return res
       .status(500)
       .json(
-        new ApiResponse(false, "Failed to get applicants! please try again")
+        new ApiResponse(
+          false,
+          "Failed to get applicants! please try again",
+          null,
+          undefined
+        )
       );
   }
 };

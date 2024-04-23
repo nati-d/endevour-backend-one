@@ -9,6 +9,10 @@ const getExclusiveJob = async (req: Request, res: Response) => {
       where: {
         id: parseInt(id),
       },
+      include: {
+        recommended_applicants: true,
+        recommenders: true,
+      },
     });
 
     if (!getJob)
@@ -18,13 +22,20 @@ const getExclusiveJob = async (req: Request, res: Response) => {
 
     return res
       .status(200)
-      .json(new ApiResponse(false, "Job getted successfully.", getJob));
+      .json(new ApiResponse(true, "Job getted successfully.", getJob));
   } catch (error) {
     console.log(error);
 
     return res
       .status(500)
-      .json(new ApiResponse(false, "Failed to get job please try again!"));
+      .json(
+        new ApiResponse(
+          false,
+          "Failed to get job please try again!",
+          null,
+          error
+        )
+      );
   }
 };
 

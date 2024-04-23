@@ -5,64 +5,50 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient"));
 const response_1 = __importDefault(require("../../types/response"));
-const sendEmail_1 = __importDefault(require("../../services/notifications/sendEmail"));
-const createExclusiveJob = async (req, res) => {
+const createExclusiveJob = async (req, res, next) => {
     if (!req.auth)
         return;
-    const { title, overview } = req.body;
-    const file = req.file?.filename;
+    const { description, recommenders_id, closing_date } = req.body;
     const verifiedBy = req.auth?.id;
-    let createdExclusiveJob;
-    if (!file)
-        res.status(400).json(new response_1.default(false, "File not provided."));
-    const recommenders = req.body.recommenders;
     try {
-        createdExclusiveJob = await prismaClient_1.default.exclusive_job.create({
+        const createdExclusiveJob = await prismaClient_1.default.exclusive_job.create({
             data: {
-                title,
-                overview,
-                file,
+                description,
                 verified_by: verifiedBy,
+                closing_date,
+                recommenders: {
+                    connect: recommenders_id,
+                },
             },
         });
-    }
-    catch (error) {
-        return res
-            .status(500)
-            .json(new response_1.default(false, "Failed to create exclusive job please try again."));
-    }
-    const htmlTemplate = () => `
-  <html>
-    <head>
-      <title>Endevour Exclusive Job</title>
-    </head>
-    <body>
-      <h1>${title}</h1>
-      <p>${overview}</p>
-      <a href = https://endevour.org/exclusive-jobs/recommend/${createdExclusiveJob.id}>Recommend here</>
-    </body>
-  </html>
-`;
-    const attachment_file = {
-        filename: "detail.pdf",
-        path: `https://api.endevour.org/public/files/exclusive_job/${file}`,
-    };
-    try {
-        await (0, sendEmail_1.default)(recommenders, "Recommend your best for the best.", htmlTemplate(), [attachment_file]);
-        return res
-            .status(201)
-            .json(new response_1.default(true, "Emails send successfully to the recommenders.", createdExclusiveJob));
+        const recommenders = await prismaClient_1.default.exclusive_job.findUnique({
+            where: { id: createdExclusiveJob.id },
+            include: {
+                recommenders: true,
+            },
+        });
+        const recommendersEmail = recommenders?.recommenders
+            .map((recommender) => recommender.email)
+            .join(", ");
+        req.emailData = {
+            sendTo: recommendersEmail ? recommendersEmail : "",
+            subject: "Recommend your best for the best.",
+            html: createdExclusiveJob.description +
+                `<a href='https://endevour.org/exclusive-job/recommend?job_id=${createdExclusiveJob.id}'></a>`,
+            otherData: createdExclusiveJob,
+            queryOnFail: async () => await prismaClient_1.default.exclusive_job.delete({
+                where: {
+                    id: createdExclusiveJob.id,
+                },
+            }),
+        };
+        next();
     }
     catch (error) {
         console.log(error);
-        await prismaClient_1.default.exclusive_job.delete({
-            where: {
-                id: createdExclusiveJob.id,
-            },
-        });
         return res
             .status(500)
-            .json(new response_1.default(false, "Failed to send email for recommenders please try again!"));
+            .json(new response_1.default(false, "Failed to create exclusive job please try again."));
     }
 };
 exports.default = createExclusiveJob;
