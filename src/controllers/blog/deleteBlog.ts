@@ -13,10 +13,14 @@ export default async (req: Request, res: Response) => {
             where: { id: parseInt( req.query.id as string ) },
         });
 
-        else
-        blog = await prisma.client.blog.delete({
-             where: { id: req.body.id },
-        });
+        else {
+            const blogToBeDeleted = await prisma.client.blog.findFirst({ where: { id: parseInt( req.query.id as string ) } } ) 
+
+            if (blogToBeDeleted?.posted_by == req.userAuth.id)
+            blog = await prisma.client.blog.delete({
+                where: { id: parseInt( req.query.id as string ) },
+            });
+        }
 
         res.status(204).json(new ApiResponse(true, "blog deleted successfully", blog));
 
@@ -25,10 +29,10 @@ export default async (req: Request, res: Response) => {
 
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
             if ( error.code === "P2022" )
-                return res.status(403).json(new ApiResponse(false, "not authorized to post blogs", error));
+            return res.status(403).json(new ApiResponse(false, "not authorized to post blogs", error));
 
             if ( error.code === "P2025" )
-                return res.status(404).json(new ApiResponse(false, "resource to be deleted not found", error));
+            return res.status(404).json(new ApiResponse(false, "resource to be deleted not found", error));
         }
 
         res.status(400).json(new ApiResponse(false, "error while creating blog", error));

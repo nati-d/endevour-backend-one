@@ -13,10 +13,13 @@ exports.default = async (req, res) => {
             blog = await index_1.default.client.blog.delete({
                 where: { id: parseInt(req.query.id) },
             });
-        else
-            blog = await index_1.default.client.blog.delete({
-                where: { id: req.body.id },
-            });
+        else {
+            const blogToBeDeleted = await index_1.default.client.blog.findFirst({ where: { id: parseInt(req.query.id) } });
+            if (blogToBeDeleted?.posted_by == req.userAuth.id)
+                blog = await index_1.default.client.blog.delete({
+                    where: { id: parseInt(req.query.id) },
+                });
+        }
         res.status(204).json(new response_1.default(true, "blog deleted successfully", blog));
     }
     catch (error) {

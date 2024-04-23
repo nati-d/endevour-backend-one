@@ -7,7 +7,6 @@ const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient
 const client_1 = require("@prisma/client");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const lodash_1 = __importDefault(require("lodash"));
 const index_1 = __importDefault(require("../../validation/index"));
 const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
@@ -30,6 +29,20 @@ exports.default = async (req, res) => {
                 },
                 password,
             },
+            select: {
+                password: false,
+                id: true,
+                username: true,
+                first_name: true,
+                last_name: true,
+                email: true,
+                phone_number: true,
+                profile_image: true,
+                location: true,
+                verified_by: true,
+                created_at: true,
+                updated_at: true
+            }
         });
     }
     catch (error) {
@@ -41,9 +54,8 @@ exports.default = async (req, res) => {
         return res.status(500).json(new response_1.default(false, "Unknown error at registering user", error));
     }
     try {
-        lodash_1.default.omit(newUser, "password");
-        const token = jsonwebtoken_1.default.sign(newUser, process.env.JWT_KEY);
-        return res.status(201).json(new response_1.default(true, "User registered successfully", token));
+        const token = jsonwebtoken_1.default.sign(newUser, 'jwtsecretkey');
+        return res.header('authorization', token).status(201).json(new response_1.default(true, "User registered successfully", newUser));
     }
     catch (error) {
         console.error("Error signing JWT token:", error);

@@ -3,7 +3,6 @@ import prisma from "../../prisma/client/prismaClient";
 import { Prisma } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import _ from "lodash";
 import Validator from "../../validation/index";
 import ApiResponse from "../../types/response";
 
@@ -32,6 +31,20 @@ export default async (req: Request, res: Response) => {
                 },
                 password,
             },
+            select: {
+                password: false,
+                id: true,
+                username: true,
+                first_name: true,
+                last_name: true,
+                email: true,
+                phone_number: true,
+                profile_image: true,
+                location: true,
+                verified_by: true,
+                created_at: true,
+                updated_at: true
+            }
         });
 
     } catch (error) {
@@ -45,11 +58,9 @@ export default async (req: Request, res: Response) => {
     }
 
     try {
-        _.omit(newUser, "password");
+        const token = jwt.sign(newUser, 'jwtsecretkey');
 
-        const token = jwt.sign(newUser, process.env.JWT_KEY as string);
-
-        return res.status(201).json(new ApiResponse(true, "User registered successfully", token));
+        return res.header('authorization', token).status(201).json(new ApiResponse(true, "User registered successfully", newUser));
     } catch (error) {
         console.error("Error signing JWT token:", error);
 

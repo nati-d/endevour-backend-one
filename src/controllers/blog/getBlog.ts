@@ -41,30 +41,21 @@ export default async (req: Request, res: Response) => {
                 take: 10,
                 skip: page,
                 where,
-                include: {
-                    tags: {
-                        select: {
-                            name: true,
-                        },
-                    },
-                },
+                include: { tags: { select: { name: true } } },
                 orderBy: {
                     id: 'desc'
-                }
+                },
             })
         }
 
         else
         blog = await prisma.client.blog.findMany({
-            take: 1,
-            skip: 3,
+            take: 10,
+            skip: page,
             where,
-            include: {
-                tags: {
-                    select: {
-                        name: true,
-                    },
-                },
+            include: { tags: { select: { name: true } } },
+            orderBy: {
+                id: 'desc'
             }
         });
 

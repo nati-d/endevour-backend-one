@@ -29,6 +29,7 @@ const grant_routes_1 = __importDefault(require("./grant.routes"));
 const blog_routes_1 = __importDefault(require("./blog.routes"));
 const sp_routes_1 = __importDefault(require("./sp.routes"));
 const tag_routes_1 = __importDefault(require("./tag.routes"));
+const auth_1 = __importDefault(require("./auth"));
 var Routers;
 (function (Routers) {
     Routers.adminRoutes = admin_routes_1.default;
@@ -42,5 +43,6 @@ var Routers;
     Routers.blog = blog_routes_1.default;
     Routers.sp = sp_routes_1.default;
     Routers.tag = tag_routes_1.default;
+    Routers.auth = auth_1.default;
 })(Routers || (Routers = {}));
 exports.default = Routers;

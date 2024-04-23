@@ -40,9 +40,13 @@ exports.default = async (req, res) => {
                         })),
                         disconnect: req.body.tags_to_remove.map((name) => ({ name })),
                     }
-                }
+                },
+                include: { tags: { select: { name: true } } },
             });
-        else
+        else if (req.userAuth.id) {
+            const blogToBeUpdated = await index_1.default.client.blog.findFirst({ where: { id: req.body.id } });
+            if (blogToBeUpdated?.posted_by != req.userAuth?.id)
+                return res.status(403).json(new response_1.default(false, "unable to update blog due to ownership of the post!"));
             newBlog = await index_1.default.client.blog.update({
                 where: {
                     id: req.body.id,
@@ -51,7 +55,6 @@ exports.default = async (req, res) => {
                     title: req.body.title,
                     overview: req.body.overview,
                     body: req.body.body,
-                    posted_by: req.auth?.id,
                     tags: {
                         connectOrCreate: req.body.tags.map((name) => ({
                             where: { name },
@@ -62,6 +65,7 @@ exports.default = async (req, res) => {
                 },
                 include: { tags: { select: { name: true } } }
             });
+        }
         res.status(200).json(new response_1.default(true, "new blog created successfully", newBlog));
     }
     catch (error) {

@@ -40,29 +40,20 @@ exports.default = async (req, res) => {
                 take: 10,
                 skip: page,
                 where,
-                include: {
-                    tags: {
-                        select: {
-                            name: true,
-                        },
-                    },
-                },
+                include: { tags: { select: { name: true } } },
                 orderBy: {
                     id: 'desc'
-                }
+                },
             });
         }
         else
             blog = await index_1.default.client.blog.findMany({
-                take: 1,
-                skip: 3,
+                take: 10,
+                skip: page,
                 where,
-                include: {
-                    tags: {
-                        select: {
-                            name: true,
-                        },
-                    },
+                include: { tags: { select: { name: true } } },
+                orderBy: {
+                    id: 'desc'
                 }
             });
         totalPages = await index_1.default.client.blog.count({ where });
