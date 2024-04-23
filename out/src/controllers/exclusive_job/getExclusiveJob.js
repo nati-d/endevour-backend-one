@@ -12,6 +12,10 @@ const getExclusiveJob = async (req, res) => {
             where: {
                 id: parseInt(id),
             },
+            include: {
+                recommended_applicants: true,
+                recommenders: true,
+            },
         });
         if (!getJob)
             return res
@@ -19,13 +23,13 @@ const getExclusiveJob = async (req, res) => {
                 .json(new response_1.default(false, "Excluseve job not found!"));
         return res
             .status(200)
-            .json(new response_1.default(false, "Job getted successfully.", getJob));
+            .json(new response_1.default(true, "Job getted successfully.", getJob));
     }
     catch (error) {
         console.log(error);
         return res
             .status(500)
-            .json(new response_1.default(false, "Failed to get job please try again!"));
+            .json(new response_1.default(false, "Failed to get job please try again!", null, error));
     }
 };
 exports.default = getExclusiveJob;

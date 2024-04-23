@@ -1,0 +1,45 @@
+import { Request, Response } from "express";
+import sendEmailConfig, { Attachment } from "../configs/sendEmailConfig";
+import ApiResponse from "../types/response";
+
+declare global {
+  namespace Express {
+    interface Request {
+      emailData: {
+        sendTo: string;
+        subject: string;
+        html: string;
+        file?: Attachment[];
+        otherData?: any;
+        queryOnFail?: () => void;
+      };
+    }
+  }
+}
+
+const sendEmail = async (req: Request, res: Response) => {
+  const { sendTo, subject, html, file, otherData, queryOnFail } = req.emailData;
+  try {
+    if (file) await sendEmailConfig(sendTo, subject, html, file);
+    else await sendEmailConfig(sendTo, subject, html);
+
+    return res
+      .status(201)
+      .json(new ApiResponse(true, "Email send successfully.", otherData));
+  } catch (error) {
+    console.log(error);
+    if (queryOnFail) queryOnFail();
+    return res
+      .status(500)
+      .json(
+        new ApiResponse(
+          false,
+          "Failed to send email. please try again!",
+          null,
+          error
+        )
+      );
+  }
+};
+
+export default sendEmail;

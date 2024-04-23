@@ -5,9 +5,15 @@ import _getRecommender from "./recommender/getRecommender";
 import _getRecommenders from "./recommender/getRecommenders";
 
 import _createExclusiveJob from "./createExclusiveJob";
+import _getExclusiveJob from "./getExclusiveJob";
+import _getExclusiveJobs from "./getExclusiveJobs";
+import _deleteExclusiveJob from "./deleteExclusiveJob";
 
 import _createRecommendedApplicant from "./recommended_applicants/createRecommendedApplicant";
 import _getRecommendedApplicant from "./recommended_applicants/getRecommendedApplicant";
+import _getRecommendedApplicants from "./recommended_applicants/getRecommendedApplicants";
+import _acceptDeclineApplicant from "./recommended_applicants/acceptDeclineApplicant";
+
 namespace ExclusiveJob {
   export const createRecommender = _createRecommender;
   export const updateRecommender = _updateRecommender;
@@ -16,9 +22,14 @@ namespace ExclusiveJob {
   export const getRecommenders = _getRecommenders;
 
   export const createExclusiveJob = _createExclusiveJob;
+  export const getExclusiveJob = _getExclusiveJob;
+  export const getExclusiveJobs = _getExclusiveJobs;
+  export const deleteExclusiveJob = _deleteExclusiveJob;
 
   export const createRecommendedApplicant = _createRecommendedApplicant;
   export const getRecommendedApplicant = _getRecommendedApplicant;
+  export const getRecommendedApplicants = _getRecommendedApplicants;
+  export const acceptDeclineApplicant = _acceptDeclineApplicant;
 }
 
 export default ExclusiveJob;

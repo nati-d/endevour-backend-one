@@ -18,13 +18,13 @@ const getRecommendedApplicants = async (req, res) => {
         });
         return res
             .status(200)
-            .json(new response_1.default(true, "Applicans for this job: ", getApplicants));
+            .json(new response_1.default(true, "Applicants for this job getted successfully. ", getApplicants));
     }
     catch (error) {
         console.log(error);
         return res
             .status(500)
-            .json(new response_1.default(false, "Failed to get applicants! please try again"));
+            .json(new response_1.default(false, "Failed to get applicants! please try again", null, undefined));
     }
 };
 exports.default = getRecommendedApplicants;
