@@ -25,12 +25,18 @@ const sendEmailForRecommenders = async (req, res, next) => {
                     in: mapedIds,
                 },
             },
+            select: {
+                email: true,
+            },
         });
-        const joinedEmails = recommendersEmail.join(",");
+        const joinedEmails = recommendersEmail
+            .map((recommender) => recommender.email)
+            .join(", ");
         req.emailData = {
             sendTo: joinedEmails,
             subject: "Recommend user for the above job",
-            html: updatedExclusiveJob.description,
+            html: updatedExclusiveJob.description +
+                `<a href='https://endevour.org/exclusive-job/recommend?job_id=${updatedExclusiveJob.id}'>Recommend here</a>`,
             queryOnFail: async () => await prismaClient_1.default.exclusive_job.update({
                 where: {
                     id: job_id,
