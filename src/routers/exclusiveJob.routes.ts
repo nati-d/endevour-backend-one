@@ -6,6 +6,7 @@ const router = express.Router();
 router.use(Middlewares.tokenAuth);
 router.use(Middlewares.adminAuth);
 
+//Recommenders
 router.post("/recommender/create", ExclusiveJob.createRecommender);
 
 router.get("/recommender/all", ExclusiveJob.getRecommenders);
@@ -25,6 +26,7 @@ router.delete(
   ExclusiveJob.deleteRecommender
 );
 
+// Exclusive jobs
 router.post("/create", ExclusiveJob.createExclusiveJob, Middlewares.sendEmail);
 
 router.get("/get/:id", ExclusiveJob.getExclusiveJob);
@@ -33,6 +35,15 @@ router.get("/all", ExclusiveJob.getExclusiveJobs);
 
 router.delete("/delete/:id", ExclusiveJob.deleteExclusiveJob);
 
+router.put("/update/:id", ExclusiveJob.updateExclusiveJob);
+
+router.post(
+  "/send-more-emails",
+  ExclusiveJob.sendEmailForRecommenders,
+  Middlewares.sendEmail
+);
+
+// Recommended applicants
 router.post(
   "/recommended-applicant/create",
   Middlewares.uploadFile("files/exclusive_job/applicant_cv").single("cv"),

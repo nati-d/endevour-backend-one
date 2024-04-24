@@ -10,7 +10,9 @@ const getRecommenders = async (req: Request, res: Response) => {
       new ApiResponse(
         true,
         "Recommenders getted successfully",
-        _.pickBy(recommenders, (value, key) => key !== "password")
+        recommenders.map((recommender) =>
+          _.pickBy(recommender, (value, key) => key !== "password")
+        )
       )
     );
   } catch (error) {

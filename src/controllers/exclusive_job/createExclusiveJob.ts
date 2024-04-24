@@ -7,6 +7,7 @@ const createExclusiveJob = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log(req.body);
   if (!req.auth) return;
 
   const { description, recommenders_id, closing_date } = req.body;
@@ -16,11 +17,11 @@ const createExclusiveJob = async (
     const createdExclusiveJob = await prisma.exclusive_job.create({
       data: {
         description,
-        verified_by: verifiedBy,
         closing_date,
         recommenders: {
           connect: recommenders_id,
         },
+        verified_by: verifiedBy,
       },
     });
 
@@ -40,7 +41,7 @@ const createExclusiveJob = async (
       subject: "Recommend your best for the best.",
       html:
         createdExclusiveJob.description +
-        `<a href='https://endevour.org/exclusive-job/recommend?job_id=${createdExclusiveJob.id}'></a>`,
+        `<a href='https://endevour.org/exclusive-job/recommend?job_id=${createdExclusiveJob.id}'>Recommend here</a>`,
       otherData: createdExclusiveJob,
       queryOnFail: async () =>
         await prisma.exclusive_job.delete({
