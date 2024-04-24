@@ -9,7 +9,7 @@ const lodash_1 = __importDefault(require("lodash"));
 const getRecommenders = async (req, res) => {
     try {
         const recommenders = await prismaClient_1.default.recommender.findMany();
-        return res.json(new response_1.default(true, "Recommenders getted successfully", lodash_1.default.pickBy(recommenders, (value, key) => key !== "password")));
+        return res.json(new response_1.default(true, "Recommenders getted successfully", recommenders.map((recommender) => lodash_1.default.pickBy(recommender, (value, key) => key !== "password"))));
     }
     catch (error) {
         console.error("Error fetching recommenders:", error);

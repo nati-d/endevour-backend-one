@@ -9,15 +9,20 @@ const middlewares_1 = __importDefault(require("../middlewares"));
 const router = express_1.default.Router();
 router.use(middlewares_1.default.tokenAuth);
 router.use(middlewares_1.default.adminAuth);
+//Recommenders
 router.post("/recommender/create", exclusive_job_1.default.createRecommender);
 router.get("/recommender/all", exclusive_job_1.default.getRecommenders);
 router.get("/recommender/get-by-id/:recommender_id", exclusive_job_1.default.getRecommender);
 router.put("/recommender/update/:recommender_id", exclusive_job_1.default.updateRecommender);
 router.delete("/recommender/delete/:recommender_id", exclusive_job_1.default.deleteRecommender);
+// Exclusive jobs
 router.post("/create", exclusive_job_1.default.createExclusiveJob, middlewares_1.default.sendEmail);
 router.get("/get/:id", exclusive_job_1.default.getExclusiveJob);
 router.get("/all", exclusive_job_1.default.getExclusiveJobs);
 router.delete("/delete/:id", exclusive_job_1.default.deleteExclusiveJob);
+router.put("/update/:id", exclusive_job_1.default.updateExclusiveJob);
+router.post("/send-more-emails", exclusive_job_1.default.sendEmailForRecommenders, middlewares_1.default.sendEmail);
+// Recommended applicants
 router.post("/recommended-applicant/create", middlewares_1.default.uploadFile("files/exclusive_job/applicant_cv").single("cv"), exclusive_job_1.default.createRecommendedApplicant);
 router.get("/recommended-applicant/get/:id", exclusive_job_1.default.getRecommendedApplicant);
 router.get("/recommended-applicant/all", exclusive_job_1.default.getRecommendedApplicants);
