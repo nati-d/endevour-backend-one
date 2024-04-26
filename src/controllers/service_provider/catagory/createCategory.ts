@@ -5,21 +5,13 @@ import Validator from "../../../validation/index";
 import ApiResponse from "../../../types/response";
 
 export default async (req: Request, res: Response) => {
-    const { error } = Validator.job.jobCatagory.validate(req.body);
-    if (error) {
-
-        res.send(new ApiResponse(false, "unidentified request content", error.details));
-
-        return;
-
-    }
-
-    let newCatagory: Object;
+    let newCategory: Object;
 
     try {
-        newCatagory = await prisma.client.job_category.create({
+        newCategory = await prisma.client.service_provider_category.create({
             data: {
-                name: req.body.name
+                name: req.body.name,
+                verified_by: req.auth.id
             }
         });
 
@@ -35,6 +27,6 @@ export default async (req: Request, res: Response) => {
 
     }
 
-    res.send(new ApiResponse(true, "New job catagory is added", newCatagory));
+    res.send(new ApiResponse(true, "New service provider category is added", newCategory));
 
 }

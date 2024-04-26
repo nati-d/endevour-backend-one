@@ -39,9 +39,17 @@ import _updateBlog from "./blog/updateBlog";
 import _deleteBlog from "./blog/deleteBlog";
 
 import _createSp from "./service_provider/createSp";
-// import _getSp from "./service_provider/getSp";
-// import _udpateSp from "./service_provider/udpateSp";
-// import _deleteSp from "./service_provider/deleteSp";
+import _getSp from "./service_provider/getSp";
+import _getSpById from "./service_provider/getSpById";
+import _updateSp from "./service_provider/updateSp";
+import _deleteSp from "./service_provider/deleteSp";
+import _signinSp from "./service_provider/auth/login";
+
+import _createSpCategory from "./service_provider/catagory/createCategory";
+import _getSpCategory from "./service_provider/catagory/getCategory";
+import _getSpCategoryById from "./service_provider/catagory/getCategoryById";
+import _updateSpCategory from "./service_provider/catagory/updateCategory";
+import _deleteSpCategory from "./service_provider/catagory/deleteCategory";
 
 namespace Controller {
     export const addAdmin = _addAdmin;
@@ -116,6 +124,26 @@ namespace Controller {
     // -- Service Provider -- //
 
     export const createSp = _createSp;
+
+    export const getSp = _getSp;
+
+    export const getSpById = _getSpById;
+
+    export const updateSp = _updateSp;
+
+    export const deleteSp = _deleteSp;
+
+    export const signinSp = _signinSp;
+
+    export const createSpCategory = _createSpCategory;
+
+    export const getSpCategory = _getSpCategory
+
+    export const getSpCategoryById = _getSpCategoryById;
+
+    export const updateSpCategory = _updateSpCategory;
+
+    export const deleteSpCategory = _deleteSpCategory;
 }
 
 export default Controller;

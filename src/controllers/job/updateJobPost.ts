@@ -7,7 +7,6 @@ import ApiResponse from "../../types/response";
 
 export default async (req: Request, res: Response) => {
 
-    console.log(req.auth)
     const { error } = Validator.job.updateJobPost.validate(req.body);
     if (error) {
         return res.status(400).json(new ApiResponse(false, "unidentified request content", error.details));

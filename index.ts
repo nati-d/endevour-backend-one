@@ -39,6 +39,8 @@ app.use("/api/common", Router.common);
 
 app.use("/api/blog", Router.blog);
 
+app.use("/api/service-provider", Router.sp)
+
 app.use("/api/tag", Router.tag);
 
 const port = 3000;

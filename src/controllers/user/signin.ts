@@ -38,7 +38,7 @@ export default async (req: Request, res: Response) => {
         user.is_admin = false;
         delete user.password;
         const token = jwt.sign(user, 'jwtprivatekey');
-        return res.header('authorization', token ).json(new ApiResponse(true, 'successful log in', user));
+        return res.header('authorization', token ).json(new ApiResponse(true, 'successful log in', token));
     } catch(error) {
         console.error(error);
 

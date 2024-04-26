@@ -169,10 +169,12 @@ model Service_provider {
   email       String
   about       String   @db.Text
   verified_by Int?
+  service_category      String
+  password    String
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
 
-  service_category       Service_provider_category[]
+  service_provider_category     Service_provider_category?   @relation(fields: [service_category], references: [name], onUpdate: Cascade, onDelete: Cascade)
   admin                  Admin?                      @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   post                   Service_provider_post[]
   Saved_service_provider Saved_service_provider[]

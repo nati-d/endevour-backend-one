@@ -12,8 +12,19 @@ export default async (req: Request, res: Response) => {
 
         jobPost = await prisma.client.job_post.findFirst({
             where : { id },
-            include: { tags: { select: { name: true } } } }
-        )
+            include: {
+                salary: {
+                    select: {
+                        id: false,
+                        low_end: true,
+                        high_end: true,
+                        periodicity: true,
+                        currency: true
+                    }
+                },
+                tags: { select: { name: true } }
+            }
+        })
 
         if (jobPost)
         return res.status(200).json(new ApiResponse(true, "job post fetched successfully", jobPost))

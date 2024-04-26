@@ -5,11 +5,24 @@ const ARRAY_OF_NUMBERS = joi.array().items(joi.number());
 
 const createSp = joi.object({
     name: joi.string().required(),
-    category: ARRAY_OF_NUMBERS,
+    email: joi.string(),
     about: joi.string().required(),
-    password: joi.string().required()
+    password: joi.string().required(),
+    category: ARRAY_OF_NUMBERS,
+    service_category: joi.string().required() 
 });
 
+const updateSp = joi.object({
+    id: joi.number(),
+    email: joi.string(),
+    phone: joi.string().length(12),
+    about: joi.string(),
+    password: joi.string(),
+    category: joi.string(),
+    service_category: joi.string().required(),
+})
+
 export default {
-    createSp
+    createSp,
+    updateSp
 }
