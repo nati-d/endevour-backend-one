@@ -15,7 +15,7 @@ export default async (req: Request, res: Response) => {
     try {
         let id = parseInt(req.query.id as string) || req.body.id;
         let title = req.query.title as string || req.body.title;
-        let verified_by = parseInt(req.query.verified_by as string) || req.body.verified_by;
+        let verified_by = parseInt(req.query.verified_by as string);
         let posted_by = parseInt(req.query.posted_by as string) || req.body.posted_by;
         let date_lower_bound = (req.query.date_lower_bound as string) || req.body?.date?.lower_bound;
         let date_upper_bound = (req.query.date_upper_bound as string) || req.body?.date?.upper_bound;
@@ -23,7 +23,7 @@ export default async (req: Request, res: Response) => {
         let where = {
             id,
             title,
-            verified_by,
+            verified_by: verified_by == 0 ? {not: null} : verified_by == -1 ? null : verified_by,
             posted_by,
             created_at: {
                 gte: date_lower_bound,

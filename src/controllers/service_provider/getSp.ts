@@ -1,21 +1,21 @@
 import prisma from "../../prisma/index";
 import { Prisma } from "@prisma/client";
 import { Request, Response } from "express";
-import Validator from "../../validation/index";
 import ApiResponse from "../../types/response";
 
 export default async (req: Request, res: Response) => {
 
     try {
         let id = parseInt(req.query.id as string) || req.body.id;
-        let verified_by = parseInt(req.query.verified_by as string) || req.body.verified_by;
+        let verified_by = parseInt(req.query.verified_by as string);
         let sp_category = req.body.service_category as string; 
 
         let where = {
             id,
-            verified_by,
+            verified_by: verified_by == 0 ? {not: null} : verified_by == -1 ? null : verified_by,
             service_category: sp_category, 
         }
+        console.log(where)
 
         let service_provider: any;
         let totalPages: number = 0;
@@ -34,7 +34,8 @@ export default async (req: Request, res: Response) => {
 
         let __sp_category = await prisma.client.service_provider.findMany({
             where: {
-                service_category: sp_category
+                service_category: sp_category,
+                verified_by: verified_by == 0 ? {not: null} : verified_by == -1 ? null : verified_by,
             },
             select: {
                 name: true

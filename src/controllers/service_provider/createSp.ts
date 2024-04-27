@@ -47,7 +47,7 @@ export default async (req: Request, res: Response) => {
         console.log(error);
 
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
-            if (error.code == "P2002")
+            if (error.code == "P2003")
             return res.status(400).json(new ApiResponse(false, "unique key constraint error", error));
         }
 

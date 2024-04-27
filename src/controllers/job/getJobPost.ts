@@ -1,8 +1,9 @@
 import prisma from "../../prisma/index";
 import { Prisma } from "@prisma/client"
 import { Request, Response } from "express";
-import _ from "lodash";
-import Validator from "../../validation/index";
+import _, { parseInt } from "lodash";
+import Validator from "../../validation";
+import Helper from "../../helpers";
 import ApiResponse from "../../types/response";
 
 export default async (req: Request, res: Response) => {
@@ -21,7 +22,7 @@ export default async (req: Request, res: Response) => {
         let category = !req.query.category ? undefined : JSON.parse(req.query.category as string) || req.body.category;
         let closing_date_lower_bound = (req.query.closing_date_lower_bound as string) || req.body?.closing_date?.lower_bound;
         let closing_date_upper_bound = (req.query.closing_date_upper_bound as string) || req.body?.closing_date?.upper_bound;
-        let verified_by = parseInt(req.query.verified_by as string) || req.body.verified_by;
+        let verified_by = parseInt(req.query.verified_by as string);
         let posted_by = parseInt(req.query.posted_by as string) || req.body.posted_by;
         let salary_low_end = parseFloat(req.query.salary_low_end as string) || req.body?.salary?.low_end;
         let salary_high_end = parseFloat(req.query.salary_high_end as string) || req.body?.salary?.high_end;
@@ -37,7 +38,7 @@ export default async (req: Request, res: Response) => {
             year_of_experience: { gte: year_of_experience_lower_bound, lte: year_of_experience_upper_bound },
             category: { in: category },
             closing_date: { gte: closing_date_lower_bound, lte: closing_date_upper_bound },
-            verified_by,
+            verified_by: verified_by == 0 ? {not: null} : verified_by == -1 ? null : verified_by,
             posted_by,
             salary: {
                 low_end: { lte: salary_high_end },
@@ -51,6 +52,7 @@ export default async (req: Request, res: Response) => {
             },
             tags: tags && tags.length > 0 ? { some: { name: { in: tags } } } : {}
         }
+        console.log(where)
 
         let jobPosts: any;
         let totalPages: number = 0;

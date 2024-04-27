@@ -1,12 +1,12 @@
-const verificationFiltering = async (verifiedBy: number) => {
+const verificationFiltering = (verifiedBy: number): any => {
   let filtering = {};
   if (!verifiedBy) return (filtering = { verified_by: undefined });
 
-  if (verifiedBy === 0) {
+  if (verifiedBy == 0) {
     filtering = {
       verified_by: { not: null },
     };
-  } else if (verifiedBy === -1) {
+  } else if (verifiedBy == -1) {
     filtering = {
       verified_by: null,
     };
