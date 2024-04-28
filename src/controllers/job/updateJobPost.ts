@@ -78,7 +78,7 @@ export default async (req: Request, res: Response) => {
             })
         }
 
-        res.status(201).json(new ApiResponse(true, "Job post updated successfully", _.merge(updatedJobPost, updatedJobPostSalary)));
+        res.status(200).json(new ApiResponse(true, "Job post updated successfully", _.merge(updatedJobPost, updatedJobPostSalary)));
 
     } catch (error) {
 

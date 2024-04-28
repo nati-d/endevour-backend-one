@@ -71,7 +71,7 @@ exports.default = async (req, res) => {
                 }
             });
         }
-        res.status(201).json(new response_1.default(true, "Job post updated successfully", lodash_1.default.merge(updatedJobPost, updatedJobPostSalary)));
+        res.status(200).json(new response_1.default(true, "Job post updated successfully", lodash_1.default.merge(updatedJobPost, updatedJobPostSalary)));
     }
     catch (error) {
         console.error("Error while updating job post:", error);
