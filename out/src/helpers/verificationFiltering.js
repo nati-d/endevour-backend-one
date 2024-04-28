@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const verificationFiltering = async (verifiedBy) => {
+const verificationFiltering = (verifiedBy) => {
     let filtering = {};
     if (!verifiedBy)
         return (filtering = { verified_by: undefined });
-    if (verifiedBy === 0) {
+    if (verifiedBy == 0) {
         filtering = {
             verified_by: { not: null },
         };
     }
-    else if (verifiedBy === -1) {
+    else if (verifiedBy == -1) {
         filtering = {
             verified_by: null,
         };

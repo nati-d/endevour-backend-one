@@ -36,7 +36,7 @@ exports.default = async (req, res) => {
         user.is_admin = false;
         delete user.password;
         const token = jsonwebtoken_1.default.sign(user, 'jwtprivatekey');
-        return res.header('authorization', token).json(new response_1.default(true, 'successful log in', user));
+        return res.header('authorization', token).json(new response_1.default(true, 'successful log in', token));
     }
     catch (error) {
         console.error(error);

@@ -36,9 +36,16 @@ const getBlogById_1 = __importDefault(require("./blog/getBlogById"));
 const updateBlog_1 = __importDefault(require("./blog/updateBlog"));
 const deleteBlog_1 = __importDefault(require("./blog/deleteBlog"));
 const createSp_1 = __importDefault(require("./service_provider/createSp"));
-// import _getSp from "./service_provider/getSp";
-// import _udpateSp from "./service_provider/udpateSp";
-// import _deleteSp from "./service_provider/deleteSp";
+const getSp_1 = __importDefault(require("./service_provider/getSp"));
+const getSpById_1 = __importDefault(require("./service_provider/getSpById"));
+const updateSp_1 = __importDefault(require("./service_provider/updateSp"));
+const deleteSp_1 = __importDefault(require("./service_provider/deleteSp"));
+const login_1 = __importDefault(require("./service_provider/auth/login"));
+const createCategory_1 = __importDefault(require("./service_provider/catagory/createCategory"));
+const getCategory_1 = __importDefault(require("./service_provider/catagory/getCategory"));
+const getCategoryById_1 = __importDefault(require("./service_provider/catagory/getCategoryById"));
+const updateCategory_1 = __importDefault(require("./service_provider/catagory/updateCategory"));
+const deleteCategory_1 = __importDefault(require("./service_provider/catagory/deleteCategory"));
 var Controller;
 (function (Controller) {
     Controller.addAdmin = addAdmin_1.default;
@@ -81,6 +88,16 @@ var Controller;
     Controller.deleteBlog = deleteBlog_1.default;
     // -- Service Provider -- //
     Controller.createSp = createSp_1.default;
+    Controller.getSp = getSp_1.default;
+    Controller.getSpById = getSpById_1.default;
+    Controller.updateSp = updateSp_1.default;
+    Controller.deleteSp = deleteSp_1.default;
+    Controller.signinSp = login_1.default;
+    Controller.createSpCategory = createCategory_1.default;
+    Controller.getSpCategory = getCategory_1.default;
+    Controller.getSpCategoryById = getCategoryById_1.default;
+    Controller.updateSpCategory = updateCategory_1.default;
+    Controller.deleteSpCategory = deleteCategory_1.default;
 })(Controller || (Controller = {}));
 exports.default = Controller;
 // get all super admins

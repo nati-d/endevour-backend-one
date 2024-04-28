@@ -13,7 +13,18 @@ exports.default = async (req, res) => {
         let jobPost;
         jobPost = await index_1.default.client.job_post.findFirst({
             where: { id },
-            include: { tags: { select: { name: true } } }
+            include: {
+                salary: {
+                    select: {
+                        id: false,
+                        low_end: true,
+                        high_end: true,
+                        periodicity: true,
+                        currency: true
+                    }
+                },
+                tags: { select: { name: true } }
+            }
         });
         if (jobPost)
             return res.status(200).json(new response_1.default(true, "job post fetched successfully", jobPost));

@@ -56,7 +56,7 @@ exports.default = async (req, res) => {
     }
     try {
         const token = jsonwebtoken_1.default.sign(user, 'jwtprivatekey');
-        return res.header('authorization', token).status(201).json(new response_1.default(true, "User registered successfully", user));
+        return res.header('authorization', token).status(201).json(new response_1.default(true, "User registered successfully", token));
     }
     catch (error) {
         console.error("Error signing JWT token:", error);

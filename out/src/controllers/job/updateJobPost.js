@@ -9,7 +9,6 @@ const lodash_1 = __importDefault(require("lodash"));
 const index_2 = __importDefault(require("../../validation/index"));
 const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
-    console.log(req.auth);
     const { error } = index_2.default.job.updateJobPost.validate(req.body);
     if (error) {
         return res.status(400).json(new response_1.default(false, "unidentified request content", error.details));

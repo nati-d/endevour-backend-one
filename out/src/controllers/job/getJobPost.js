@@ -5,22 +5,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("../../prisma/index"));
 const client_1 = require("@prisma/client");
-const index_2 = __importDefault(require("../../validation/index"));
+const lodash_1 = require("lodash");
+const validation_1 = __importDefault(require("../../validation"));
 const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
-    const { error } = index_2.default.job.getJobPost.validate(req.body);
+    const { error } = validation_1.default.job.getJobPost.validate(req.body);
     if (error)
         return res.status(400).send(new response_1.default(false, "unidentified request content", error.details));
     try {
-        let id = parseInt(req.query.id) || req.body.id;
+        let id = (0, lodash_1.parseInt)(req.query.id) || req.body.id;
         let contract_type = !req.query.contract_type ? undefined : JSON.parse(req.query.contract_type) || req.body.contract_type;
-        let year_of_experience_lower_bound = parseInt(req.query.year_of_experience_lower_bound) || req.body?.year_of_experience?.lower_bound;
-        let year_of_experience_upper_bound = parseInt(req.query.year_of_experience_upper_bound) || req.body?.year_of_experience?.upper_bound;
+        let year_of_experience_lower_bound = (0, lodash_1.parseInt)(req.query.year_of_experience_lower_bound) || req.body?.year_of_experience?.lower_bound;
+        let year_of_experience_upper_bound = (0, lodash_1.parseInt)(req.query.year_of_experience_upper_bound) || req.body?.year_of_experience?.upper_bound;
         let category = !req.query.category ? undefined : JSON.parse(req.query.category) || req.body.category;
         let closing_date_lower_bound = req.query.closing_date_lower_bound || req.body?.closing_date?.lower_bound;
         let closing_date_upper_bound = req.query.closing_date_upper_bound || req.body?.closing_date?.upper_bound;
-        let verified_by = parseInt(req.query.verified_by) || req.body.verified_by;
-        let posted_by = parseInt(req.query.posted_by) || req.body.posted_by;
+        let verified_by = (0, lodash_1.parseInt)(req.query.verified_by);
+        let posted_by = (0, lodash_1.parseInt)(req.query.posted_by) || req.body.posted_by;
         let salary_low_end = parseFloat(req.query.salary_low_end) || req.body?.salary?.low_end;
         let salary_high_end = parseFloat(req.query.salary_high_end) || req.body?.salary?.high_end;
         let periodicity = !req.query.periodicity ? undefined : JSON.parse(req.query.periodicity) || req.body.periodicity;
@@ -34,7 +35,7 @@ exports.default = async (req, res) => {
             year_of_experience: { gte: year_of_experience_lower_bound, lte: year_of_experience_upper_bound },
             category: { in: category },
             closing_date: { gte: closing_date_lower_bound, lte: closing_date_upper_bound },
-            verified_by,
+            verified_by: verified_by == 0 ? { not: null } : verified_by == -1 ? null : verified_by,
             posted_by,
             salary: {
                 low_end: { lte: salary_high_end },
@@ -48,9 +49,10 @@ exports.default = async (req, res) => {
             },
             tags: tags && tags.length > 0 ? { some: { name: { in: tags } } } : {}
         };
+        console.log(where);
         let jobPosts;
         let totalPages = 0;
-        let page = req.query.page ? (parseInt(req.query.page) - 1) * 10 : req.body.page ? (req.body.page - 1) * 10 : 0;
+        let page = req.query.page ? ((0, lodash_1.parseInt)(req.query.page) - 1) * 10 : req.body.page ? (req.body.page - 1) * 10 : 0;
         jobPosts = await index_1.default.client.job_post.findMany({
             take: 10,
             skip: page,

@@ -29,6 +29,7 @@ app.use("/api/grant", routers_1.default.grant);
 app.use("/api/exclusive-job", routers_1.default.exclusiveJob);
 app.use("/api/common", routers_1.default.common);
 app.use("/api/blog", routers_1.default.blog);
+app.use("/api/service-provider", routers_1.default.sp);
 app.use("/api/tag", routers_1.default.tag);
 const port = 3000;
 app.listen(port, () => console.log("Server started at port", port));
