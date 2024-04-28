@@ -51,6 +51,6 @@ export default async (req: Request, res: Response) => {
             return res.status(400).json(new ApiResponse(false, "unique key constraint error", error));
         }
 
-        return res.status(500).json(new ApiResponse(true, "unknown error while creating service provider"));
+        return res.status(500).json(new ApiResponse(false, "unknown error while creating service provider", error));
     }
 }
