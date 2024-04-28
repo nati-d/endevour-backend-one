@@ -19,6 +19,9 @@ export default async (req: Request, res: Response) => {
                 id: req.body.id
             },
             data: {
+                    title: req.body.title,
+                    overview: req.body.overview,
+                    body: req.body.body,
                 verified_by: req.body.verify ? req.auth?.id : req.body.verify == false ? null : undefined,
                 tags: {
                     connectOrCreate: req.body.tags.map((name: string) => ({
@@ -31,6 +34,7 @@ export default async (req: Request, res: Response) => {
             include: { tags: { select: { name: true } } },
         });
 
+        else if (!req.auth.is_admin) {
             const blogToBeUpdated = await prisma.client.blog.findFirst({ where: { id: req.body.id } } );
 
             if(blogToBeUpdated?.posted_by != req.auth?.id)
@@ -54,6 +58,7 @@ export default async (req: Request, res: Response) => {
                 },
                 include: { tags: { select: { name: true } } }
             });
+        }
 
         res.status(200).json(new ApiResponse(true, "new blog updated successfully", blog));
 

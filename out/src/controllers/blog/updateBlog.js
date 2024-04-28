@@ -20,6 +20,9 @@ exports.default = async (req, res) => {
                     id: req.body.id
                 },
                 data: {
+                    title: req.body.title,
+                    overview: req.body.overview,
+                    body: req.body.body,
                     verified_by: req.body.verify ? req.auth?.id : req.body.verify == false ? null : undefined,
                     tags: {
                         connectOrCreate: req.body.tags.map((name) => ({
@@ -31,27 +34,29 @@ exports.default = async (req, res) => {
                 },
                 include: { tags: { select: { name: true } } },
             });
-        const blogToBeUpdated = await index_1.default.client.blog.findFirst({ where: { id: req.body.id } });
-        if (blogToBeUpdated?.posted_by != req.auth?.id)
-            return res.status(403).json(new response_1.default(false, "unable to update blog due to ownership of the post!"));
-        blog = await index_1.default.client.blog.update({
-            where: {
-                id: req.body.id,
-            },
-            data: {
-                title: req.body.title,
-                overview: req.body.overview,
-                body: req.body.body,
-                tags: {
-                    connectOrCreate: req.body.tags.map((name) => ({
-                        where: { name },
-                        create: { name }
-                    })),
-                    disconnect: req.body.tags_to_remove.map((name) => ({ name })),
-                }
-            },
-            include: { tags: { select: { name: true } } }
-        });
+        else if (!req.auth.is_admin) {
+            const blogToBeUpdated = await index_1.default.client.blog.findFirst({ where: { id: req.body.id } });
+            if (blogToBeUpdated?.posted_by != req.auth?.id)
+                return res.status(403).json(new response_1.default(false, "unable to update blog due to ownership of the post!"));
+            blog = await index_1.default.client.blog.update({
+                where: {
+                    id: req.body.id,
+                },
+                data: {
+                    title: req.body.title,
+                    overview: req.body.overview,
+                    body: req.body.body,
+                    tags: {
+                        connectOrCreate: req.body.tags.map((name) => ({
+                            where: { name },
+                            create: { name }
+                        })),
+                        disconnect: req.body.tags_to_remove.map((name) => ({ name })),
+                    }
+                },
+                include: { tags: { select: { name: true } } }
+            });
+        }
         res.status(200).json(new response_1.default(true, "new blog updated successfully", blog));
     }
     catch (error) {
