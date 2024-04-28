@@ -31,7 +31,6 @@ export default async (req: Request, res: Response) => {
             include: { tags: { select: { name: true } } },
         });
 
-        else if (!req.auth.is_admin) {
             const blogToBeUpdated = await prisma.client.blog.findFirst({ where: { id: req.body.id } } );
 
             if(blogToBeUpdated?.posted_by != req.auth?.id)
@@ -55,7 +54,6 @@ export default async (req: Request, res: Response) => {
                 },
                 include: { tags: { select: { name: true } } }
             });
-        }
 
         res.status(200).json(new ApiResponse(true, "new blog updated successfully", blog));
 
