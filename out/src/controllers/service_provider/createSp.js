@@ -43,6 +43,6 @@ exports.default = async (req, res) => {
             if (error.code == "P2003")
                 return res.status(400).json(new response_1.default(false, "unique key constraint error", error));
         }
-        return res.status(500).json(new response_1.default(true, "unknown error while creating service provider"));
+        return res.status(500).json(new response_1.default(false, "unknown error while creating service provider", error));
     }
 };
