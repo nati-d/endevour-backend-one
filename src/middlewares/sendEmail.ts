@@ -12,20 +12,37 @@ declare global {
         file?: Attachment[];
         otherData?: any;
         queryOnFail?: () => void;
+        resMessage?: string;
+        statusCode?: number;
       };
     }
   }
 }
 
 const sendEmail = async (req: Request, res: Response) => {
-  const { sendTo, subject, html, file, otherData, queryOnFail } = req.emailData;
+  const {
+    sendTo,
+    subject,
+    html,
+    file,
+    otherData,
+    queryOnFail,
+    resMessage,
+    statusCode,
+  } = req.emailData;
   try {
     if (file) await sendEmailConfig(sendTo, subject, html, file);
     else await sendEmailConfig(sendTo, subject, html);
 
     return res
-      .status(201)
-      .json(new ApiResponse(true, "Email send successfully.", otherData));
+      .status(statusCode || 201)
+      .json(
+        new ApiResponse(
+          true,
+          resMessage || "Email send successfully.",
+          otherData
+        )
+      );
   } catch (error) {
     console.log(error);
     if (queryOnFail) queryOnFail();

@@ -3,46 +3,34 @@ import Middlewares from "../middlewares";
 import Tender from "../controllers/tender";
 const router = express.Router();
 
+// Accessed by all user.
+router.get("/:tender_id", Tender.getTender);
+
+router.get("/all/tenders", Tender.getTenders);
+
+// Accessed by all authenticated user
+router.use(Middlewares.tokenAuth);
+
 router.post(
   "/post",
-  [
-    Middlewares.tokenAuth,
-    Middlewares.uploadFile("files/tender").array("files"),
-  ],
+  Middlewares.uploadFile("files/tender").array("files"),
   Tender.createTender
 );
 
-router.get("/:tender_id", Middlewares.tokenAuth, Tender.getTender);
+router.put("/update", Tender.updateTender);
 
-router.get("/all/tenders", Middlewares.tokenAuth, Tender.getTenders);
+router.delete("/delete", Tender.deleteTender);
 
-router.put("/update", [Middlewares.tokenAuth], Tender.updateTender);
+// Accessed by only admins(authorized)
+router.use(Middlewares.adminAuth);
 
-router.delete("/delete", [Middlewares.tokenAuth], Tender.deleteTender);
+router.post("/category/create", Tender.createTenderCategory);
 
-router.post(
-  "/category/create",
-  [Middlewares.tokenAuth, Middlewares.adminAuth],
-  Tender.createTenderCategory
-);
+router.put("/category/update", Tender.updateTenderCategory);
 
-router.put(
-  "/category/update",
-  [Middlewares.tokenAuth, Middlewares.adminAuth],
-  Tender.updateTenderCategory
-);
+router.delete("/category/delete", Tender.deleteTenderCategory);
 
-router.delete(
-  "/category/delete",
-  [Middlewares.tokenAuth, Middlewares.adminAuth],
-  Tender.deleteTenderCategory
-);
-
-router.get(
-  "/category/get-category-by-id",
-  [Middlewares.tokenAuth, Middlewares.adminAuth],
-  Tender.getTenderCategory
-);
+router.get("/category/get-category-by-id", Tender.getTenderCategory);
 
 router.get("/category/get-all-categories", Tender.getAllTenderCategories);
 

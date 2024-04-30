@@ -7,7 +7,7 @@ const createTender = async (req: Request, res: Response) => {
   try {
     const { tags, new_tags } = req.body;
 
-    if (req.auth?.role) {
+    if (req.auth?.is_admin) {
       req.body.verified_by = req.auth.id;
       req.body.posted_by = null;
     } else {

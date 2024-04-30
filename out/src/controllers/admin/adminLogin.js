@@ -31,7 +31,7 @@ const adminLogin = async (req, res) => {
         }
         else {
             const payload = lodash_1.default.pickBy(getAdmin, (_value, key) => key !== "password");
-            const token = jsonwebtoken_1.default.sign(payload, process.env.JWT_KEY || "");
+            const token = jsonwebtoken_1.default.sign({ ...payload, is_admin: true }, process.env.JWT_KEY || "");
             return res
                 .status(200)
                 .json({ success: true, message: "Logged in successfully.", token });

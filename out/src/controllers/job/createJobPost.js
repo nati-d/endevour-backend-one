@@ -12,11 +12,15 @@ exports.default = async (req, res) => {
     try {
         const { error } = index_2.default.job.jobPost.validate(req.body);
         if (error) {
-            return res.status(400).send(new response_1.default(false, "unidentified request content", error.details));
+            return res
+                .status(400)
+                .send(new response_1.default(false, "unidentified request content", error.details));
         }
     }
     catch (error) {
-        return res.status(400).send(new response_1.default(false, "Error at request validation", error));
+        return res
+            .status(400)
+            .send(new response_1.default(false, "Error at request validation", error));
     }
     let jobId = 0;
     try {
@@ -35,11 +39,11 @@ exports.default = async (req, res) => {
                 tags: {
                     connectOrCreate: req.body.tags.map((name) => ({
                         where: { name },
-                        create: { name }
-                    }))
-                }
+                        create: { name },
+                    })),
+                },
             },
-            include: { tags: { select: { name: true } } }
+            include: { tags: { select: { name: true } } },
         });
         jobId = newJobPost.id;
         const salary = await index_1.default.client.salary.create({
@@ -49,29 +53,34 @@ exports.default = async (req, res) => {
                 high_end: parseInt(req.body.high_end),
                 periodicity: req.body.periodicity,
                 currency: req.body.currency,
-            }
+            },
         });
-        res.status(201).json(new response_1.default(true, "job posted successfully", lodash_1.default.merge(newJobPost, salary)));
+        res
+            .status(201)
+            .json(new response_1.default(true, "job posted successfully", lodash_1.default.merge(newJobPost, salary)));
     }
     catch (error) {
         console.log(error);
         if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
-            if (error.code = "P2022") {
-                return res.status(401).json(new response_1.default(false, 'Not authorized to post jobs', error));
+            if ((error.code = "P2022")) {
+                return res
+                    .status(400)
+                    .json(new response_1.default(false, "Invalid job category id.", error));
             }
-            ;
         }
         try {
             if (jobId != 0)
                 await index_1.default.client.job_post.delete({
                     where: {
-                        id: jobId
-                    }
+                        id: jobId,
+                    },
                 });
         }
         catch (error) {
             console.log(error);
         }
-        return res.status(400).json(new response_1.default(false, "error while creating job post", error));
+        return res
+            .status(400)
+            .json(new response_1.default(false, "error while creating job post", error));
     }
 };

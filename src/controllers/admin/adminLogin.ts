@@ -33,7 +33,10 @@ const adminLogin = async (req: Request, res: Response) => {
       });
     } else {
       const payload = _.pickBy(getAdmin, (_value, key) => key !== "password");
-      const token = jwt.sign(payload, process.env.JWT_KEY || "");
+      const token = jwt.sign(
+        { ...payload, is_admin: true },
+        process.env.JWT_KEY || ""
+      );
       return res
         .status(200)
         .json({ success: true, message: "Logged in successfully.", token });
