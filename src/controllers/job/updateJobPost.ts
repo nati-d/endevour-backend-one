@@ -22,7 +22,20 @@ export default async (req: Request, res: Response) => {
                 where: { id: req.body.id },
                 data: {
                     verified_by: req.body.verify ? req.auth?.id : req.body.verify == false ? null : undefined,
-                    verified_at: new Date()
+                    title: req.body.title,
+                    overview: req.body.overview,
+                    body: req.body.body,
+                    contract_type: req.body.contract_type,
+                    year_of_experience: req.body.year_of_experience,
+                    category: req.body.category,
+                    closing_date: new Date(req.body.closing_date),
+                    tags: {
+                        connectOrCreate: req.body.tags ? req.body.tags.map((name: string) => ({
+                            where: { name },
+                            create: { name }
+                        })) : [],
+                        disconnect: req.body.tags_to_remove ? req.body.tags_to_remove.map((name: string) => ({ name })) : [],
+                    }
                 }
             });
         }
@@ -50,7 +63,6 @@ export default async (req: Request, res: Response) => {
                         })),
                         disconnect: req.body.tags_to_remove.map((name: string) => ({ name })),
                     },
- 
                 }
             });
 
@@ -66,7 +78,7 @@ export default async (req: Request, res: Response) => {
             })
         }
 
-        res.status(201).json(new ApiResponse(true, "Job post updated successfully", _.merge(updatedJobPost, updatedJobPostSalary)));
+        res.status(200).json(new ApiResponse(true, "Job post updated successfully", _.merge(updatedJobPost, updatedJobPostSalary)));
 
     } catch (error) {
 

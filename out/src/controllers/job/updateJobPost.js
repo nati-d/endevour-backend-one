@@ -21,7 +21,20 @@ exports.default = async (req, res) => {
                 where: { id: req.body.id },
                 data: {
                     verified_by: req.body.verify ? req.auth?.id : req.body.verify == false ? null : undefined,
-                    verified_at: new Date()
+                    title: req.body.title,
+                    overview: req.body.overview,
+                    body: req.body.body,
+                    contract_type: req.body.contract_type,
+                    year_of_experience: req.body.year_of_experience,
+                    category: req.body.category,
+                    closing_date: new Date(req.body.closing_date),
+                    tags: {
+                        connectOrCreate: req.body.tags ? req.body.tags.map((name) => ({
+                            where: { name },
+                            create: { name }
+                        })) : [],
+                        disconnect: req.body.tags_to_remove ? req.body.tags_to_remove.map((name) => ({ name })) : [],
+                    }
                 }
             });
         }
@@ -58,7 +71,7 @@ exports.default = async (req, res) => {
                 }
             });
         }
-        res.status(201).json(new response_1.default(true, "Job post updated successfully", lodash_1.default.merge(updatedJobPost, updatedJobPostSalary)));
+        res.status(200).json(new response_1.default(true, "Job post updated successfully", lodash_1.default.merge(updatedJobPost, updatedJobPostSalary)));
     }
     catch (error) {
         console.error("Error while updating job post:", error);
