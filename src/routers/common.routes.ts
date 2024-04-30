@@ -14,11 +14,7 @@ router.post("/forgot-password/change-password", Common.changePassword);
 
 router.post(
   "/get-post-url",
-  [
-    Middleware.tokenAuth,
-    Middleware.adminAuth,
-    Middleware.uploadFile("posts").single("post"),
-  ],
+  [Middleware.tokenAuth, Middleware.uploadFile("posts").single("post")],
   Common.getPostUrl
 );
 export default router;

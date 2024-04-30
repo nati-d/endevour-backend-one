@@ -6,15 +6,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sendEmailConfig_1 = __importDefault(require("../configs/sendEmailConfig"));
 const response_1 = __importDefault(require("../types/response"));
 const sendEmail = async (req, res) => {
-    const { sendTo, subject, html, file, otherData, queryOnFail } = req.emailData;
+    const { sendTo, subject, html, file, otherData, queryOnFail, resMessage, statusCode, } = req.emailData;
     try {
         if (file)
             await (0, sendEmailConfig_1.default)(sendTo, subject, html, file);
         else
             await (0, sendEmailConfig_1.default)(sendTo, subject, html);
         return res
-            .status(201)
-            .json(new response_1.default(true, "Email send successfully.", otherData));
+            .status(statusCode || 201)
+            .json(new response_1.default(true, resMessage || "Email send successfully.", otherData));
     }
     catch (error) {
         console.log(error);

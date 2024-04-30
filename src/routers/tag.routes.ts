@@ -22,5 +22,5 @@ router.delete(
   Tag.deleteTag
 );
 
-router.get("/get", [Middlewares.tokenAuth, Middlewares.adminAuth], Tag.getTags);
+router.get("/get", Tag.getTags);
 export default router;
