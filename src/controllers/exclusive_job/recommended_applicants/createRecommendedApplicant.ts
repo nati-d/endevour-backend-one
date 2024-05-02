@@ -3,7 +3,7 @@ import prisma from "../../../prisma/client/prismaClient";
 import ApiResponse from "../../../types/response";
 
 const createRecommendedApplicant = async (req: Request, res: Response) => {
-  const { job_id, recommender_email, first_name, last_name, email } = req.body;
+  const { job_id, recommender_email, remark } = req.body;
   const cv = req.file?.filename;
 
   if (!cv)
@@ -27,9 +27,10 @@ const createRecommendedApplicant = async (req: Request, res: Response) => {
           new ApiResponse(false, "The application date for this job is passed!")
         );
 
-    const getRecommender = await prisma.recommender.findUnique({
+    const getRecommender = await prisma.user.findUnique({
       where: {
         email: recommender_email,
+        is_recommender: true,
       },
     });
 
@@ -43,7 +44,7 @@ const createRecommendedApplicant = async (req: Request, res: Response) => {
           )
         );
 
-    const isAuthorized = await prisma.recommender.findFirst({
+    const isAuthorized = await prisma.user.findFirst({
       where: {
         id: getRecommender.id,
         exclusive_jobs: {
@@ -67,9 +68,7 @@ const createRecommendedApplicant = async (req: Request, res: Response) => {
     const createdRecommendedApplicant =
       await prisma.recommended_applicant.create({
         data: {
-          email,
-          first_name,
-          last_name,
+         remark,
           cv,
           job: getJob.id,
           recommender: getRecommender.id,

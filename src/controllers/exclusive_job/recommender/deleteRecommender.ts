@@ -5,7 +5,7 @@ import ApiResponse from "../../../types/response";
 const deleteRecommender = async (req: Request, res: Response) => {
   const { recommender_id } = req.params;
   try {
-    await prisma.recommender.delete({
+    await prisma.user.delete({
       where: { id: Number(recommender_id) },
     });
 

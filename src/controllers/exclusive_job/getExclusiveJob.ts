@@ -11,7 +11,7 @@ const getExclusiveJob = async (req: Request, res: Response) => {
       },
       include: {
         recommended_applicants: true,
-        recommenders: true,
+        user: true,
       },
     });
 

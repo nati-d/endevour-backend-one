@@ -1,38 +1,59 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import prisma from "../../../prisma/client/prismaClient";
 import ApiResponse from "../../../types/response";
-import _ from "lodash";
-import { Recommender } from "../../../types/types";
+import _, { has } from "lodash";
+import { User } from "../../../types/types";
 import Validator from "../../../validation";
 import { Prisma } from "@prisma/client";
+import hashPassword from "../../../helpers/hashPassword";
 
-const createRecommender = async (req: Request, res: Response) => {
+const createRecommender = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { error } = Validator.recommender.Recommender.validate(req.body);
+
     if (error)
       return res.status(400).json(new ApiResponse(false, error.message));
 
-    if (!req.auth) return;
+    const { first_name, last_name, email, password, phone_number } =
+      req.body as User;
 
-    const { first_name, last_name, email, password } = req.body as Recommender;
     const verified_by = req.auth?.id;
 
-    const newRecommender = await prisma.recommender.create({
+    const hashedPassword = await hashPassword(password);
+
+    const newRecommender = await prisma.user.create({
       data: {
         first_name,
         last_name,
         email,
+        password: hashedPassword,
+        phone_number,
+        is_recommender: true,
         verified_by,
       },
     });
 
-    return res.status(201).json(
-      new ApiResponse(
-        true,
-        "Recommender created successfully.",
-        _.pickBy(newRecommender, (value, key) => key !== "password")
-      )
-    );
+    req.emailData = {
+      sendTo: email,
+      subject: "Invited to be recommender of endevour exclusive job.",
+      html: `<p> 
+      <b>email: </b> ${email}<br/> <b>password: </b> ${password} <br/> You can login by goint to this link <a href="https://endevour.org/auth/sign-in">Login at endevour.org</a></p> `,
+      statusCode: 201,
+      resMessage: "Recommender created successfully.",
+      otherData: _.pickBy(newRecommender, (value, key) => key !== "password"),
+      queryOnFail: async () =>
+        await prisma.user.delete({
+          where: {
+            id: newRecommender.id,
+          },
+        }),
+    };
+
+    next();
   } catch (error) {
     console.error("Error creating recommender:", error);
 

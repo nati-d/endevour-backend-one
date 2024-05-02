@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const prismaClient_1 = __importDefault(require("../../../prisma/client/prismaClient"));
 const response_1 = __importDefault(require("../../../types/response"));
 const createRecommendedApplicant = async (req, res) => {
-    const { job_id, recommender_email, first_name, last_name, email } = req.body;
+    const { job_id, recommender_email, remark } = req.body;
     const cv = req.file?.filename;
     if (!cv)
         return res.status(400).json(new response_1.default(false, "CV not provided!"));
@@ -24,16 +24,17 @@ const createRecommendedApplicant = async (req, res) => {
             return res
                 .status(403)
                 .json(new response_1.default(false, "The application date for this job is passed!"));
-        const getRecommender = await prismaClient_1.default.recommender.findUnique({
+        const getRecommender = await prismaClient_1.default.user.findUnique({
             where: {
                 email: recommender_email,
+                is_recommender: true,
             },
         });
         if (!getRecommender)
             return res
                 .status(404)
                 .json(new response_1.default(false, "Recommender does not exist in the recommenders list!"));
-        const isAuthorized = await prismaClient_1.default.recommender.findFirst({
+        const isAuthorized = await prismaClient_1.default.user.findFirst({
             where: {
                 id: getRecommender.id,
                 exclusive_jobs: {
@@ -49,9 +50,7 @@ const createRecommendedApplicant = async (req, res) => {
                 .json(new response_1.default(false, "You're not authorized to recommend for this job!"));
         const createdRecommendedApplicant = await prismaClient_1.default.recommended_applicant.create({
             data: {
-                email,
-                first_name,
-                last_name,
+                remark,
                 cv,
                 job: getJob.id,
                 recommender: getRecommender.id,

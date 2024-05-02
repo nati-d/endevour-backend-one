@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const prismaClient_1 = __importDefault(require("../../../prisma/client/prismaClient"));
 const response_1 = __importDefault(require("../../../types/response"));
-const acceptDeclineApplicant = async (req, res, next) => {
+const acceptDeclineApplicant = async (req, res) => {
     const { job_id, applicant_id } = req.body;
     try {
         const getApplicant = await prismaClient_1.default.recommended_applicant.findFirst({
@@ -27,22 +27,26 @@ const acceptDeclineApplicant = async (req, res, next) => {
                 verified_by: req.auth?.id,
             },
         });
-        req.emailData = {
-            sendTo: getApplicant.email,
-            subject: "Application Accesptance Confirmation",
-            html: "<b> You are accepted successfully</b>",
-            otherData: updatedApplicant,
-            queryOnFail: async () => await prismaClient_1.default.recommended_applicant.update({
-                where: {
-                    id: getApplicant.id,
-                },
-                data: {
-                    accepted: null,
-                    verified_by: null,
-                },
-            }),
-        };
-        next();
+        return res
+            .status(200)
+            .json(new response_1.default(true, "Verified successfully.", updatedApplicant));
+        // req.emailData = {
+        //   sendTo: getApplicant.email,
+        //   subject: "Application Accesptance Confirmation",
+        //   html: "<b> You are accepted successfully</b>",
+        //   otherData: updatedApplicant,
+        //   queryOnFail: async () =>
+        //     await prisma.recommended_applicant.update({
+        //       where: {
+        //         id: getApplicant.id,
+        //       },
+        //       data: {
+        //         accepted: null,
+        //         verified_by: null,
+        //       },
+        //     }),
+        // };
+        // next();
     }
     catch (error) {
         console.log(error);

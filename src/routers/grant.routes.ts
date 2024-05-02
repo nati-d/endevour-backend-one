@@ -4,14 +4,26 @@ import Middleware from "../middlewares/index";
 
 const router: Router = express.Router();
 
-router.post("/create-grant", [Middleware.tokenAuth, Middleware.adminAuth], Controller.createGrant);
+router.post(
+  "/create-grant",
+  [Middleware.tokenAuth, Middleware.adminAuth],
+  Controller.createGrant
+);
 
-router.get("/get-grant", [Middleware.tokenAuth], Controller.getGrant);
+router.get("/get-grant", Controller.getGrant);
 
-router.get("/get-grant-by-id", [Middleware.tokenAuth], Controller.getGrantById);
+router.get("/get-grant-by-id", Controller.getGrantById);
 
-router.put("/update-grant", [Middleware.tokenAuth, Middleware.adminAuth], Controller.updateGrant);
+router.put(
+  "/update-grant",
+  [Middleware.tokenAuth, Middleware.adminAuth],
+  Controller.updateGrant
+);
 
-router.delete("/delete-grant", [Middleware.tokenAuth, Middleware.adminAuth], Controller.deleteGrant);
+router.delete(
+  "/delete-grant",
+  [Middleware.tokenAuth, Middleware.adminAuth],
+  Controller.deleteGrant
+);
 
 export default router;

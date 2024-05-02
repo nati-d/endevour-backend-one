@@ -9,9 +9,9 @@ const promises_1 = __importDefault(require("fs/promises"));
 const path_1 = __importDefault(require("path"));
 const deleteTender = async (req, res) => {
     try {
-        const { tender_id } = req.query;
+        const { tender_id } = req.params;
         const existingTender = await prismaClient_1.default.tender.findUnique({
-            where: { id: Number(tender_id) },
+            where: { id: parseInt(tender_id) },
             include: { files: true },
         });
         if (!existingTender)

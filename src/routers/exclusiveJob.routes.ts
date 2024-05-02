@@ -7,7 +7,11 @@ router.use(Middlewares.tokenAuth);
 router.use(Middlewares.adminAuth);
 
 //Recommenders
-router.post("/recommender/create", ExclusiveJob.createRecommender);
+router.post(
+  "/recommender/create",
+  ExclusiveJob.createRecommender,
+  Middlewares.sendEmail
+);
 
 router.get("/recommender/all", ExclusiveJob.getRecommenders);
 

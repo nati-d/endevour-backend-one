@@ -5,7 +5,12 @@ import _ from "lodash";
 
 const getRecommenders = async (req: Request, res: Response) => {
   try {
-    const recommenders = await prisma.recommender.findMany();
+    const recommenders = await prisma.user.findMany({
+      where: {
+        is_recommender: true,
+      },
+    });
+
     return res.json(
       new ApiResponse(
         true,

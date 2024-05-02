@@ -13,17 +13,18 @@ const sendEmailForRecommenders = async (req, res, next) => {
                 id: job_id,
             },
             data: {
-                recommenders: {
+                user: {
                     connect: recommenders_id,
                 },
             },
         });
         const mapedIds = recommenders_id.map((user) => user.id);
-        const recommendersEmail = await prismaClient_1.default.recommender.findMany({
+        const recommendersEmail = await prismaClient_1.default.user.findMany({
             where: {
                 id: {
                     in: mapedIds,
                 },
+                is_recommender: true,
             },
             select: {
                 email: true,
@@ -42,7 +43,7 @@ const sendEmailForRecommenders = async (req, res, next) => {
                     id: job_id,
                 },
                 data: {
-                    recommenders: {
+                    user: {
                         disconnect: recommenders_id,
                     },
                 },
