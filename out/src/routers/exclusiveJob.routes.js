@@ -10,7 +10,7 @@ const router = express_1.default.Router();
 router.use(middlewares_1.default.tokenAuth);
 router.use(middlewares_1.default.adminAuth);
 //Recommenders
-router.post("/recommender/create", exclusive_job_1.default.createRecommender);
+router.post("/recommender/create", exclusive_job_1.default.createRecommender, middlewares_1.default.sendEmail);
 router.get("/recommender/all", exclusive_job_1.default.getRecommenders);
 router.get("/recommender/get-by-id/:recommender_id", exclusive_job_1.default.getRecommender);
 router.put("/recommender/update/:recommender_id", exclusive_job_1.default.updateRecommender);

@@ -16,7 +16,7 @@ const createExclusiveJob = async (req, res, next) => {
             data: {
                 description,
                 closing_date,
-                recommenders: {
+                user: {
                     connect: recommenders_id,
                 },
                 verified_by: verifiedBy,
@@ -25,10 +25,10 @@ const createExclusiveJob = async (req, res, next) => {
         const recommenders = await prismaClient_1.default.exclusive_job.findUnique({
             where: { id: createdExclusiveJob.id },
             include: {
-                recommenders: true,
+                user: true,
             },
         });
-        const recommendersEmail = recommenders?.recommenders
+        const recommendersEmail = recommenders?.user
             .map((recommender) => recommender.email)
             .join(", ");
         req.emailData = {

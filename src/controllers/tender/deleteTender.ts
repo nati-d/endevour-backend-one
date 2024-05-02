@@ -5,9 +5,9 @@ import fs from "fs/promises";
 import path from "path";
 const deleteTender = async (req: Request, res: Response) => {
   try {
-    const { tender_id } = req.query;
+    const { tender_id } = req.params;
     const existingTender = await prisma.tender.findUnique({
-      where: { id: Number(tender_id) },
+      where: { id: parseInt(tender_id) },
       include: { files: true },
     });
 

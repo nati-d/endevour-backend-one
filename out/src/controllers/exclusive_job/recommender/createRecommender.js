@@ -8,24 +8,41 @@ const response_1 = __importDefault(require("../../../types/response"));
 const lodash_1 = __importDefault(require("lodash"));
 const validation_1 = __importDefault(require("../../../validation"));
 const client_1 = require("@prisma/client");
-const createRecommender = async (req, res) => {
+const hashPassword_1 = __importDefault(require("../../../helpers/hashPassword"));
+const createRecommender = async (req, res, next) => {
     try {
         const { error } = validation_1.default.recommender.Recommender.validate(req.body);
         if (error)
             return res.status(400).json(new response_1.default(false, error.message));
-        if (!req.auth)
-            return;
-        const { first_name, last_name, email, password } = req.body;
+        const { first_name, last_name, email, password, phone_number } = req.body;
         const verified_by = req.auth?.id;
-        const newRecommender = await prismaClient_1.default.recommender.create({
+        const hashedPassword = await (0, hashPassword_1.default)(password);
+        const newRecommender = await prismaClient_1.default.user.create({
             data: {
                 first_name,
                 last_name,
                 email,
+                password: hashedPassword,
+                phone_number,
+                is_recommender: true,
                 verified_by,
             },
         });
-        return res.status(201).json(new response_1.default(true, "Recommender created successfully.", lodash_1.default.pickBy(newRecommender, (value, key) => key !== "password")));
+        req.emailData = {
+            sendTo: email,
+            subject: "Invited to be recommender of endevour exclusive job.",
+            html: `<p> 
+      <b>email: </b> ${email}<br/> <b>password: </b> ${password} <br/> You can login by goint to this link <a href="https://endevour.org/auth/sign-in">Login at endevour.org</a></p> `,
+            statusCode: 201,
+            resMessage: "Recommender created successfully.",
+            otherData: lodash_1.default.pickBy(newRecommender, (value, key) => key !== "password"),
+            queryOnFail: async () => await prismaClient_1.default.user.delete({
+                where: {
+                    id: newRecommender.id,
+                },
+            }),
+        };
+        next();
     }
     catch (error) {
         console.error("Error creating recommender:", error);

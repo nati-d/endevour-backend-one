@@ -30,7 +30,6 @@ model Admin {
   grant                     Grant[]
   blog                      Blog[]
   exclusive_job             Exclusive_job[]
-  recommender               Recommender[]
   tender_category           Tender_category[]
   tag                       Tag[]
   recommended_applicant     Recommended_applicant[]
@@ -49,19 +48,21 @@ enum Admin_role {
 
 // -- ---- -- User -- ---- -- //
 model User {
-  id            Int      @id @default(autoincrement())
-  username      String?  @db.VarChar(30)
-  first_name    String   @db.VarChar(30)
-  last_name     String   @db.VarChar(30)
-  email         String   @unique @db.VarChar(60)
-  phone_number  String?  @unique @db.Char(12)
-  profile_image String?
-  location      Json?
-  verified_by   Int?
-  password      String?
-  token         String?
-  created_at    DateTime @default(now())
-  updated_at    DateTime @default(now()) @updatedAt
+  id             Int      @id @default(autoincrement())
+  username       String?  @db.VarChar(30)
+  first_name     String   @db.VarChar(30)
+  last_name      String   @db.VarChar(30)
+  email          String   @unique @db.VarChar(60)
+  phone_number   String?  @unique @db.Char(12)
+  password       String?
+  profile_image  String?
+  location       Json?
+  verified_by    Int?
+  token          String?
+  is_recommender Boolean? @default(false)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 
   admin                  Admin?                   @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   job_post               Job_post[]
@@ -75,6 +76,8 @@ model User {
   saved_blog             Saved_blog[]
   saved_tender           Saved_tender[]
   saved_job              Saved_job[]
+  exclusive_jobs         Exclusive_job[]
+  recommended_applicants Recommended_applicant[]
 
   @@index([first_name, last_name])
 }
@@ -448,43 +451,27 @@ model Exclusive_job {
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
-  recommenders           Recommender[]
   admin                  Admin                   @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   recommended_applicants Recommended_applicant[]
-}
-
-model Recommender {
-  id          Int      @id @default(autoincrement())
-  first_name  String   @db.VarChar(30)
-  last_name   String   @db.VarChar(30)
-  email       String   @unique @db.VarChar(60)
-  verified_by Int
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now()) @updatedAt
-
-  exclusive_jobs         Exclusive_job[]
-  admin                  Admin                   @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  recommended_applicants Recommended_applicant[]
+  user                   User[]
+  userId                 Int?
 }
 
 model Recommended_applicant {
   id          Int      @id @default(autoincrement())
-  email       String
-  first_name  String   @db.VarChar(30)
-  last_name   String   @db.VarChar(30)
+  remark      String   @db.Text
   cv          String
   accepted    Boolean?
   job         Int
   recommender Int
   verified_by Int?
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now()) @updatedAt
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 
   exclusive_job Exclusive_job @relation(fields: [job], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  recommender_  Recommender   @relation(fields: [recommender], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user          User          @relation(fields: [recommender], references: [id], onUpdate: Cascade, onDelete: Cascade)
   admin         Admin?        @relation(fields: [verified_by], references: [id])
-
-  @@unique([email, job])
 }
 
 model Password_reset {

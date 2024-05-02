@@ -2,11 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import prisma from "../../../prisma/client/prismaClient";
 import ApiResponse from "../../../types/response";
 
-const acceptDeclineApplicant = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const acceptDeclineApplicant = async (req: Request, res: Response) => {
   const { job_id, applicant_id } = req.body;
 
   try {
@@ -34,24 +30,28 @@ const acceptDeclineApplicant = async (
       },
     });
 
-    req.emailData = {
-      sendTo: getApplicant.email,
-      subject: "Application Accesptance Confirmation",
-      html: "<b> You are accepted successfully</b>",
-      otherData: updatedApplicant,
-      queryOnFail: async () =>
-        await prisma.recommended_applicant.update({
-          where: {
-            id: getApplicant.id,
-          },
-          data: {
-            accepted: null,
-            verified_by: null,
-          },
-        }),
-    };
+    return res
+      .status(200)
+      .json(new ApiResponse(true, "Verified successfully.", updatedApplicant));
 
-    next();
+    // req.emailData = {
+    //   sendTo: getApplicant.email,
+    //   subject: "Application Accesptance Confirmation",
+    //   html: "<b> You are accepted successfully</b>",
+    //   otherData: updatedApplicant,
+    //   queryOnFail: async () =>
+    //     await prisma.recommended_applicant.update({
+    //       where: {
+    //         id: getApplicant.id,
+    //       },
+    //       data: {
+    //         accepted: null,
+    //         verified_by: null,
+    //       },
+    //     }),
+    // };
+
+    // next();
   } catch (error) {
     console.log(error);
 

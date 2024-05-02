@@ -8,7 +8,7 @@ const response_1 = __importDefault(require("../../../types/response"));
 const deleteRecommender = async (req, res) => {
     const { recommender_id } = req.params;
     try {
-        await prismaClient_1.default.recommender.delete({
+        await prismaClient_1.default.user.delete({
             where: { id: Number(recommender_id) },
         });
         return res.status(204).end();

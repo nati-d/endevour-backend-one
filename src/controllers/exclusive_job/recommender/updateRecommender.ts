@@ -2,21 +2,22 @@ import { Request, Response } from "express";
 import prisma from "../../../prisma/client/prismaClient";
 import ApiResponse from "../../../types/response";
 import Validator from "../../../validation";
-
+import _ from "lodash";
 const updateRecommender = async (req: Request, res: Response) => {
   const { error } = Validator.recommender.Recommender.validate(req.body);
   if (error) return res.status(400).json(new ApiResponse(false, error.message));
 
   const { recommender_id } = req.params;
-  const { first_name, last_name, email } = req.body;
+  const { first_name, last_name, email, phone_number } = req.body;
 
   try {
-    const updatedRecommender = await prisma.recommender.update({
-      where: { id: Number(recommender_id) },
+    const updatedRecommender = await prisma.user.update({
+      where: { id: Number(recommender_id), is_recommender: true },
       data: {
         first_name,
         last_name,
         email,
+        phone_number,
       },
     });
 
@@ -24,7 +25,7 @@ const updateRecommender = async (req: Request, res: Response) => {
       new ApiResponse(
         true,
         "Recommender updated successfully.",
-        updatedRecommender
+        _.pickBy(updatedRecommender, (value, key) => key !== "password")
       )
     );
   } catch (error) {
