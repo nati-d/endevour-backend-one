@@ -21,6 +21,12 @@ const getTenders = async (req, res) => {
             where: filtering,
             include: {
                 files: true,
+                tender_category: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
             },
         });
         return res.status(200).json(new response_1.default(true, "Tenders getted successfully.", {

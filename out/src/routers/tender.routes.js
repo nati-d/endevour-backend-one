@@ -13,7 +13,7 @@ router.get("/:tender_id", tender_1.default.getTender);
 // Accessed by all authenticated user
 router.use(middlewares_1.default.tokenAuth);
 router.post("/post", middlewares_1.default.uploadFile("files/tender").array("files"), tender_1.default.createTender);
-router.put("/update", tender_1.default.updateTender);
+router.put("/update/:tender_id", tender_1.default.updateTender);
 router.delete("/delete/:tender_id", tender_1.default.deleteTender);
 // Accessed by only admins(authorized)
 router.use(middlewares_1.default.adminAuth);
