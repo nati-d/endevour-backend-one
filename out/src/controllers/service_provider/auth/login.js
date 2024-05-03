@@ -11,7 +11,6 @@ exports.default = async (req, res) => {
     let user;
     try {
         user = await prisma_1.default.client.service_provider.findFirst({ where: { email: req.body.email } });
-        console.log(user);
         if (!user)
             return res.status(400).json(new response_1.default(false, "username or password does not exist"));
     }

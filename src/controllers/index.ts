@@ -51,6 +51,12 @@ import _getSpCategoryById from "./service_provider/catagory/getCategoryById";
 import _updateSpCategory from "./service_provider/catagory/updateCategory";
 import _deleteSpCategory from "./service_provider/catagory/deleteCategory";
 
+import _createSpPost from "./service_provider/post/createPost";
+import _getSpPost from "./service_provider/post/getPost";
+import _getSpPostById from "./service_provider/post/getPostById";
+import _updateSpPost from "./service_provider/post/updatePost";
+import _deleteSpPost from "./service_provider/post/deletePost";
+
 namespace Controller {
     export const addAdmin = _addAdmin;
 
@@ -144,6 +150,16 @@ namespace Controller {
     export const updateSpCategory = _updateSpCategory;
 
     export const deleteSpCategory = _deleteSpCategory;
+
+    export const createSpPost = _createSpPost;
+
+    export const getSpPost = _getSpPost;
+
+    export const getSpPostById = _getSpPostById;
+
+    export const updateSpPost = _updateSpPost;
+
+    export const deleteSpPost = _deleteSpPost;
 }
 
 export default Controller;

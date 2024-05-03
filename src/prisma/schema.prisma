@@ -187,11 +187,11 @@ model Service_provider {
 
 model Service_provider_post {
   id          Int      @id @default(autoincrement())
-  content     String
+  body        String
   description String
   posted_by   Int
-  created_at  DateTime
-  updated_at  DateTime
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
 
   service_provider Service_provider @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
 

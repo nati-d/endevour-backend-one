@@ -26,4 +26,14 @@ router.put("/update-service-provider-category",[ Middleware.tokenAuth, Middlewar
 
 router.delete("/delete-service-provider-category",[ Middleware.tokenAuth, Middleware.adminAuth ], Controller.deleteSpCategory);
 
+router.post("/create-post", [Middleware.tokenAuth, Middleware.spAuth], Controller.createSpPost);
+
+router.get("/get-post", Controller.getSpPost);
+
+router.get("/get-post-by-id", Controller.getSpPostById);
+
+router.put("/update-post", [Middleware.tokenAuth, Middleware.spAuth], Controller.updateSpPost);
+
+router.delete("/delete-post", [Middleware.tokenAuth, Middleware.spAuth], Controller.deleteSpPost);
+
 export default router;

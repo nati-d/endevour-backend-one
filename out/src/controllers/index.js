@@ -46,6 +46,11 @@ const getCategory_1 = __importDefault(require("./service_provider/catagory/getCa
 const getCategoryById_1 = __importDefault(require("./service_provider/catagory/getCategoryById"));
 const updateCategory_1 = __importDefault(require("./service_provider/catagory/updateCategory"));
 const deleteCategory_1 = __importDefault(require("./service_provider/catagory/deleteCategory"));
+const createPost_1 = __importDefault(require("./service_provider/post/createPost"));
+const getPost_1 = __importDefault(require("./service_provider/post/getPost"));
+const getPostById_1 = __importDefault(require("./service_provider/post/getPostById"));
+const updatePost_1 = __importDefault(require("./service_provider/post/updatePost"));
+const deletePost_1 = __importDefault(require("./service_provider/post/deletePost"));
 var Controller;
 (function (Controller) {
     Controller.addAdmin = addAdmin_1.default;
@@ -98,6 +103,11 @@ var Controller;
     Controller.getSpCategoryById = getCategoryById_1.default;
     Controller.updateSpCategory = updateCategory_1.default;
     Controller.deleteSpCategory = deleteCategory_1.default;
+    Controller.createSpPost = createPost_1.default;
+    Controller.getSpPost = getPost_1.default;
+    Controller.getSpPostById = getPostById_1.default;
+    Controller.updateSpPost = updatePost_1.default;
+    Controller.deleteSpPost = deletePost_1.default;
 })(Controller || (Controller = {}));
 exports.default = Controller;
 // get all super admins
