@@ -6,8 +6,8 @@ import { Tender } from "../../types/types";
 const updateTender = async (req: Request, res: Response) => {
   try {
     const body = req.body as Tender;
-    const { tender_id } = req.query;
-    console.log(tender_id);
+    const { tender_id } = req.params;
+
     const updatedTender = await prisma.tender.update({
       where: { id: Number(tender_id) },
       data: {

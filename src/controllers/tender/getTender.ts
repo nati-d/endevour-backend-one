@@ -12,6 +12,12 @@ const getTender = async (req: Request, res: Response) => {
       },
       include: {
         files: true,
+        tender_category: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     });
 

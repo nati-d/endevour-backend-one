@@ -20,23 +20,37 @@ exports.default = async (req, res) => {
                         low_end: true,
                         high_end: true,
                         periodicity: true,
-                        currency: true
-                    }
+                        currency: true,
+                    },
                 },
-                tags: { select: { name: true } }
-            }
+                tags: { select: { name: true } },
+                job_category: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
+            },
         });
         if (jobPost)
-            return res.status(200).json(new response_1.default(true, "job post fetched successfully", jobPost));
+            return res
+                .status(200)
+                .json(new response_1.default(true, "job post fetched successfully", jobPost));
         else
-            return res.status(204).json(new response_1.default(false, "job post does not exit", jobPost));
+            return res
+                .status(204)
+                .json(new response_1.default(false, "job post does not exit", jobPost));
     }
     catch (error) {
         console.error(error);
         if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
             if (error.code === "P2022")
-                return res.status(403).json(new response_1.default(false, "not authorized to get job posts"));
+                return res
+                    .status(403)
+                    .json(new response_1.default(false, "not authorized to get job posts"));
         }
-        return res.status(400).json(new response_1.default(false, "error while getting job post"));
+        return res
+            .status(400)
+            .json(new response_1.default(false, "error while getting job post"));
     }
 };

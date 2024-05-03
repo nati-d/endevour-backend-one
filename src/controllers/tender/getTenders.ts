@@ -6,6 +6,7 @@ import verificationFiltering from "../../helpers/verificationFiltering";
 const getTenders = async (req: Request, res: Response) => {
   const tendersPerPage = 10;
   const { verified_by, page } = req.query;
+
   try {
     let filtering = {};
     if (verified_by)
@@ -20,6 +21,12 @@ const getTenders = async (req: Request, res: Response) => {
       where: filtering,
       include: {
         files: true,
+        tender_category: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     });
 

@@ -8,8 +8,7 @@ const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient
 const updateTender = async (req, res) => {
     try {
         const body = req.body;
-        const { tender_id } = req.query;
-        console.log(tender_id);
+        const { tender_id } = req.params;
         const updatedTender = await prismaClient_1.default.tender.update({
             where: { id: Number(tender_id) },
             data: {

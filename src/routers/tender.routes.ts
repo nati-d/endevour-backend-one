@@ -17,7 +17,7 @@ router.post(
   Tender.createTender
 );
 
-router.put("/update", Tender.updateTender);
+router.put("/update/:tender_id", Tender.updateTender);
 
 router.delete("/delete/:tender_id", Tender.deleteTender);
 
