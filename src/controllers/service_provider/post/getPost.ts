@@ -15,7 +15,8 @@ export default async (req: Request, res: Response) => {
         let post = await prisma.client.service_provider_post.findMany({
             take: 10,
             skip: page,
-            where
+            where,
+            orderBy: { created_at: 'desc' }
         });
 
         totalPages = await prisma.client.service_provider_post.count({ where });

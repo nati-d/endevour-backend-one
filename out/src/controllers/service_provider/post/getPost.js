@@ -16,7 +16,8 @@ exports.default = async (req, res) => {
         let post = await index_1.default.client.service_provider_post.findMany({
             take: 10,
             skip: page,
-            where
+            where,
+            orderBy: { created_at: 'desc' }
         });
         totalPages = await index_1.default.client.service_provider_post.count({ where });
         totalPages = Math.ceil(totalPages / 10);
