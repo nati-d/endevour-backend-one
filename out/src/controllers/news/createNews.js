@@ -8,7 +8,6 @@ const client_1 = require("@prisma/client");
 const index_2 = __importDefault(require("../../validation/index"));
 const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
-    console.log("*file", req.files);
     const thumbnail = Array.isArray(req.files) ? req.files[0]?.filename : null;
     req.body.tags = req.body.tags ? JSON.parse(req.body.tags) : [];
     try {

@@ -5,7 +5,6 @@ import Validator from "../../validation/index";
 import ApiResponse from "../../types/response";
 
 export default async (req: Request, res: Response) => {
-    console.log("*file", req.files)
     const thumbnail = Array.isArray(req.files) ? req.files[0]?.filename : null;
     req.body.tags = req.body.tags ? JSON.parse(req.body.tags) : [];
 

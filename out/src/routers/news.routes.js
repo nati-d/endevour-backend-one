@@ -10,6 +10,6 @@ const router = express_1.default.Router();
 router.post("/create-news", [index_2.default.tokenAuth, index_2.default.adminAuth, index_2.default.uploadFile("/images/news/thumbnail").array("thumbnail")], index_1.default.createNews);
 router.get("/get-news", index_1.default.getNews);
 router.get("/get-news-by-id", index_1.default.getNewsById);
-router.put("/update-news", [index_2.default.tokenAuth, index_2.default.adminAuth], index_1.default.updateNews);
+router.put("/update-news", [index_2.default.tokenAuth, index_2.default.adminAuth, index_2.default.uploadFile("/images/news/thumbnail").array("thumbnail")], index_1.default.updateNews);
 router.delete("/delete-news", [index_2.default.tokenAuth, index_2.default.adminAuth], index_1.default.deleteNews);
 exports.default = router;
