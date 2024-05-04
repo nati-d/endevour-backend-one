@@ -5,6 +5,10 @@ import Validator from "../../validation/index";
 import ApiResponse from "../../types/response";
 
 export default async (req: Request, res: Response) => {
+    console.log("*file", req.files)
+    const thumbnail = Array.isArray(req.files) ? req.files[0]?.filename : null;
+    req.body.tags = req.body.tags ? JSON.parse(req.body.tags) : [];
+
     try {
         const { error } = Validator.news.createNews.validate(req.body);
 
@@ -20,7 +24,7 @@ export default async (req: Request, res: Response) => {
             data: {
                 title: req.body.title,
                 overview: req.body.overview,
-                thumbnail: req.body.thumbnail,
+                thumbnail,
                 body: req.body.body,
                 posted_by: req.auth?.id,
                 tags: {

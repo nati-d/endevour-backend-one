@@ -10,7 +10,7 @@ const RANGE_OF_DATE = joi.object({
 const createNews = joi.object({
     title: joi.string().required(),
     overview: joi.string().required(),
-    thumbnail: joi.string(),
+    thumbnail: joi.any(),
     body: joi.string().required(),
     tags: ARRAY_OF_STRINGS
 });

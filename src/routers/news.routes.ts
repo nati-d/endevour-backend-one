@@ -4,11 +4,7 @@ import Middleware from "../middlewares/index";
 
 const router: Router = express.Router();
 
-router.post(
-  "/create-news",
-  [Middleware.tokenAuth, Middleware.adminAuth],
-  Controller.createNews
-);
+router.post("/create-news", [Middleware.tokenAuth, Middleware.adminAuth, Middleware.uploadFile("/images/news/thumbnail").array("thumbnail")], Controller.createNews);
 
 router.get("/get-news", Controller.getNews);
 
