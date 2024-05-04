@@ -20,6 +20,7 @@ export default async (req: Request, res: Response) => {
             data: {
                 title: req.body.title,
                 overview: req.body.overview,
+                thumbnail: req.body.thumbnail,
                 body: req.body.body,
                 posted_by: req.auth?.id as number,
                 tags: {
