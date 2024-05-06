@@ -8,7 +8,6 @@ export default async (req: Request, res: Response) => {
     let user: any;
     try {
         user = await prisma.client.service_provider.findFirst( { where: { email: req.body.email } } );
-        console.log(user)
 
         if (!user)
         return res.status(400).json(new ApiResponse(false, "username or password does not exist"));

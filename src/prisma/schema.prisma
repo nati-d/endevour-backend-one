@@ -147,6 +147,7 @@ model Organization {
 model Saved_organization {
   user         Int
   organization Int
+  created_at    DateTime    @default(now())
 
   user_         User         @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
   organization_ Organization @relation(fields: [organization], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -187,11 +188,11 @@ model Service_provider {
 
 model Service_provider_post {
   id          Int      @id @default(autoincrement())
-  content     String
+  body        String
   description String
   posted_by   Int
-  created_at  DateTime
-  updated_at  DateTime
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
 
   service_provider Service_provider @relation(fields: [posted_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
@@ -201,6 +202,7 @@ model Service_provider_post {
 model Saved_service_provider {
   user             Int
   service_provider Int
+  created_at    DateTime    @default(now())
 
   user_             User             @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
   service_provider_ Service_provider @relation(fields: [service_provider], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -285,9 +287,10 @@ enum Periodicity {
 model Saved_job {
   user Int
   job  Int
+  created_at    DateTime    @default(now())
 
-  user_ User     @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  job_  Job_post @relation(fields: [job], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  User User     @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  Job  Job_post @relation(fields: [job], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   @@id([user, job])
 }
@@ -297,6 +300,7 @@ model News {
   id         Int          @id @default(autoincrement())
   title      String
   overview   String
+  thumbnail  String?
   body       String       @db.LongText
   posted_by  Int
   created_at DateTime     @default(now())
@@ -309,6 +313,7 @@ model News {
 model Saved_news {
   user Int
   news Int
+  created_at    DateTime    @default(now())
 
   user_ User @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
   news_ News @relation(fields: [news], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -368,6 +373,7 @@ model Tender_files {
 model Saved_tender {
   user   Int
   tender Int
+  created_at    DateTime    @default(now())
 
   user_   User   @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
   tender_ Tender @relation(fields: [tender], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -402,6 +408,7 @@ model Grant {
 model Saved_grant {
   user  Int
   grant Int
+  created_at    DateTime    @default(now())
 
   user_  User  @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
   grant_ Grant @relation(fields: [grant], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -433,6 +440,7 @@ model Blog {
 model Saved_blog {
   user Int
   blog Int
+  created_at    DateTime    @default(now())
 
   user_ User @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
   blog_ Blog @relation(fields: [blog], references: [id], onUpdate: Cascade, onDelete: Cascade)

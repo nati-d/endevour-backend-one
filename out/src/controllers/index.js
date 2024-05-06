@@ -10,6 +10,7 @@ const confirmPassword_1 = __importDefault(require("./admin/confirmPassword"));
 const uploadProfileImg_1 = __importDefault(require("./admin/uploadProfileImg"));
 const signup_1 = __importDefault(require("./user/signup"));
 const signin_1 = __importDefault(require("./user/signin"));
+const saved_1 = __importDefault(require("./user/saved"));
 const createJobPost_1 = __importDefault(require("./job/createJobPost"));
 const getJobPost_1 = __importDefault(require("./job/getJobPost"));
 const getJobPostById_1 = __importDefault(require("./job/getJobPostById"));
@@ -46,6 +47,11 @@ const getCategory_1 = __importDefault(require("./service_provider/catagory/getCa
 const getCategoryById_1 = __importDefault(require("./service_provider/catagory/getCategoryById"));
 const updateCategory_1 = __importDefault(require("./service_provider/catagory/updateCategory"));
 const deleteCategory_1 = __importDefault(require("./service_provider/catagory/deleteCategory"));
+const createPost_1 = __importDefault(require("./service_provider/post/createPost"));
+const getPost_1 = __importDefault(require("./service_provider/post/getPost"));
+const getPostById_1 = __importDefault(require("./service_provider/post/getPostById"));
+const updatePost_1 = __importDefault(require("./service_provider/post/updatePost"));
+const deletePost_1 = __importDefault(require("./service_provider/post/deletePost"));
 var Controller;
 (function (Controller) {
     Controller.addAdmin = addAdmin_1.default;
@@ -56,6 +62,7 @@ var Controller;
     // -- User -- //
     Controller.userSignup = signup_1.default;
     Controller.userSignin = signin_1.default;
+    Controller.saved = saved_1.default;
     // -- Job post -- //
     Controller.insertJobPost = createJobPost_1.default;
     Controller.getJobPost = getJobPost_1.default;
@@ -98,6 +105,11 @@ var Controller;
     Controller.getSpCategoryById = getCategoryById_1.default;
     Controller.updateSpCategory = updateCategory_1.default;
     Controller.deleteSpCategory = deleteCategory_1.default;
+    Controller.createSpPost = createPost_1.default;
+    Controller.getSpPost = getPost_1.default;
+    Controller.getSpPostById = getPostById_1.default;
+    Controller.updateSpPost = updatePost_1.default;
+    Controller.deleteSpPost = deletePost_1.default;
 })(Controller || (Controller = {}));
 exports.default = Controller;
 // get all super admins

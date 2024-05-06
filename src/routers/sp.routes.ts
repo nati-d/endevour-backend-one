@@ -3,6 +3,7 @@ import Middleware from "../middlewares/index";
 import Controller from "../controllers/index";
 
 const router: Router = Router();
+const routerPost = Router();
 
 router.post("/signup", Controller.createSp);
 
@@ -25,5 +26,17 @@ router.get("/get-service-provider-category-by-name", Controller.getSpCategoryByI
 router.put("/update-service-provider-category",[ Middleware.tokenAuth, Middleware.adminAuth ], Controller.updateSpCategory);
 
 router.delete("/delete-service-provider-category",[ Middleware.tokenAuth, Middleware.adminAuth ], Controller.deleteSpCategory);
+
+routerPost.post("/create-post", [Middleware.tokenAuth, Middleware.spAuth], Controller.createSpPost);
+
+routerPost.get("/get-post", Controller.getSpPost);
+
+routerPost.get("/get-post-by-id", Controller.getSpPostById);
+
+routerPost.put("/update-post", [Middleware.tokenAuth, Middleware.spAuth], Controller.updateSpPost);
+
+routerPost.delete("/delete-post", [Middleware.tokenAuth, Middleware.spAuth], Controller.deleteSpPost);
+
+router.use("/post", routerPost);
 
 export default router;

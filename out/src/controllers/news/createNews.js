@@ -8,6 +8,8 @@ const client_1 = require("@prisma/client");
 const index_2 = __importDefault(require("../../validation/index"));
 const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
+    const thumbnail = Array.isArray(req.files) ? req.files[0]?.filename : null;
+    req.body.tags = req.body.tags ? JSON.parse(req.body.tags) : [];
     try {
         const { error } = index_2.default.news.createNews.validate(req.body);
         if (error) {
@@ -22,6 +24,7 @@ exports.default = async (req, res) => {
             data: {
                 title: req.body.title,
                 overview: req.body.overview,
+                thumbnail,
                 body: req.body.body,
                 posted_by: req.auth?.id,
                 tags: {
