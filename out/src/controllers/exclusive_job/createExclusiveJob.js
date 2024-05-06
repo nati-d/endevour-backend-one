@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient"));
 const response_1 = __importDefault(require("../../types/response"));
 const createExclusiveJob = async (req, res, next) => {
-    console.log(req.body);
     if (!req.auth)
         return;
     const { description, recommenders_id, closing_date } = req.body;
