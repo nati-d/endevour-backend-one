@@ -7,7 +7,6 @@ const createExclusiveJob = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.body);
   if (!req.auth) return;
 
   const { description, recommenders_id, closing_date } = req.body;

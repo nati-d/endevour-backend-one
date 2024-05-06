@@ -337,18 +337,17 @@ model Tender_category {
 }
 
 model Tender {
-  id           Int      @id @default(autoincrement())
-  title        String
-  overview     String
-  body         String   @db.LongText
-  price        Float?
-  starting_bid Float
-  status       String
-  category     Int
-  opening_date DateTime
-  closing_date DateTime
-  posted_by    Int?
-  verified_by  Int?
+  id               Int      @id @default(autoincrement())
+  title            String
+  overview         String
+  body             String   @db.LongText
+  status           String
+  category         Int
+  opportunity_size Int?
+  opening_date     DateTime
+  closing_date     DateTime
+  posted_by        Int?
+  verified_by      Int?
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt

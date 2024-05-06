@@ -158,8 +158,7 @@ export type Tender = {
   title: string;
   overview: string;
   body: string;
-  price: number | null;
-  starting_bid: number;
+  opportunity_size: number;
   eligibility: boolean;
   status: string;
   category: number;
