@@ -17,7 +17,7 @@ const deleteTender = async (req: Request, res: Response) => {
     const fileDeletePromises = existingTender.files.map(async (file) => {
       const filePath = path.join(
         __dirname,
-        "../../../public/files/tender_files",
+        "../../../public/files/tender",
         file.file
       );
       await fs.unlink(filePath);

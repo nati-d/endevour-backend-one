@@ -17,7 +17,7 @@ const deleteTender = async (req, res) => {
         if (!existingTender)
             return res.status(404).json(new response_1.default(false, "Tender not found"));
         const fileDeletePromises = existingTender.files.map(async (file) => {
-            const filePath = path_1.default.join(__dirname, "../../../public/files/tender_files", file.file);
+            const filePath = path_1.default.join(__dirname, "../../../public/files/tender", file.file);
             await promises_1.default.unlink(filePath);
         });
         await Promise.all(fileDeletePromises);
