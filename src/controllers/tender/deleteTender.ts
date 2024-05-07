@@ -14,16 +14,18 @@ const deleteTender = async (req: Request, res: Response) => {
     if (!existingTender)
       return res.status(404).json(new ApiResponse(false, "Tender not found"));
 
-    const fileDeletePromises = existingTender.files.map(async (file) => {
-      const filePath = path.join(
-        __dirname,
-        "../../../public/files/tender",
-        file.file
-      );
-      await fs.unlink(filePath);
-    });
+    if (existingTender.files) {
+      const fileDeletePromises = existingTender.files.map(async (file) => {
+        const filePath = path.join(
+          __dirname,
+          "../../../public/files/tender",
+          file.file
+        );
+        await fs.unlink(filePath);
+      });
 
-    await Promise.all(fileDeletePromises);
+      await Promise.all(fileDeletePromises);
+    }
 
     await prisma.tender.delete({
       where: { id: Number(tender_id) },
