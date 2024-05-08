@@ -39,6 +39,7 @@ exports.default = async (req, res) => {
             : req.body.page
                 ? (req.body.page - 1) * 10
                 : 0;
+        let currentPage = page ? page / 10 + 1 : 1;
         news = await index_1.default.client.news.findMany({
             take: 10,
             skip: page,
@@ -62,6 +63,8 @@ exports.default = async (req, res) => {
             .json(new response_1.default(true, "News getted successfully", {
             news: news,
             total_pages: totalPages,
+            current_page: currentPage,
+            next_page: currentPage >= totalPages ? null : currentPage + 1,
             tags: _tags,
         }));
     }

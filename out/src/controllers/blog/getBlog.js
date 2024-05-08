@@ -47,6 +47,7 @@ exports.default = async (req, res) => {
             : req.body.page
                 ? (req.body.page - 1) * 10
                 : 0;
+        let currentPage = page ? page / 10 + 1 : 1;
         if (req.auth?.role == "ADMIN" || req.auth?.role == "SUPER_ADMIN") {
             blog = await index_1.default.client.blog.findMany({
                 take: 10,
@@ -84,6 +85,8 @@ exports.default = async (req, res) => {
             .json(new response_1.default(true, "blog fetched successfully", {
             blog,
             total_pages: totalPages,
+            current_page: currentPage,
+            next_page: currentPage >= totalPages ? null : currentPage + 1,
             tags: _tags,
         }));
     }

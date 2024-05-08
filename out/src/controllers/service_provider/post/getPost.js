@@ -10,6 +10,7 @@ exports.default = async (req, res) => {
     try {
         let totalPages = 0;
         let page = req.query.page ? ((0, lodash_1.parseInt)(req.query.page) - 1) * 10 : req.body.page ? (req.body.page - 1) * 10 : 0;
+        let currentPage = page ? page / 10 + 1 : 1;
         let where = {
             posted_by: req.query.posted_by ? (0, lodash_1.parseInt)(req.query.posted_by) : undefined,
         };
@@ -21,7 +22,12 @@ exports.default = async (req, res) => {
         });
         totalPages = await index_1.default.client.service_provider_post.count({ where });
         totalPages = Math.ceil(totalPages / 10);
-        return res.status(200).json(new response_1.default(true, "data fetched successfully", { posts: post, total_pages: totalPages }));
+        return res.status(200).json(new response_1.default(true, "data fetched successfully", {
+            posts: post,
+            current_page: currentPage,
+            next_page: currentPage >= totalPages ? null : currentPage + 1,
+            total_pages: totalPages
+        }));
     }
     catch (error) {
         console.error(error);

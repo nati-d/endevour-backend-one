@@ -53,6 +53,7 @@ export default async (req: Request, res: Response) => {
       : req.body.page
       ? (req.body.page - 1) * 10
       : 0;
+    let currentPage = page ? page / 10 + 1 : 1;
 
     if (req.auth?.role == "ADMIN" || req.auth?.role == "SUPER_ADMIN") {
       blog = await prisma.client.blog.findMany({
@@ -96,6 +97,8 @@ export default async (req: Request, res: Response) => {
         new ApiResponse(true, "blog fetched successfully", {
           blog,
           total_pages: totalPages,
+          current_page: currentPage,
+          next_page: currentPage >= totalPages ? null : currentPage + 1,
           tags: _tags,
         })
       );

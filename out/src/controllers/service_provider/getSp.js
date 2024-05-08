@@ -20,6 +20,7 @@ exports.default = async (req, res) => {
         let service_provider;
         let totalPages = 0;
         let page = req.query.page ? (parseInt(req.query.page) - 1) * 10 : req.body.page ? (req.body.page - 1) * 10 : 0;
+        let currentPage = page ? page / 10 + 1 : 1;
         service_provider = await index_1.default.client.service_provider.findMany({
             take: 10,
             skip: page,
@@ -38,7 +39,11 @@ exports.default = async (req, res) => {
             }
         });
         let _sp_category = __sp_category.map(data => data.name);
-        res.status(200).json(new response_1.default(true, "service provider fetched successfully", { service_provider: service_provider, total_pages: totalPages, service_category: _sp_category }));
+        res.status(200).json(new response_1.default(true, "service provider fetched successfully", { service_provider: service_provider,
+            total_pages: totalPages,
+            current_page: currentPage,
+            next_page: currentPage >= totalPages ? null : currentPage + 1,
+            service_category: _sp_category }));
     }
     catch (error) {
         console.error("Error while posting service provider:", error);

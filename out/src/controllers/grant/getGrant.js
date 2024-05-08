@@ -36,6 +36,7 @@ exports.default = async (req, res) => {
         let grant;
         let totalPages = 0;
         let page = req.query.page ? (parseInt(req.query.page) - 1) * 10 : req.body.page ? (req.body.page - 1) * 10 : 0;
+        let currentPage = page ? page / 10 + 1 : 1;
         grant = await index_1.default.client.grant.findMany({
             take: 10,
             skip: page,
@@ -47,7 +48,7 @@ exports.default = async (req, res) => {
                 id: "desc"
             }
         });
-        totalPages = await index_1.default.client.blog.count({ where });
+        totalPages = await index_1.default.client.grant.count({ where });
         totalPages = Math.ceil(totalPages / 10);
         let __tags = await index_1.default.client.tag.findMany({
             where: {
@@ -58,7 +59,13 @@ exports.default = async (req, res) => {
             }
         });
         let _tags = __tags.map(data => data.name);
-        return res.status(200).json(new response_1.default(true, "grants fetched successfully", { grant: grant, total_pages: totalPages, tags: _tags }));
+        return res.status(200).json(new response_1.default(true, "grants fetched successfully", {
+            grant: grant,
+            total_pages: totalPages,
+            current_page: currentPage,
+            next_page: currentPage >= totalPages ? null : currentPage + 1,
+            tags: _tags
+        }));
     }
     catch (error) {
         console.error("Error while posting grant:", error);
