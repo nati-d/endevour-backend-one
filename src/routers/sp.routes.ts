@@ -9,7 +9,7 @@ router.post("/signup", Controller.createSp);
 
 router.post("/signin", Controller.signinSp);
 
-router.get("/get-service-provider", Controller.getSp);
+router.get("/get-service-provider", Middleware.tokenForAdmin, Controller.getSp);
 
 router.get("/get-service-provider-by-id", Controller.getSpById);
 

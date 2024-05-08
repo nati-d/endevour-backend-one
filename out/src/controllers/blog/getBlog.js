@@ -18,7 +18,7 @@ exports.default = async (req, res) => {
     try {
         let id = (0, lodash_1.parseInt)(req.query.id) || req.body.id;
         let title = req.query.title || req.body.title;
-        let verified_by = (0, lodash_1.parseInt)(req.query.verified_by);
+        let verified_by = req.auth?.is_admin ? (0, lodash_1.parseInt)(req.query.verified_by) : { not: null };
         let posted_by = (0, lodash_1.parseInt)(req.query.posted_by) || req.body.posted_by;
         let date_lower_bound = req.query.date_lower_bound || req.body?.date?.lower_bound;
         let date_upper_bound = req.query.date_upper_bound || req.body?.date?.upper_bound;

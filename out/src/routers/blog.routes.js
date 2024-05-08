@@ -8,7 +8,7 @@ const index_1 = __importDefault(require("../controllers/index"));
 const index_2 = __importDefault(require("../middlewares/index"));
 const router = express_1.default.Router();
 router.post("/create-blog", [index_2.default.tokenAuth], index_1.default.createBlog);
-router.get("/get-blog", index_1.default.getBlog);
+router.get("/get-blog", index_2.default.tokenForAdmin, index_1.default.getBlog);
 router.get("/get-blog-by-id", index_1.default.getBlogById);
 router.put("/update-blog", [index_2.default.tokenAuth], index_1.default.updateBlog);
 router.delete("/delete-blog", [index_2.default.tokenAuth], index_1.default.deleteBlog);

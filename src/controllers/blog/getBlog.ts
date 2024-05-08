@@ -19,7 +19,7 @@ export default async (req: Request, res: Response) => {
   try {
     let id = parseInt(req.query.id as string) || req.body.id;
     let title = (req.query.title as string) || req.body.title;
-    let verified_by = parseInt(req.query.verified_by as string);
+    let verified_by = req.auth?.is_admin ? parseInt(req.query.verified_by as string): { not: null };
     let posted_by =
       parseInt(req.query.posted_by as string) || req.body.posted_by;
     let date_lower_bound =

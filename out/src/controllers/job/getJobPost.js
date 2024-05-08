@@ -24,7 +24,7 @@ exports.default = async (req, res) => {
             : JSON.parse(req.query.category) || req.body.category;
         let closing_date_lower_bound = req.query.closing_date_lower_bound || req.body?.closing_date?.lower_bound;
         let closing_date_upper_bound = req.query.closing_date_upper_bound || req.body?.closing_date?.upper_bound;
-        let verified_by = (0, lodash_1.parseInt)(req.query.verified_by);
+        let verified_by = req.auth?.is_admin ? (0, lodash_1.parseInt)(req.query.verified_by) : { not: null };
         let posted_by = (0, lodash_1.parseInt)(req.query.posted_by) || req.body.posted_by;
         let salary_low_end = parseFloat(req.query.salary_low_end) || req.body?.salary?.low_end;
         let salary_high_end = parseFloat(req.query.salary_high_end) ||

@@ -10,7 +10,7 @@ const router = (0, express_1.Router)();
 const routerPost = (0, express_1.Router)();
 router.post("/signup", index_2.default.createSp);
 router.post("/signin", index_2.default.signinSp);
-router.get("/get-service-provider", index_2.default.getSp);
+router.get("/get-service-provider", index_1.default.tokenForAdmin, index_2.default.getSp);
 router.get("/get-service-provider-by-id", index_2.default.getSpById);
 router.put("/update-service-provider", [index_1.default.tokenAuth, index_1.default.spAuth], index_2.default.updateSp);
 router.delete("/delete-service-provider", [index_1.default.tokenAuth, index_1.default.spAuth], index_2.default.deleteSp);

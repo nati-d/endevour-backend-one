@@ -5,11 +5,6 @@ import Validator from "../../validation/index";
 import ApiResponse from "../../types/response";
 
 export default async (req: Request, res: Response) => {
-  const { error } = Validator.grant.getGrant.validate(req.body);
-
-  if (error) {
-    return res.status(400).json(new ApiResponse(false, "unidentified request content", error.details));
-  }
 
   try {
     let id = parseInt(req.query.id as string) || req.body.id;

@@ -9,7 +9,7 @@ const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
     try {
         let id = parseInt(req.query.id) || req.body.id;
-        let verified_by = parseInt(req.query.verified_by);
+        let verified_by = req.auth?.is_admin ? parseInt(req.query.verified_by) : { not: null };
         let sp_category = req.body.service_category;
         let where = {
             id,
@@ -25,7 +25,18 @@ exports.default = async (req, res) => {
             take: 10,
             skip: page,
             where,
-            orderBy: { id: 'desc' }
+            orderBy: { id: 'desc' },
+            select: {
+                id: true,
+                name: true,
+                phone: true,
+                email: true,
+                about: true,
+                verified_by: true,
+                service_category: true,
+                created_at: true,
+                updated_at: true
+            }
         });
         totalPages = await index_1.default.client.service_provider.count({ where });
         totalPages = Math.ceil(totalPages / 10);

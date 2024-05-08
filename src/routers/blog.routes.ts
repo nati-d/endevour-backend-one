@@ -6,7 +6,7 @@ const router: Router = express.Router();
 
 router.post("/create-blog", [ Middleware.tokenAuth ], Controller.createBlog);
 
-router.get("/get-blog", Controller.getBlog);
+router.get("/get-blog", Middleware.tokenForAdmin, Controller.getBlog);
 
 router.get("/get-blog-by-id", Controller.getBlogById);
 

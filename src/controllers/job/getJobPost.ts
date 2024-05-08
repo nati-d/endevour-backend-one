@@ -30,7 +30,7 @@ export default async (req: Request, res: Response) => {
       (req.query.closing_date_lower_bound as string) || req.body?.closing_date?.lower_bound;
     let closing_date_upper_bound =
       (req.query.closing_date_upper_bound as string) || req.body?.closing_date?.upper_bound;
-    let verified_by = parseInt(req.query.verified_by as string);
+    let verified_by = req.auth?.is_admin ? parseInt(req.query.verified_by as string) : { not: null };
     let posted_by = parseInt(req.query.posted_by as string) || req.body.posted_by;
     let salary_low_end =
       parseFloat(req.query.salary_low_end as string) || req.body?.salary?.low_end;

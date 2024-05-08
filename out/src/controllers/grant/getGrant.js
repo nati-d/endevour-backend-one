@@ -5,13 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("../../prisma/index"));
 const client_1 = require("@prisma/client");
-const index_2 = __importDefault(require("../../validation/index"));
 const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
-    const { error } = index_2.default.grant.getGrant.validate(req.body);
-    if (error) {
-        return res.status(400).json(new response_1.default(false, "unidentified request content", error.details));
-    }
     try {
         let id = parseInt(req.query.id) || req.body.id;
         let title = req.query.title || req.body.title;
