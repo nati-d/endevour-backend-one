@@ -1,34 +1,24 @@
 import prisma from "../../prisma/index";
 import { Prisma } from "@prisma/client";
 import { Request, Response } from "express";
-import _, { parseInt } from "lodash";
-import Validator from "../../validation/index";
+import _ from "lodash";
 import ApiResponse from "../../types/response";
 
 export default async (req: Request, res: Response) => {
-  const { error } = Validator.blog.getBlog.validate(req.body);
-
-  if (error) {
-    return res
-      .status(400)
-      .json(
-        new ApiResponse(false, "unidentified request content", error.details)
-      );
-  }
 
   try {
-    let id = parseInt(req.query.id as string) || req.body.id;
-    let title = (req.query.title as string) || req.body.title;
+    let id = parseInt(req.query.id as string) || undefined;
+    let title = (req.query.title as string) || undefined;
     let verified_by = req.auth?.is_admin ? parseInt(req.query.verified_by as string): { not: null };
     let posted_by =
-      parseInt(req.query.posted_by as string) || req.body.posted_by;
+      parseInt(req.query.posted_by as string) || undefined;
     let date_lower_bound =
-      (req.query.date_lower_bound as string) || req.body?.date?.lower_bound;
+      (req.query.date_lower_bound as string) || undefined;
     let date_upper_bound =
-      (req.query.date_upper_bound as string) || req.body?.date?.upper_bound;
+      (req.query.date_upper_bound as string) || undefined;
     let tags = !req.query.tags
       ? undefined
-      : JSON.parse(req.query.tags as string) || req.body.tags;
+      : JSON.parse(req.query.tags as string) || undefined;
     let where = {
       id,
       title,

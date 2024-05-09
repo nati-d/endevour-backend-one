@@ -5,26 +5,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("../../prisma/index"));
 const client_1 = require("@prisma/client");
-const lodash_1 = require("lodash");
-const index_2 = __importDefault(require("../../validation/index"));
 const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
-    const { error } = index_2.default.blog.getBlog.validate(req.body);
-    if (error) {
-        return res
-            .status(400)
-            .json(new response_1.default(false, "unidentified request content", error.details));
-    }
     try {
-        let id = (0, lodash_1.parseInt)(req.query.id) || req.body.id;
-        let title = req.query.title || req.body.title;
-        let verified_by = req.auth?.is_admin ? (0, lodash_1.parseInt)(req.query.verified_by) : { not: null };
-        let posted_by = (0, lodash_1.parseInt)(req.query.posted_by) || req.body.posted_by;
-        let date_lower_bound = req.query.date_lower_bound || req.body?.date?.lower_bound;
-        let date_upper_bound = req.query.date_upper_bound || req.body?.date?.upper_bound;
+        let id = parseInt(req.query.id) || undefined;
+        let title = req.query.title || undefined;
+        let verified_by = req.auth?.is_admin ? parseInt(req.query.verified_by) : { not: null };
+        let posted_by = parseInt(req.query.posted_by) || undefined;
+        let date_lower_bound = req.query.date_lower_bound || undefined;
+        let date_upper_bound = req.query.date_upper_bound || undefined;
         let tags = !req.query.tags
             ? undefined
-            : JSON.parse(req.query.tags) || req.body.tags;
+            : JSON.parse(req.query.tags) || undefined;
         let where = {
             id,
             title,
@@ -43,7 +35,7 @@ exports.default = async (req, res) => {
         let blog;
         let totalPages = 0;
         let page = req.query.page
-            ? ((0, lodash_1.parseInt)(req.query.page) - 1) * 10
+            ? (parseInt(req.query.page) - 1) * 10
             : req.body.page
                 ? (req.body.page - 1) * 10
                 : 0;
