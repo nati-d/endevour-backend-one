@@ -6,40 +6,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("../../prisma/index"));
 const client_1 = require("@prisma/client");
 const lodash_1 = require("lodash");
-const validation_1 = __importDefault(require("../../validation"));
 const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
-    const { error } = validation_1.default.job.getJobPost.validate(req.body);
-    if (error)
-        return res
-            .status(400)
-            .send(new response_1.default(false, "unidentified request content", error.details));
     try {
-        let id = (0, lodash_1.parseInt)(req.query.id) || req.body.id;
+        let id = (0, lodash_1.parseInt)(req.query.id) || undefined;
         let contract_type = !req.query.contract_type ? undefined
-            : JSON.parse(req.query.contract_type) || req.body.contract_type;
-        let year_of_experience_lower_bound = (0, lodash_1.parseInt)(req.query.year_of_experience_lower_bound) || req.body?.year_of_experience?.lower_bound;
-        let year_of_experience_upper_bound = (0, lodash_1.parseInt)(req.query.year_of_experience_upper_bound) || req.body?.year_of_experience?.upper_bound;
+            : JSON.parse(req.query.contract_type) || undefined;
+        let year_of_experience_lower_bound = (0, lodash_1.parseInt)(req.query.year_of_experience_lower_bound) || undefined;
+        let year_of_experience_upper_bound = (0, lodash_1.parseInt)(req.query.year_of_experience_upper_bound) || undefined;
         let category = !req.query.category ? undefined
-            : JSON.parse(req.query.category) || req.body.category;
-        let closing_date_lower_bound = req.query.closing_date_lower_bound || req.body?.closing_date?.lower_bound;
-        let closing_date_upper_bound = req.query.closing_date_upper_bound || req.body?.closing_date?.upper_bound;
+            : JSON.parse(req.query.category) || undefined;
+        let closing_date_lower_bound = req.query.closing_date_lower_bound || undefined;
+        let closing_date_upper_bound = req.query.closing_date_upper_bound || undefined;
         let verified_by = req.auth?.is_admin ? (0, lodash_1.parseInt)(req.query.verified_by) : { not: null };
-        let posted_by = (0, lodash_1.parseInt)(req.query.posted_by) || req.body.posted_by;
-        let salary_low_end = parseFloat(req.query.salary_low_end) || req.body?.salary?.low_end;
-        let salary_high_end = parseFloat(req.query.salary_high_end) ||
-            req.body?.salary?.high_end;
-        let periodicity = !req.query.periodicity
-            ? undefined
-            : JSON.parse(req.query.periodicity) || req.body.periodicity;
+        let posted_by = (0, lodash_1.parseInt)(req.query.posted_by) || undefined;
+        let salary_low_end = parseFloat(req.query.salary_low_end) || undefined;
+        let salary_high_end = parseFloat(req.query.salary_high_end) || undefined;
+        let periodicity = !req.query.periodicity ? undefined
+            : JSON.parse(req.query.periodicity) || undefined;
         let currency = !req.query.currency
             ? undefined
-            : JSON.parse(req.query.currency) || req.body.currency;
-        let date_lower_bound = req.query.date_lower_bound || req.body?.date?.lower_bound;
-        let date_upper_bound = req.query.date_upper_bound || req.body?.date?.upper_bound;
+            : JSON.parse(req.query.currency) || undefined;
+        let date_lower_bound = req.query.date_lower_bound || undefined;
+        let date_upper_bound = req.query.date_upper_bound || undefined;
         let tags = !req.query.tags
             ? undefined
-            : JSON.parse(req.query.tags) || req.body.tags;
+            : JSON.parse(req.query.tags) || undefined;
         let where = {
             id,
             contract_type: { in: contract_type },
