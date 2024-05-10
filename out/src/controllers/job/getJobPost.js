@@ -18,7 +18,7 @@ exports.default = async (req, res) => {
             : JSON.parse(req.query.category) || undefined;
         let closing_date_lower_bound = req.query.closing_date_lower_bound || undefined;
         let closing_date_upper_bound = req.query.closing_date_upper_bound || undefined;
-        let verified_by = req.auth?.is_admin ? (0, lodash_1.parseInt)(req.query.verified_by) : { not: null };
+        let verified_by = req.auth?.is_admin ? (0, lodash_1.parseInt)(req.query.verified_by) || undefined : { not: null };
         let posted_by = (0, lodash_1.parseInt)(req.query.posted_by) || undefined;
         let salary_low_end = parseFloat(req.query.salary_low_end) || undefined;
         let salary_high_end = parseFloat(req.query.salary_high_end) || undefined;
@@ -44,11 +44,7 @@ exports.default = async (req, res) => {
                 gte: closing_date_lower_bound,
                 lte: closing_date_upper_bound,
             },
-            verified_by: verified_by == 0
-                ? { not: null }
-                : verified_by == -1
-                    ? null
-                    : verified_by,
+            verified_by: verified_by == 0 ? { not: null } : verified_by == -1 ? null : verified_by,
             posted_by,
             salary: {
                 low_end: { lte: salary_high_end },

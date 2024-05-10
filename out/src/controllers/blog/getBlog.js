@@ -10,7 +10,7 @@ exports.default = async (req, res) => {
     try {
         let id = parseInt(req.query.id) || undefined;
         let title = req.query.title || undefined;
-        let verified_by = req.auth?.is_admin ? parseInt(req.query.verified_by) : { not: null };
+        let verified_by = req.auth?.is_admin ? parseInt(req.query.verified_by) || undefined : { not: null };
         let posted_by = parseInt(req.query.posted_by) || undefined;
         let date_lower_bound = req.query.date_lower_bound || undefined;
         let date_upper_bound = req.query.date_upper_bound || undefined;
