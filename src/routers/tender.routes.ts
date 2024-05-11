@@ -4,7 +4,7 @@ import Tender from "../controllers/tender";
 const router = express.Router();
 
 // Accessed by all user.
-router.get("/all/tenders", Tender.getTenders);
+router.get("/all/tenders", Middlewares.tokenForAdmin, Tender.getTenders);
 
 router.get("/:tender_id", Tender.getTender);
 

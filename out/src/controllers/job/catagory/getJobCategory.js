@@ -11,7 +11,11 @@ exports.default = async (req, res) => {
     try {
         let jobPosts;
         let totalPages = 0;
-        let page = req.query.page ? ((0, lodash_1.parseInt)(req.query.page) - 1) * 10 : req.body.page ? (req.body.page - 1) * 10 : 0;
+        let page = req.query.page
+            ? ((0, lodash_1.parseInt)(req.query.page) - 1) * 10
+            : req.body.page
+                ? (req.body.page - 1) * 10
+                : 0;
         let currentPage = page ? page / 10 + 1 : 1;
         jobPosts = await index_1.default.client.job_category.findMany({
             take: 10,

@@ -15,20 +15,16 @@ const tokenAuth = (req: Request, res: Response, next: NextFunction) => {
 
   if (!token) {
     next();
-  }
-  else {
-
+  } else {
     try {
       const decoded: any = jwt.verify(token, process.env.JWT_KEY as string);
       if (decoded.is_admin == true) req.auth = decoded;
       next();
     } catch (error) {
-
       return res
         .status(400)
         .json(new ApiResponse(false, "Access denied. Invalid token"));
     }
-
   }
 };
 
