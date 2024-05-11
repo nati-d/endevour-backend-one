@@ -8,7 +8,7 @@ const middlewares_1 = __importDefault(require("../middlewares"));
 const tender_1 = __importDefault(require("../controllers/tender"));
 const router = express_1.default.Router();
 // Accessed by all user.
-router.get("/all/tenders", tender_1.default.getTenders);
+router.get("/all/tenders", middlewares_1.default.tokenForAdmin, tender_1.default.getTenders);
 router.get("/:tender_id", tender_1.default.getTender);
 router.get("/category/get-all-categories", tender_1.default.getAllTenderCategories);
 // Accessed by all authenticated user

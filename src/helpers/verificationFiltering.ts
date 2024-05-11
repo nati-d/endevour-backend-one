@@ -1,20 +1,16 @@
 const verificationFiltering = (verifiedBy: number): any => {
-  let filtering = {};
-  if (!verifiedBy) return (filtering = { verified_by: undefined });
+  let verified_by: any;
+  if (!verifiedBy) return (verified_by = undefined);
 
   if (verifiedBy == 0) {
-    filtering = {
-      verified_by: { not: null },
-    };
+    verified_by = { not: null };
   } else if (verifiedBy == -1) {
-    filtering = {
-      verified_by: null,
-    };
+    verified_by = null;
   } else {
-    filtering = { verified_by: verifiedBy };
+    verified_by = verifiedBy;
   }
 
-  return filtering;
+  return verified_by;
 };
 
 export default verificationFiltering;
