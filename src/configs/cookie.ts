@@ -2,14 +2,14 @@ import { createClient } from "redis";
 import RedisStore from "connect-redis";
 
 let redisClient = createClient();
-redisClient.connect().catch(console.error);
+redisClient.connect().catch();
 
 export default {
     store: new RedisStore({
         client: redisClient,
         prefix: "endevour:"
     }),
-    secret: "your_secret_key_here",
+    secret: process.env.REDIS_SECRET as string,
     resave: false,
     saveUninitialized: false,
     cookie: {
