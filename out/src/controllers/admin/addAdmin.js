@@ -45,7 +45,7 @@ const addAdmin = async (req, res) => {
         });
         return res
             .status(500)
-            .json(new response_1.default(false, "Failed to created new admin please try again!"));
+            .json(new response_1.default(false, "Failed to created new admin please try again!", null, error));
     }
 };
 exports.default = addAdmin;

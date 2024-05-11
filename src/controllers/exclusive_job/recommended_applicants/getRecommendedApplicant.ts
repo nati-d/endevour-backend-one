@@ -11,6 +11,25 @@ const getRecommendedApplicant = async (req: Request, res: Response) => {
       },
       include: {
         exclusive_job: true,
+        user: {
+          select: {
+            id: true,
+            first_name: true,
+            last_name: true,
+            profile_image: true,
+            email: true,
+          },
+        },
+        admin: {
+          select: {
+            id: true,
+            email: true,
+            first_name: true,
+            last_name: true,
+            role: true,
+            profile_image: true,
+          },
+        },
       },
     });
 

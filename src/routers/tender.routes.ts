@@ -8,6 +8,8 @@ router.get("/all/tenders", Tender.getTenders);
 
 router.get("/:tender_id", Tender.getTender);
 
+router.get("/category/get-all-categories", Tender.getAllTenderCategories);
+
 // Accessed by all authenticated user
 router.use(Middlewares.tokenAuth);
 
@@ -31,7 +33,5 @@ router.put("/category/update", Tender.updateTenderCategory);
 router.delete("/category/delete", Tender.deleteTenderCategory);
 
 router.get("/category/get-category-by-id", Tender.getTenderCategory);
-
-router.get("/category/get-all-categories", Tender.getAllTenderCategories);
 
 export default router;

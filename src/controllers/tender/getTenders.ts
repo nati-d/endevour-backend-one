@@ -4,16 +4,22 @@ import ApiResponse from "../../types/response";
 import verificationFiltering from "../../helpers/verificationFiltering";
 
 const getTenders = async (req: Request, res: Response) => {
-  const tendersPerPage = 10;
   const { verified_by, page } = req.query;
+  const tendersPerPage = 10;
 
   try {
     let filtering = {};
-    if (verified_by)
-      filtering = verificationFiltering(parseInt(verified_by.toString()));
 
-    const totalTenders = await prisma.tender.count();
-    const numberOfPages = Math.ceil(totalTenders / tendersPerPage);
+    if (!req.auth)
+      filtering = {
+        verified_by: {
+          not: null,
+        },
+      };
+
+    if (req.auth && verified_by) {
+      filtering = verificationFiltering(parseInt(verified_by.toString()));
+    }
 
     const tenders = await prisma.tender.findMany({
       skip: page ? (parseInt(page.toString()) - 1) * tendersPerPage : undefined,
@@ -29,6 +35,8 @@ const getTenders = async (req: Request, res: Response) => {
         },
       },
     });
+
+    const numberOfPages = Math.ceil(tenders.length / tendersPerPage);
 
     return res.status(200).json(
       new ApiResponse(true, "Tenders getted successfully.", {

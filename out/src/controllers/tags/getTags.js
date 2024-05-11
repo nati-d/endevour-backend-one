@@ -6,16 +6,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient"));
 const response_1 = __importDefault(require("../../types/response"));
 const getTags = async (req, res) => {
-    const tag_name = req.body.tag_name;
+    const { page } = req.query;
+    const tagsPerPage = 10;
     try {
         const tags = await prismaClient_1.default.tag.findMany({
-            where: {
-                name: tag_name,
-            },
+            skip: page ? (parseInt(page.toString()) - 1) * tagsPerPage : undefined,
+            take: tagsPerPage,
         });
-        return res
-            .status(200)
-            .json(new response_1.default(true, "Tags getted successfully.", tags));
+        const numberOfPages = Math.ceil(tags.length / tagsPerPage);
+        return res.status(200).json(new response_1.default(true, "Tags getted successfully.", {
+            tags,
+            totalPages: numberOfPages,
+            currentPage: Number(page),
+            nextPage: page && parseInt(page?.toString()) < numberOfPages
+                ? parseInt(page.toString()) + 1
+                : null,
+        }));
     }
     catch (error) {
         console.log(error);

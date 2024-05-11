@@ -7,14 +7,19 @@ const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient
 const response_1 = __importDefault(require("../../types/response"));
 const verificationFiltering_1 = __importDefault(require("../../helpers/verificationFiltering"));
 const getTenders = async (req, res) => {
-    const tendersPerPage = 10;
     const { verified_by, page } = req.query;
+    const tendersPerPage = 10;
     try {
         let filtering = {};
-        if (verified_by)
+        if (!req.auth)
+            filtering = {
+                verified_by: {
+                    not: null,
+                },
+            };
+        if (req.auth && verified_by) {
             filtering = (0, verificationFiltering_1.default)(parseInt(verified_by.toString()));
-        const totalTenders = await prismaClient_1.default.tender.count();
-        const numberOfPages = Math.ceil(totalTenders / tendersPerPage);
+        }
         const tenders = await prismaClient_1.default.tender.findMany({
             skip: page ? (parseInt(page.toString()) - 1) * tendersPerPage : undefined,
             take: tendersPerPage,
@@ -29,6 +34,7 @@ const getTenders = async (req, res) => {
                 },
             },
         });
+        const numberOfPages = Math.ceil(tenders.length / tendersPerPage);
         return res.status(200).json(new response_1.default(true, "Tenders getted successfully.", {
             tenders,
             totalPages: numberOfPages,

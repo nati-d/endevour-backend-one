@@ -5,12 +5,14 @@ import _, { parseInt } from "lodash";
 import ApiResponse from "../../../types/response";
 
 export default async (req: Request, res: Response) => {
-
   try {
-
     let jobPosts: any;
     let totalPages: number = 0;
-    let page = req.query.page ? (parseInt(req.query.page as string) - 1) * 10 : req.body.page ? (req.body.page - 1) * 10 : 0;
+    let page = req.query.page
+      ? (parseInt(req.query.page as string) - 1) * 10
+      : req.body.page
+      ? (req.body.page - 1) * 10
+      : 0;
     let currentPage = page ? page / 10 + 1 : 1;
 
     jobPosts = await prisma.client.job_category.findMany({
