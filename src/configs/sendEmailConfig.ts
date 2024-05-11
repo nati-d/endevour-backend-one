@@ -12,11 +12,11 @@ const sendEmailConfig = (
 ) => {
   const transporter = nodemailer.createTransport({
     host: "endevour.org",
-    port: 465,
+    port: 468,
     secure: true,
     auth: {
       user: "info@endevour.org",
-      pass: "Bwn#+AUS853W",
+      pass: "NRyo187uvFMp",
     },
   });
 

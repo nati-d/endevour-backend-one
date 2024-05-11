@@ -7,11 +7,11 @@ const nodemailer_1 = __importDefault(require("nodemailer"));
 const sendEmailConfig = (sendTo, subject, html, file) => {
     const transporter = nodemailer_1.default.createTransport({
         host: "endevour.org",
-        port: 465,
+        port: 468,
         secure: true,
         auth: {
             user: "info@endevour.org",
-            pass: "Bwn#+AUS853W",
+            pass: "NRyo187uvFMp",
         },
     });
     return transporter.sendMail({
