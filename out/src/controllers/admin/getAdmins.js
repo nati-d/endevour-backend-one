@@ -9,19 +9,29 @@ const response_1 = __importDefault(require("../../types/response"));
 const admin_1 = require("../../validation/admin");
 const getAdmins = async (req, res) => {
     const { error } = admin_1.adminRole.validate(req.query);
+    const { page } = req.query;
     if (error)
         return res.status(400).json(new response_1.default(false, "Invalide role query"));
     const role = req.query.role;
+    const adminsPerPage = 10;
     try {
         const getAdmins = await prismaClient_1.default.admin.findMany({
+            skip: page ? (parseInt(page.toString()) - 1) * adminsPerPage : undefined,
+            take: adminsPerPage,
             where: {
                 role,
             },
         });
+        const numberOfPages = Math.ceil(getAdmins.length / adminsPerPage);
         const passwordRemoved = getAdmins.map((element) => lodash_1.default.pickBy(element, (value, key) => key !== "password"));
-        return res
-            .status(200)
-            .json(new response_1.default(true, "Admins retrieved successfully.", passwordRemoved));
+        return res.status(200).json(new response_1.default(true, "Admins retrieved successfully.", {
+            admins: passwordRemoved,
+            totalPages: numberOfPages,
+            currentPage: Number(page),
+            nextPage: page && parseInt(page?.toString()) < numberOfPages
+                ? parseInt(page.toString()) + 1
+                : null,
+        }));
     }
     catch (error) {
         return res

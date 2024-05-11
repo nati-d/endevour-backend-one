@@ -3,17 +3,28 @@ import prisma from "../../prisma/client/prismaClient";
 import ApiResponse from "../../types/response";
 
 const getTags = async (req: Request, res: Response) => {
-  const tag_name = req.body.tag_name;
+  const { page } = req.query;
+  const tagsPerPage = 10;
+
   try {
     const tags = await prisma.tag.findMany({
-      where: {
-        name: tag_name,
-      },
+      skip: page ? (parseInt(page.toString()) - 1) * tagsPerPage : undefined,
+      take: tagsPerPage,
     });
 
-    return res
-      .status(200)
-      .json(new ApiResponse(true, "Tags getted successfully.", tags));
+    const numberOfPages = Math.ceil(tags.length / tagsPerPage);
+
+    return res.status(200).json(
+      new ApiResponse(true, "Tags getted successfully.", {
+        tags,
+        totalPages: numberOfPages,
+        currentPage: Number(page),
+        nextPage:
+          page && parseInt(page?.toString()) < numberOfPages
+            ? parseInt(page.toString()) + 1
+            : null,
+      })
+    );
   } catch (error) {
     console.log(error);
     return res

@@ -61,7 +61,12 @@ const addAdmin = async (req: Request, res: Response) => {
     return res
       .status(500)
       .json(
-        new ApiResponse(false, "Failed to created new admin please try again!")
+        new ApiResponse(
+          false,
+          "Failed to created new admin please try again!",
+          null,
+          error
+        )
       );
   }
 };
