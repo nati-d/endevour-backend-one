@@ -6,16 +6,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const sendEmailConfig = (sendTo, subject, html, file) => {
     const transporter = nodemailer_1.default.createTransport({
-        host: "endevour.org",
-        port: 468,
+        host: "api.endevour.org",
+        port: 465,
         secure: true,
         auth: {
-            user: "info@endevour.org",
-            pass: "NRyo187uvFMp",
+            user: "test@api.endevour.org",
+            pass: "!I}mul~=Az9.",
         },
     });
     return transporter.sendMail({
-        from: "info@endevour.org",
+        from: "test@api.endevour.org",
         to: sendTo,
         subject: subject,
         html: html,

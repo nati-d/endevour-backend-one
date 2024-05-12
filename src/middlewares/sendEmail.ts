@@ -44,8 +44,9 @@ const sendEmail = async (req: Request, res: Response) => {
         )
       );
   } catch (error) {
-    console.log(error);
+    console.log("Error while sending email", error);
     if (queryOnFail) queryOnFail();
+
     return res
       .status(500)
       .json(

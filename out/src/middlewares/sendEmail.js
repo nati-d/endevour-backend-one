@@ -17,7 +17,7 @@ const sendEmail = async (req, res) => {
             .json(new response_1.default(true, resMessage || "Email send successfully.", otherData));
     }
     catch (error) {
-        console.log(error);
+        console.log("Error while sending email", error);
         if (queryOnFail)
             queryOnFail();
         return res
