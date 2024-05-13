@@ -6,6 +6,7 @@ const getAllTenderCategories = async (req: Request, res: Response) => {
   const categoriesPerPage = 10;
   try {
     const totalCategories = await prisma.tender_category.count();
+
     const categories = await prisma.tender_category.findMany({
       skip: page
         ? (parseInt(page.toString()) - 1) * categoriesPerPage

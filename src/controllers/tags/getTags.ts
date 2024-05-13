@@ -7,12 +7,14 @@ const getTags = async (req: Request, res: Response) => {
   const tagsPerPage = 10;
 
   try {
+    const totalTags = await prisma.tag.count();
+
     const tags = await prisma.tag.findMany({
       skip: page ? (parseInt(page.toString()) - 1) * tagsPerPage : undefined,
       take: tagsPerPage,
     });
 
-    const numberOfPages = Math.ceil(tags.length / tagsPerPage);
+    const numberOfPages = Math.ceil(totalTags / tagsPerPage);
 
     return res.status(200).json(
       new ApiResponse(true, "Tags getted successfully.", {
