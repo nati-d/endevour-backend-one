@@ -15,6 +15,7 @@ const getAdmins = async (req, res) => {
     const role = req.query.role;
     const adminsPerPage = 10;
     try {
+        const totalAdmins = await prismaClient_1.default.admin.count();
         const getAdmins = await prismaClient_1.default.admin.findMany({
             skip: page ? (parseInt(page.toString()) - 1) * adminsPerPage : undefined,
             take: adminsPerPage,
@@ -22,7 +23,7 @@ const getAdmins = async (req, res) => {
                 role,
             },
         });
-        const numberOfPages = Math.ceil(getAdmins.length / adminsPerPage);
+        const numberOfPages = Math.ceil(totalAdmins / adminsPerPage);
         const passwordRemoved = getAdmins.map((element) => lodash_1.default.pickBy(element, (value, key) => key !== "password"));
         return res.status(200).json(new response_1.default(true, "Admins retrieved successfully.", {
             admins: passwordRemoved,
