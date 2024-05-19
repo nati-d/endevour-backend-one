@@ -9,16 +9,21 @@ require("./src/services");
 
 const app = express();
 
-// app.use(session(Config.cookie));
-app.use(cors());
+app.use(session(Config.cookie));
+app.use(cors({
+  origin: 'https://www.endevour.org',
+  credentials: true
+}));
 app.use(express.json());
 app.use("/public", express.static("public"));
 app.set("trust proxy", 1);
 
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/auth", Router.auth);
+
+app.use("/home", Router.home);
 
 app.use("/api/user", Router.user);
 

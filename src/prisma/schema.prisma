@@ -87,6 +87,8 @@ model User_credential {
   user_id       Int?
   credential_id String
   provider      String
+  created_at    DateTime    @default(now())
+  updated_at    DateTime    @default(now()) @updatedAt
 
   user User? @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 

@@ -12,6 +12,7 @@ import _blog from "./blog.routes";
 import _sp from "./sp.routes";
 import _tag from "./tag.routes";
 import _auth from "./auth";
+import _home from "./home";
 
 import _verification from "./verification.routes";
 namespace Routers {
@@ -27,6 +28,7 @@ namespace Routers {
   export const sp = _sp;
   export const tag = _tag;
   export const auth = _auth;
+  export const home = _home;
   export const verification = _verification;
 }
 
