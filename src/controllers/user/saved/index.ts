@@ -25,55 +25,61 @@ import _getOrganization from "./organization/get";
 import _saveServiceProvider from "./service_provider/add";
 import _deleteServiceProvider from "./service_provider/remove";
 import _getServiceProvider from "./service_provider/get";
+import _procurement from "./service_provider/procurement";
+import _getProcurementHistory from "./service_provider/getProcurementHistory";
 
 namespace Saved {
-    export const saveJob = _saveJob;
+  export const saveJob = _saveJob;
 
-    export const deleteJob = _deleteJob;
+  export const deleteJob = _deleteJob;
 
-    export const getJob = _getJob;
+  export const getJob = _getJob;
 
-// -- -- news -- -- //
-    export const saveNews = _saveNews;
+  // -- -- news -- -- //
+  export const saveNews = _saveNews;
 
-    export const deleteNews = _deleteNews;
+  export const deleteNews = _deleteNews;
 
-    export const getNews = _getNews;
+  export const getNews = _getNews;
 
-// -- -- blog -- -- //
-    export const saveBlog = _saveBlog;
+  // -- -- blog -- -- //
+  export const saveBlog = _saveBlog;
 
-    export const deleteBlog = _deleteBlog;
+  export const deleteBlog = _deleteBlog;
 
-    export const getBlog = _getBlog;
+  export const getBlog = _getBlog;
 
-// -- -- grant -- -- //
-    export const saveGrant = _saveGrant;
+  // -- -- grant -- -- //
+  export const saveGrant = _saveGrant;
 
-    export const deleteGrant = _deleteGrant;
+  export const deleteGrant = _deleteGrant;
 
-    export const getGrant = _getGrant;
+  export const getGrant = _getGrant;
 
-// -- -- Tender -- -- //
-    export const saveTender = _saveTender;
+  // -- -- Tender -- -- //
+  export const saveTender = _saveTender;
 
-    export const deleteTender = _deleteTender;
+  export const deleteTender = _deleteTender;
 
-    export const getTender = _getTender;
+  export const getTender = _getTender;
 
-// -- -- Organization -- -- //
-    export const saveOrganization = _saveOrganization;
+  // -- -- Organization -- -- //
+  export const saveOrganization = _saveOrganization;
 
-    export const deleteOrganization = _deleteOrganization;
+  export const deleteOrganization = _deleteOrganization;
 
-    export const getOrganization = _getOrganization;
+  export const getOrganization = _getOrganization;
 
-// -- -- Service Provider -- -- //
-    export const saveServiceProvider = _saveServiceProvider;
+  // -- -- Service Provider -- -- //
+  export const saveServiceProvider = _saveServiceProvider;
 
-    export const deleteServiceProvider = _deleteServiceProvider;
+  export const deleteServiceProvider = _deleteServiceProvider;
 
-    export const getServiceProvider = _getServiceProvider;
+  export const getServiceProvider = _getServiceProvider;
+
+  export const procurement = _procurement;
+
+  export const getProcurementHistory = _getProcurementHistory
 }
 
 export default Saved;

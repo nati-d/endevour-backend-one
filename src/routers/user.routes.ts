@@ -2,6 +2,7 @@ import express, { Router } from "express";
 import prisma from "../prisma/";
 import Controller from "../controllers";
 import Middleware from "../middlewares";
+import Service from "../services";
 
 const router: Router = express.Router();
 const savedRouter = Router();
@@ -51,6 +52,10 @@ savedRouter.post("/service-provider", [Middleware.tokenAuth], Controller.saved.s
 savedRouter.delete("/service-provider", [Middleware.tokenAuth], Controller.saved.deleteServiceProvider);
 
 savedRouter.get("/service-provider", [Middleware.tokenAuth],Controller.saved.getServiceProvider);
+
+savedRouter.post("/procurement", Middleware.tokenAuth, Controller.saved.procurement, Middleware.sendEmail);
+
+savedRouter.get("/get-procurement-history", [Middleware.tokenAuth, Middleware.adminAuth], Controller.saved.getProcurementHistory);
 
 router.use("/saved", savedRouter);
 

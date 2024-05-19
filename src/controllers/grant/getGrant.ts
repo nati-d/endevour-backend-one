@@ -1,7 +1,6 @@
 import prisma from "../../prisma/index";
 import { Prisma } from "@prisma/client";
 import { Request, Response } from "express";
-import Validator from "../../validation/index";
 import ApiResponse from "../../types/response";
 
 export default async (req: Request, res: Response) => {
@@ -38,7 +37,21 @@ export default async (req: Request, res: Response) => {
       skip: page,
       where,
       include: {
-        tags: { select: { name: true } }
+        tags: { select: { name: true } },
+        admin: {
+          select: {
+            id: true,
+            first_name: true,
+            last_name: true,
+            email: false,
+            phone_number: false,
+            password: false,
+            role: false,
+            profile_image: true,
+            created_at: false,
+            updated_at: false,
+          }
+        }
       },
       orderBy: {
         id: "desc"

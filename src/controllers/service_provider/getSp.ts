@@ -60,7 +60,8 @@ export default async (req: Request, res: Response) => {
       total_pages: totalPages,
       current_page: currentPage,
       next_page: currentPage >= totalPages ? null : currentPage + 1,
-      service_category: _sp_category }));
+      service_category: _sp_category
+    }));
 
   } catch (error) {
 

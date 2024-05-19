@@ -51,7 +51,23 @@ export default async (req: Request, res: Response) => {
       take: 10,
       skip: page,
       where,
-      include: { tags: { select: { name: true } } },
+      include: {
+          tags: { select: { name: true } },
+          admin: {
+            select: {
+              id: true,
+              first_name: true,
+              last_name: true,
+              email: false,
+              phone_number: false,
+              password: false,
+              role: false,
+              profile_image: true,
+              created_at: false,
+              updated_at: false,
+            }
+          }
+        },
       orderBy: { id: "desc" },
     });
 
