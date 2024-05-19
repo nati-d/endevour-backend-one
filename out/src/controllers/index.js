@@ -112,9 +112,3 @@ var Controller;
     Controller.deleteSpPost = deletePost_1.default;
 })(Controller || (Controller = {}));
 exports.default = Controller;
-// get all super admins
-// get all admins
-// update admin profile
-// delete admin
-// upload admin profile image, delete it and edit it
-// verirfy password
