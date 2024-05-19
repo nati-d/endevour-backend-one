@@ -13,7 +13,23 @@ exports.default = async (req, res) => {
         let grant;
         grant = await index_1.default.client.grant.findFirst({
             where: { id },
-            include: { tags: { select: { name: true } } }
+            include: {
+                tags: { select: { name: true } },
+                admin: {
+                    select: {
+                        id: true,
+                        first_name: true,
+                        last_name: true,
+                        email: false,
+                        phone_number: false,
+                        password: false,
+                        role: false,
+                        profile_image: true,
+                        created_at: false,
+                        updated_at: false,
+                    }
+                }
+            }
         });
         if (grant)
             return res.status(200).json(new response_1.default(true, "grant fetched successfully", grant));

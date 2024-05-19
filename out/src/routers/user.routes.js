@@ -54,5 +54,7 @@ savedRouter.get("/organization", [middlewares_1.default.tokenAuth], controllers_
 savedRouter.post("/service-provider", [middlewares_1.default.tokenAuth], controllers_1.default.saved.saveServiceProvider);
 savedRouter.delete("/service-provider", [middlewares_1.default.tokenAuth], controllers_1.default.saved.deleteServiceProvider);
 savedRouter.get("/service-provider", [middlewares_1.default.tokenAuth], controllers_1.default.saved.getServiceProvider);
+savedRouter.post("/procurement", middlewares_1.default.tokenAuth, controllers_1.default.saved.procurement, middlewares_1.default.sendEmail);
+savedRouter.get("/get-procurement-history", [middlewares_1.default.tokenAuth, middlewares_1.default.adminAuth], controllers_1.default.saved.getProcurementHistory);
 router.use("/saved", savedRouter);
 exports.default = router;

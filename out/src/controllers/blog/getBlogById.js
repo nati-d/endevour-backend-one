@@ -13,7 +13,38 @@ exports.default = async (req, res) => {
         let blog;
         blog = await index_1.default.client.blog.findFirst({
             where: { id },
-            include: { tags: { select: { name: true } } }
+            include: {
+                tags: { select: { name: true } },
+                user: {
+                    select: {
+                        id: true,
+                        first_name: true,
+                        last_name: true,
+                        email: true,
+                        phone_number: true,
+                        password: false,
+                        profile_image: true,
+                        location: false,
+                        verified_by: false,
+                        token: false,
+                        is_recommender: false
+                    }
+                },
+                admin: {
+                    select: {
+                        id: true,
+                        first_name: true,
+                        last_name: true,
+                        email: false,
+                        phone_number: false,
+                        password: false,
+                        role: false,
+                        profile_image: true,
+                        created_at: false,
+                        updated_at: false,
+                    }
+                }
+            }
         });
         if (blog)
             return res.status(200).json(new response_1.default(true, "blog fetched successfully", blog));

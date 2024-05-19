@@ -18,7 +18,16 @@ exports.default = async (req, res) => {
             take: 10,
             skip: page,
             where,
-            orderBy: { created_at: 'desc' }
+            orderBy: { created_at: 'desc' },
+            include: {
+                service_provider: {
+                    select: {
+                        id: true,
+                        name: true,
+                        verified_by: true
+                    }
+                }
+            }
         });
         totalPages = await index_1.default.client.service_provider_post.count({ where });
         totalPages = Math.ceil(totalPages / 10);
