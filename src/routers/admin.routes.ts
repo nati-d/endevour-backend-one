@@ -4,36 +4,26 @@ import Middleware from "../middlewares/index";
 
 const router = express.Router();
 
-router.post(
-  "/auth/add-admin",
-  [Middleware.tokenAuth, Middleware.adminAuth, Middleware.superAdminAuth],
-  Controller.addAdmin
-);
-
 router.post("/auth/login", Controller.adminLogin);
 
-router.get(
-  "/get-admins",
-  [Middleware.tokenAuth, Middleware.adminAuth, Middleware.superAdminAuth],
-  Controller.getAdmins
-);
+// Accessed by only authorized and authenticated admins
+router.use(Middleware.tokenAuth);
+router.use(Middleware.adminAuth);
 
-router.get(
-  "/confirm-password",
-  [Middleware.tokenAuth, Middleware.adminAuth],
-  Controller.confirmPassword
-);
-
+router.get("/confirm-password", Controller.confirmPassword);
 router.post(
   "/upload-profile-img",
-  [
-    Middleware.tokenAuth,
-    Middleware.adminAuth,
-    Middleware.uploadFile("images/profile_images/admin").single(
-      "profile_image"
-    ),
-  ],
+  Middleware.uploadFile("images/profile_images/admin").single("profile_image"),
   Controller.adminProfileImgUpload
 );
+router.put("/update-profile", Controller.updateAdminProfile);
+router.put("/change-password", Controller.changeAdminPassword);
+
+// Accessed only by super_admins
+router.use(Middleware.superAdminAuth);
+
+router.post("/auth/add-admin", Controller.addAdmin);
+router.get("/get-admins", Controller.getAdmins);
+router.put("/update-role", Controller.updateAdminRole);
 
 export default router;

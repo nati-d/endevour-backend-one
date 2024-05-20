@@ -1,8 +1,13 @@
+// -- Admin Controllers start --
 import _addAdmin from "./admin/addAdmin";
 import _adminLogin from "./admin/adminLogin";
 import _getAdmins from "./admin/getAdmins";
 import _confirmPassword from "./admin/confirmPassword";
 import _adminProfileImgUpload from "./admin/uploadProfileImg";
+import _updateAdminProfile from "./admin/updateProfile";
+import _updateAdminRole from "./admin/modifyRole";
+import _changeAdminPassword from "./admin/changePassword";
+// -- Admin Controllers end --
 
 import _userSignup from "./user/signup";
 import _userSignin from "./user/signin";
@@ -59,6 +64,7 @@ import _updateSpPost from "./service_provider/post/updatePost";
 import _deleteSpPost from "./service_provider/post/deletePost";
 
 namespace Controller {
+  // -- Admin --
   export const addAdmin = _addAdmin;
 
   export const adminLogin = _adminLogin;
@@ -69,6 +75,11 @@ namespace Controller {
 
   export const adminProfileImgUpload = _adminProfileImgUpload;
 
+  export const updateAdminRole = _updateAdminRole;
+
+  export const changeAdminPassword = _changeAdminPassword;
+
+  export const updateAdminProfile = _updateAdminProfile;
   // -- User -- //
   export const userSignup = _userSignup;
 
@@ -145,7 +156,7 @@ namespace Controller {
 
   export const createSpCategory = _createSpCategory;
 
-  export const getSpCategory = _getSpCategory
+  export const getSpCategory = _getSpCategory;
 
   export const getSpCategoryById = _getSpCategoryById;
 
