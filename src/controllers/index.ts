@@ -1,8 +1,13 @@
+// -- Admin Controllers start --
 import _addAdmin from "./admin/addAdmin";
 import _adminLogin from "./admin/adminLogin";
 import _getAdmins from "./admin/getAdmins";
 import _confirmPassword from "./admin/confirmPassword";
 import _adminProfileImgUpload from "./admin/uploadProfileImg";
+import _updateAdminProfile from "./admin/updateProfile";
+import _updateAdminRole from "./admin/modifyRole";
+import _changeAdminPassword from "./admin/changePassword";
+// -- Admin Controllers end --
 
 import _userSignup from "./user/signup";
 import _userSignin from "./user/signin";
@@ -59,115 +64,115 @@ import _updateSpPost from "./service_provider/post/updatePost";
 import _deleteSpPost from "./service_provider/post/deletePost";
 
 namespace Controller {
-    export const addAdmin = _addAdmin;
+  // -- Admin --
+  export const addAdmin = _addAdmin;
 
-    export const adminLogin = _adminLogin;
+  export const adminLogin = _adminLogin;
 
-    export const getAdmins = _getAdmins;
+  export const getAdmins = _getAdmins;
 
-    export const confirmPassword = _confirmPassword;
+  export const confirmPassword = _confirmPassword;
 
-    export const adminProfileImgUpload = _adminProfileImgUpload;
+  export const adminProfileImgUpload = _adminProfileImgUpload;
 
-    // -- User -- //
-    export const userSignup = _userSignup;
+  export const updateAdminRole = _updateAdminRole;
 
-    export const userSignin = _userSignin;
+  export const changeAdminPassword = _changeAdminPassword;
 
-    export const saved = _saved;
-    // -- Job post -- //
-    export const insertJobPost = _insertJobPost;
+  export const updateAdminProfile = _updateAdminProfile;
+  // -- User -- //
+  export const userSignup = _userSignup;
 
-    export const getJobPost = _getJobPost;
+  export const userSignin = _userSignin;
 
-    export const getJobPostById = _getJobPostById;
+  export const saved = _saved;
+  // -- Job post -- //
+  export const insertJobPost = _insertJobPost;
 
-    export const updateJobPost = _updateJobPost;
+  export const getJobPost = _getJobPost;
 
-    export const deleteJobPost = _deleteJobPost;
+  export const getJobPostById = _getJobPostById;
 
-    // -- Job category -- //
-    export const insertJobCategory = _insertJobCategory;
+  export const updateJobPost = _updateJobPost;
 
-    export const getJobCategory = _getJobCategory;
+  export const deleteJobPost = _deleteJobPost;
 
-    export const getJobCategoryById = _getJobCategoryById;
+  // -- Job category -- //
+  export const insertJobCategory = _insertJobCategory;
 
-    export const updateJobCategory = _updateJobCategory;
+  export const getJobCategory = _getJobCategory;
 
-    export const deleteJobCategory = _deleteJobCategory;
-    // -- News -- //
-    export const createNews = _createNews;
+  export const getJobCategoryById = _getJobCategoryById;
 
-    export const getNews = _getNews;
+  export const updateJobCategory = _updateJobCategory;
 
-    export const getNewsById = _getNewsById;
+  export const deleteJobCategory = _deleteJobCategory;
+  // -- News -- //
+  export const createNews = _createNews;
 
-    export const updateNews = _updateNews;
+  export const getNews = _getNews;
 
-    export const deleteNews = _deleteNews;
+  export const getNewsById = _getNewsById;
 
-    // -- Grant -- //
-    export const createGrant = _createGrant;
+  export const updateNews = _updateNews;
 
-    export const getGrant = _getGrant;
+  export const deleteNews = _deleteNews;
 
-    export const getGrantById = _getGrantById;
+  // -- Grant -- //
+  export const createGrant = _createGrant;
 
-    export const updateGrant = _updateGrant;
+  export const getGrant = _getGrant;
 
-    export const deleteGrant = _deleteGrant;
+  export const getGrantById = _getGrantById;
 
-    // -- Blog -- //
-    export const createBlog = _createBlog;
+  export const updateGrant = _updateGrant;
 
-    export const getBlog = _getBlog;
+  export const deleteGrant = _deleteGrant;
 
-    export const getBlogById = _getBlogById;
+  // -- Blog -- //
+  export const createBlog = _createBlog;
 
-    export const updateBlog = _updateBlog;
+  export const getBlog = _getBlog;
 
-    export const deleteBlog = _deleteBlog;
+  export const getBlogById = _getBlogById;
 
-    // -- Service Provider -- //
+  export const updateBlog = _updateBlog;
 
-    export const createSp = _createSp;
+  export const deleteBlog = _deleteBlog;
 
-    export const getSp = _getSp;
+  // -- Service Provider -- //
 
-    export const getSpById = _getSpById;
+  export const createSp = _createSp;
 
-    export const updateSp = _updateSp;
+  export const getSp = _getSp;
 
-    export const deleteSp = _deleteSp;
+  export const getSpById = _getSpById;
 
-    export const signinSp = _signinSp;
+  export const updateSp = _updateSp;
 
-    export const createSpCategory = _createSpCategory;
+  export const deleteSp = _deleteSp;
 
-    export const getSpCategory = _getSpCategory
+  export const signinSp = _signinSp;
 
-    export const getSpCategoryById = _getSpCategoryById;
+  export const createSpCategory = _createSpCategory;
 
-    export const updateSpCategory = _updateSpCategory;
+  export const getSpCategory = _getSpCategory;
 
-    export const deleteSpCategory = _deleteSpCategory;
+  export const getSpCategoryById = _getSpCategoryById;
 
-    export const createSpPost = _createSpPost;
+  export const updateSpCategory = _updateSpCategory;
 
-    export const getSpPost = _getSpPost;
+  export const deleteSpCategory = _deleteSpCategory;
 
-    export const getSpPostById = _getSpPostById;
+  export const createSpPost = _createSpPost;
 
-    export const updateSpPost = _updateSpPost;
+  export const getSpPost = _getSpPost;
 
-    export const deleteSpPost = _deleteSpPost;
+  export const getSpPostById = _getSpPostById;
+
+  export const updateSpPost = _updateSpPost;
+
+  export const deleteSpPost = _deleteSpPost;
 }
 
 export default Controller;
-// get all super admins
-// get all admins
-// update admin profile
-// delete admin
-// upload admin profile image, delete it and edit it
-// verirfy password

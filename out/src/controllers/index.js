@@ -3,11 +3,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// -- Admin Controllers start --
 const addAdmin_1 = __importDefault(require("./admin/addAdmin"));
 const adminLogin_1 = __importDefault(require("./admin/adminLogin"));
 const getAdmins_1 = __importDefault(require("./admin/getAdmins"));
 const confirmPassword_1 = __importDefault(require("./admin/confirmPassword"));
 const uploadProfileImg_1 = __importDefault(require("./admin/uploadProfileImg"));
+const updateProfile_1 = __importDefault(require("./admin/updateProfile"));
+const modifyRole_1 = __importDefault(require("./admin/modifyRole"));
+const changePassword_1 = __importDefault(require("./admin/changePassword"));
+// -- Admin Controllers end --
 const signup_1 = __importDefault(require("./user/signup"));
 const signin_1 = __importDefault(require("./user/signin"));
 const saved_1 = __importDefault(require("./user/saved"));
@@ -54,11 +59,15 @@ const updatePost_1 = __importDefault(require("./service_provider/post/updatePost
 const deletePost_1 = __importDefault(require("./service_provider/post/deletePost"));
 var Controller;
 (function (Controller) {
+    // -- Admin --
     Controller.addAdmin = addAdmin_1.default;
     Controller.adminLogin = adminLogin_1.default;
     Controller.getAdmins = getAdmins_1.default;
     Controller.confirmPassword = confirmPassword_1.default;
     Controller.adminProfileImgUpload = uploadProfileImg_1.default;
+    Controller.updateAdminRole = modifyRole_1.default;
+    Controller.changeAdminPassword = changePassword_1.default;
+    Controller.updateAdminProfile = updateProfile_1.default;
     // -- User -- //
     Controller.userSignup = signup_1.default;
     Controller.userSignin = signin_1.default;
@@ -112,9 +121,3 @@ var Controller;
     Controller.deleteSpPost = deletePost_1.default;
 })(Controller || (Controller = {}));
 exports.default = Controller;
-// get all super admins
-// get all admins
-// update admin profile
-// delete admin
-// upload admin profile image, delete it and edit it
-// verirfy password
