@@ -78,6 +78,7 @@ model User {
   saved_job              Saved_job[]
   exclusive_jobs         Exclusive_job[]
   recommended_applicants Recommended_applicant[]
+  procurement            Procurement[]
 
   @@index([first_name, last_name])
 }
@@ -182,6 +183,7 @@ model Service_provider {
   admin                     Admin?                     @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   post                      Service_provider_post[]
   Saved_service_provider    Saved_service_provider[]
+  Procurement               Procurement[]
 
   @@index([verified_by])
 }
@@ -200,6 +202,17 @@ model Service_provider_post {
 }
 
 model Saved_service_provider {
+  user             Int
+  service_provider Int
+  created_at    DateTime    @default(now())
+
+  user_             User             @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  service_provider_ Service_provider @relation(fields: [service_provider], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@id([user, service_provider])
+}
+
+model Procurement {
   user             Int
   service_provider Int
   created_at    DateTime    @default(now())

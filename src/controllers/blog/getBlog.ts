@@ -50,21 +50,83 @@ export default async (req: Request, res: Response) => {
         take: 10,
         skip: page,
         where,
-        include: { tags: { select: { name: true } } },
+        include: {
+          tags: { select: { name: true } },
+          user: {
+            select: {
+              id: true,
+              first_name: true,
+              last_name: true,
+              email: true,
+              phone_number: true,
+              password: false,
+              profile_image: true,
+              location: false,
+              verified_by: false,
+              token: false,
+              is_recommender: false
+            }
+          },
+          admin: {
+            select: {
+              id: true,
+              first_name: true,
+              last_name: true,
+              email: false,
+              phone_number: false,
+              password: false,
+              role: false,
+              profile_image: true,
+              created_at: false,
+              updated_at: false,
+            }
+          }
+        },
         orderBy: {
           id: "desc",
         },
       });
     } else
-      blog = await prisma.client.blog.findMany({
-        take: 10,
-        skip: page,
-        where,
-        include: { tags: { select: { name: true } } },
-        orderBy: {
-          id: "desc",
+    blog = await prisma.client.blog.findMany({
+      take: 10,
+      skip: page,
+      where,
+      include: { 
+        tags: { select: { name: true } },
+        user: {
+          select: {
+            id: true,
+            first_name: true,
+            last_name: true,
+            email: true,
+            phone_number: true,
+            password: false,
+            profile_image: true,
+            location: false,
+            verified_by: false,
+            token: false,
+            is_recommender: false
+          }
         },
-      });
+        admin: {
+          select: {
+            id: true,
+            first_name: true,
+            last_name: true,
+            email: false,
+            phone_number: false,
+            password: false,
+            role: false,
+            profile_image: true,
+            created_at: false,
+            updated_at: false,
+          }
+        }
+      },
+      orderBy: {
+        id: "desc",
+      },
+    });
 
     totalPages = await prisma.client.blog.count({ where });
 
@@ -97,9 +159,9 @@ export default async (req: Request, res: Response) => {
 
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2022")
-        return res
-          .status(403)
-          .json(new ApiResponse(false, "not authorized to get blogs"));
+      return res
+        .status(403)
+        .json(new ApiResponse(false, "not authorized to get blogs"));
     }
 
     return res

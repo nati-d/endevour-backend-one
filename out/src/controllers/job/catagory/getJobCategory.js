@@ -39,10 +39,10 @@ exports.default = async (req, res) => {
             if (error.code === "P2022")
                 return res
                     .status(400)
-                    .json(new response_1.default(false, "Not authorized to get get"));
+                    .json(new response_1.default(false, "Not authorized to get categories"));
         }
         return res
             .status(500)
-            .json(new response_1.default(false, "Error while fetching job post", error));
+            .json(new response_1.default(false, "Error while fetching job post categories", error));
     }
 };

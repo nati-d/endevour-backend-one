@@ -24,6 +24,8 @@ const get_6 = __importDefault(require("./organization/get"));
 const add_7 = __importDefault(require("./service_provider/add"));
 const remove_7 = __importDefault(require("./service_provider/remove"));
 const get_7 = __importDefault(require("./service_provider/get"));
+const procurement_1 = __importDefault(require("./service_provider/procurement"));
+const getProcurementHistory_1 = __importDefault(require("./service_provider/getProcurementHistory"));
 var Saved;
 (function (Saved) {
     Saved.saveJob = add_1.default;
@@ -53,5 +55,7 @@ var Saved;
     Saved.saveServiceProvider = add_7.default;
     Saved.deleteServiceProvider = remove_7.default;
     Saved.getServiceProvider = get_7.default;
+    Saved.procurement = procurement_1.default;
+    Saved.getProcurementHistory = getProcurementHistory_1.default;
 })(Saved || (Saved = {}));
 exports.default = Saved;

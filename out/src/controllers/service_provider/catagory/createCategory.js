@@ -21,7 +21,7 @@ exports.default = async (req, res) => {
             return res.status(400).json(new response_1.default(false, 'Duplicate catagory name', error));
         }
         console.error("Error inserting user:", error);
-        return res.status(500).send(new response_1.default(false, 'Unknown error at creating service provider category user', error));
+        return res.status(500).send(new response_1.default(false, 'Unknown error at creating service provider category', error));
     }
     res.send(new response_1.default(true, "New service provider category is added", newCategory));
 };

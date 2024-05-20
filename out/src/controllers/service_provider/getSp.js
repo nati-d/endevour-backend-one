@@ -54,7 +54,8 @@ exports.default = async (req, res) => {
             total_pages: totalPages,
             current_page: currentPage,
             next_page: currentPage >= totalPages ? null : currentPage + 1,
-            service_category: _sp_category }));
+            service_category: _sp_category
+        }));
     }
     catch (error) {
         console.error("Error while posting service provider:", error);

@@ -13,6 +13,17 @@ exports.default = async (req, res) => {
         let sp;
         sp = await index_1.default.client.service_provider.findFirst({
             where: { id },
+            select: {
+                id: true,
+                name: true,
+                phone: true,
+                email: true,
+                about: true,
+                verified_by: true,
+                service_category: true,
+                created_at: true,
+                updated_at: true
+            }
         });
         if (sp)
             return res.status(200).json(new response_1.default(true, "service provider fetched successfully", sp));

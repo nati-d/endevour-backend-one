@@ -42,11 +42,11 @@ export default async (req: Request, res: Response) => {
       if (error.code === "P2022")
         return res
           .status(400)
-          .json(new ApiResponse(false, "Not authorized to get get"));
+          .json(new ApiResponse(false, "Not authorized to get categories"));
     }
 
     return res
       .status(500)
-      .json(new ApiResponse(false, "Error while fetching job post", error));
+      .json(new ApiResponse(false, "Error while fetching job post categories", error));
   }
 };

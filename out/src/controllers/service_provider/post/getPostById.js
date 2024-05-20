@@ -9,7 +9,16 @@ const response_1 = __importDefault(require("../../../types/response"));
 exports.default = async (req, res) => {
     try {
         let post = await index_1.default.client.service_provider_post.findFirst({
-            where: { id: (0, lodash_1.parseInt)(req.query.id) }
+            where: { id: (0, lodash_1.parseInt)(req.query.id) },
+            include: {
+                service_provider: {
+                    select: {
+                        id: true,
+                        name: true,
+                        verified_by: true
+                    }
+                }
+            }
         });
         return res.status(200).json(new response_1.default(true, "data fetched successfully", post));
     }

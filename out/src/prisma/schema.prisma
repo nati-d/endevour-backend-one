@@ -78,6 +78,7 @@ model User {
   saved_job              Saved_job[]
   exclusive_jobs         Exclusive_job[]
   recommended_applicants Recommended_applicant[]
+  procurement            Procurement[]
 
   @@index([first_name, last_name])
 }
@@ -147,7 +148,7 @@ model Organization {
 model Saved_organization {
   user         Int
   organization Int
-  created_at   DateTime @default(now())
+  created_at    DateTime    @default(now())
 
   user_         User         @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
   organization_ Organization @relation(fields: [organization], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -182,6 +183,7 @@ model Service_provider {
   admin                     Admin?                     @relation(fields: [verified_by], references: [id], onUpdate: Cascade, onDelete: Cascade)
   post                      Service_provider_post[]
   Saved_service_provider    Saved_service_provider[]
+  Procurement               Procurement[]
 
   @@index([verified_by])
 }
@@ -202,7 +204,18 @@ model Service_provider_post {
 model Saved_service_provider {
   user             Int
   service_provider Int
-  created_at       DateTime @default(now())
+  created_at    DateTime    @default(now())
+
+  user_             User             @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  service_provider_ Service_provider @relation(fields: [service_provider], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@id([user, service_provider])
+}
+
+model Procurement {
+  user             Int
+  service_provider Int
+  created_at    DateTime    @default(now())
 
   user_             User             @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
   service_provider_ Service_provider @relation(fields: [service_provider], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -285,9 +298,9 @@ enum Periodicity {
 }
 
 model Saved_job {
-  user       Int
-  job        Int
-  created_at DateTime @default(now())
+  user Int
+  job  Int
+  created_at    DateTime    @default(now())
 
   User User     @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
   Job  Job_post @relation(fields: [job], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -311,9 +324,9 @@ model News {
 }
 
 model Saved_news {
-  user       Int
-  news       Int
-  created_at DateTime @default(now())
+  user Int
+  news Int
+  created_at    DateTime    @default(now())
 
   user_ User @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
   news_ News @relation(fields: [news], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -371,9 +384,9 @@ model Tender_files {
 }
 
 model Saved_tender {
-  user       Int
-  tender     Int
-  created_at DateTime @default(now())
+  user   Int
+  tender Int
+  created_at    DateTime    @default(now())
 
   user_   User   @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
   tender_ Tender @relation(fields: [tender], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -406,9 +419,9 @@ model Grant {
 }
 
 model Saved_grant {
-  user       Int
-  grant      Int
-  created_at DateTime @default(now())
+  user  Int
+  grant Int
+  created_at    DateTime    @default(now())
 
   user_  User  @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
   grant_ Grant @relation(fields: [grant], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -438,9 +451,9 @@ model Blog {
 }
 
 model Saved_blog {
-  user       Int
-  blog       Int
-  created_at DateTime @default(now())
+  user Int
+  blog Int
+  created_at    DateTime    @default(now())
 
   user_ User @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
   blog_ Blog @relation(fields: [blog], references: [id], onUpdate: Cascade, onDelete: Cascade)
