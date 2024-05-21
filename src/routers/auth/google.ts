@@ -12,8 +12,7 @@ router.get('/callback',
     failureRedirect: '/auth/google/failure'
   }),
   (req, res) => {
-    // On successful authentication, redirect to the external domain
-    res.redirect('https://www.endevour.org');
+    res.redirect(process.env.PASSPORT_LOGIN_SUCCESS_REDIRECT as string);
   }
 );
 

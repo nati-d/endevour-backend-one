@@ -15,8 +15,8 @@ export default {
     cookie: {
         secure: process.env.NODE_ENV == 'production', // in production use 'true'
         httpOnly: false,
-        domain: 'endevour.org',
-        sameSite: false,
+        // domain: 'endevour.org',
+        // sameSite: false,
         maxAge: 1000 * 60 * 60 * 24,
     },
 }

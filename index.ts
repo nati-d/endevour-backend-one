@@ -10,12 +10,15 @@ require("./src/services");
 const app = express();
 
 app.use(session(Config.cookie));
+
 app.use(cors({
-  origin: 'https://www.endevour.org',
+  origin: '*',
   credentials: true
 }));
+
 app.use(express.json());
 app.use("/public", express.static("public"));
+
 app.set("trust proxy", 1);
 
 app.use(passport.initialize());
@@ -50,5 +53,6 @@ app.use("/api/service-provider", Router.sp);
 app.use("/api/tag", Router.tag);
 
 app.use("/api/verify", Router.verification);
+
 const port = 3000;
 app.listen(port, () => console.log("Server started at port", port));
