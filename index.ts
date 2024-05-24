@@ -9,7 +9,7 @@ require("./src/services");
 
 const app = express();
 
-app.use(session(Config.cookie));
+// app.use(session(Config.cookie));
 
 app.use(cors({
   origin: '*',
