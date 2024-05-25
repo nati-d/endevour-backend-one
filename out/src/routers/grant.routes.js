@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const index_1 = __importDefault(require("../controllers/index"));
 const index_2 = __importDefault(require("../middlewares/index"));
 const router = express_1.default.Router();
+router.get("/search-by-keyword", index_1.default.searchGrantsByKeyWord);
 router.post("/create-grant", [index_2.default.tokenAuth, index_2.default.adminAuth], index_1.default.createGrant);
 router.get("/get-grant", index_1.default.getGrant);
 router.get("/get-grant-by-id", index_1.default.getGrantById);

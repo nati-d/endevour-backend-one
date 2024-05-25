@@ -18,6 +18,7 @@ import _getJobPost from "./job/getJobPost";
 import _getJobPostById from "./job/getJobPostById";
 import _updateJobPost from "./job/updateJobPost";
 import _deleteJobPost from "./job/deleteJobPost";
+import _searchJobsByKeyWord from "./job/searchByKeyWord";
 
 import _insertJobCategory from "./job/catagory/createJobCategory";
 import _getJobCategory from "./job/catagory/getJobCategory";
@@ -30,6 +31,7 @@ import _getNews from "./news/getNews";
 import _getNewsById from "./news/getNewsById";
 import _updateNews from "./news/updateNews";
 import _deleteNews from "./news/deleteNews";
+import _searchNewsByKeyWord from "./news/searchByKeyWord";
 
 import _getPostUrl from "./common/getPostUrl";
 import _createGrant from "./grant/createGrant";
@@ -37,12 +39,14 @@ import _getGrant from "./grant/getGrant";
 import _getGrantById from "./grant/getGrantById";
 import _updateGrant from "./grant/updateGrant";
 import _deleteGrant from "./grant/deleteGrant";
+import _searchGrantsByKeyWord from "./grant/searchByKeyWord";
 
 import _createBlog from "./blog/createBlog";
 import _getBlog from "./blog/getBlog";
 import _getBlogById from "./blog/getBlogById";
 import _updateBlog from "./blog/updateBlog";
 import _deleteBlog from "./blog/deleteBlog";
+import _searchBlogsByKeyWord from "./blog/searchByKeyWord";
 
 import _createSp from "./service_provider/createSp";
 import _getSp from "./service_provider/getSp";
@@ -99,6 +103,8 @@ namespace Controller {
 
   export const deleteJobPost = _deleteJobPost;
 
+  export const searchJobsByKeyWord = _searchJobsByKeyWord;
+
   // -- Job category -- //
   export const insertJobCategory = _insertJobCategory;
 
@@ -120,6 +126,8 @@ namespace Controller {
 
   export const deleteNews = _deleteNews;
 
+  export const searchNewsByKeyWord = _searchNewsByKeyWord;
+
   // -- Grant -- //
   export const createGrant = _createGrant;
 
@@ -130,6 +138,8 @@ namespace Controller {
   export const updateGrant = _updateGrant;
 
   export const deleteGrant = _deleteGrant;
+
+  export const searchGrantsByKeyWord = _searchGrantsByKeyWord;
 
   // -- Blog -- //
   export const createBlog = _createBlog;
@@ -142,6 +152,7 @@ namespace Controller {
 
   export const deleteBlog = _deleteBlog;
 
+  export const searchBlogsByKeyWord = _searchBlogsByKeyWord;
   // -- Service Provider -- //
 
   export const createSp = _createSp;

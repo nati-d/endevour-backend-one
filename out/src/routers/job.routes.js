@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const middlewares_1 = __importDefault(require("../middlewares"));
 const controllers_1 = __importDefault(require("../controllers"));
 const router = express_1.default.Router();
+router.get("/search-by-keyword", controllers_1.default.searchJobsByKeyWord);
 router.post("/insert-job-category", [middlewares_1.default.tokenAuth, middlewares_1.default.adminAuth], controllers_1.default.insertJobCategory);
 router.get("/get-job-category", controllers_1.default.getJobCategory);
 router.get("/get-job-category-by-id", controllers_1.default.getJobCategoryById);

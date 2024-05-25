@@ -4,6 +4,8 @@ import Middleware from "../middlewares/index";
 
 const router: Router = express.Router();
 
+router.get("/search-by-keyword", Controller.searchGrantsByKeyWord);
+
 router.post(
   "/create-grant",
   [Middleware.tokenAuth, Middleware.adminAuth],

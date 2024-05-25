@@ -10,6 +10,8 @@ router.get("/:tender_id", Tender.getTender);
 
 router.get("/category/get-all-categories", Tender.getAllTenderCategories);
 
+router.get("/search-by-keyword", Tender.searchTenderByKeyWord);
+
 // Accessed by all authenticated user
 router.use(Middlewares.tokenAuth);
 
