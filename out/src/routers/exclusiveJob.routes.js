@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const exclusive_job_1 = __importDefault(require("../controllers/exclusive_job"));
 const middlewares_1 = __importDefault(require("../middlewares"));
 const router = express_1.default.Router();
+router.post("/recommended-applicant/create", middlewares_1.default.uploadFile("files/exclusive_job/applicant_cv").single("cv"), exclusive_job_1.default.createRecommendedApplicant);
 router.use(middlewares_1.default.tokenAuth);
 router.use(middlewares_1.default.adminAuth);
 //Recommenders
@@ -23,7 +24,6 @@ router.delete("/delete/:id", exclusive_job_1.default.deleteExclusiveJob);
 router.put("/update/:id", exclusive_job_1.default.updateExclusiveJob);
 router.post("/send-more-emails", exclusive_job_1.default.sendEmailForRecommenders, middlewares_1.default.sendEmail);
 // Recommended applicants
-router.post("/recommended-applicant/create", middlewares_1.default.uploadFile("files/exclusive_job/applicant_cv").single("cv"), exclusive_job_1.default.createRecommendedApplicant);
 router.get("/recommended-applicant/get/:id", exclusive_job_1.default.getRecommendedApplicant);
 router.get("/recommended-applicant/all", exclusive_job_1.default.getRecommendedApplicants);
 router.put("/recommended-applicant/update", exclusive_job_1.default.acceptDeclineApplicant, middlewares_1.default.sendEmail);

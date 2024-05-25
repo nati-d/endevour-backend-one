@@ -5,6 +5,8 @@ import Middleware from "../middlewares/index";
 
 router.post("/forgot-password/get-confirmation-code", Common.forgotPassword);
 
+router.post("/email-subscription", Common.emailSubscription);
+
 router.post(
   "/forgot-password/verify-confirmation-code",
   Common.verifyConfirmationCode

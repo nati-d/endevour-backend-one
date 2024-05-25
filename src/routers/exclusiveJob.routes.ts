@@ -3,6 +3,12 @@ import ExclusiveJob from "../controllers/exclusive_job";
 import Middlewares from "../middlewares";
 const router = express.Router();
 
+router.post(
+  "/recommended-applicant/create",
+  Middlewares.uploadFile("files/exclusive_job/applicant_cv").single("cv"),
+  ExclusiveJob.createRecommendedApplicant
+);
+
 router.use(Middlewares.tokenAuth);
 router.use(Middlewares.adminAuth);
 
@@ -48,11 +54,6 @@ router.post(
 );
 
 // Recommended applicants
-router.post(
-  "/recommended-applicant/create",
-  Middlewares.uploadFile("files/exclusive_job/applicant_cv").single("cv"),
-  ExclusiveJob.createRecommendedApplicant
-);
 
 router.get(
   "/recommended-applicant/get/:id",

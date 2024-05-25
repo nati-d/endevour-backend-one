@@ -8,6 +8,7 @@ import _createTender from "./createTender";
 import _updateTender from "./updateTender";
 import _getTender from "./getTender";
 import _getTenders from "./getTenders";
+import _searchTenderByKeyWord from "./searchByKeyWord";
 namespace Tender {
   // -- Tender category --//
   export const createTenderCategory = _createTenderCategory;
@@ -31,6 +32,9 @@ namespace Tender {
   export const getTenders = _getTenders;
 
   export const deleteTender = _deleteTender;
+
+  // -- Seach for keywords --
+  export const searchTenderByKeyWord = _searchTenderByKeyWord;
 }
 
 export default Tender;

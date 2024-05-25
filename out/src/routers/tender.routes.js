@@ -11,6 +11,7 @@ const router = express_1.default.Router();
 router.get("/all/tenders", middlewares_1.default.tokenForAdmin, tender_1.default.getTenders);
 router.get("/:tender_id", tender_1.default.getTender);
 router.get("/category/get-all-categories", tender_1.default.getAllTenderCategories);
+router.get("/search-by-keyword", tender_1.default.searchTenderByKeyWord);
 // Accessed by all authenticated user
 router.use(middlewares_1.default.tokenAuth);
 router.post("/post", middlewares_1.default.uploadFile("files/tender").array("files"), tender_1.default.createTender);
