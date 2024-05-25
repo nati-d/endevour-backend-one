@@ -8,9 +8,10 @@ const passport_1 = __importDefault(require("passport"));
 const router = (0, express_1.Router)();
 router.get('/', passport_1.default.authenticate('google'));
 router.get('/callback', passport_1.default.authenticate('google', {
-    successRedirect: '/home',
-    failureRedirect: '/auth/google'
-}));
+    failureRedirect: '/auth/google/failure'
+}), (req, res) => {
+    res.redirect(process.env.PASSPORT_LOGIN_SUCCESS_REDIRECT);
+});
 router.get('/failure', (req, res) => {
     res.send('google log in failure');
 });

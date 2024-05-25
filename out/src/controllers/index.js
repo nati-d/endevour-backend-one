@@ -61,6 +61,7 @@ const getPost_1 = __importDefault(require("./service_provider/post/getPost"));
 const getPostById_1 = __importDefault(require("./service_provider/post/getPostById"));
 const updatePost_1 = __importDefault(require("./service_provider/post/updatePost"));
 const deletePost_1 = __importDefault(require("./service_provider/post/deletePost"));
+const home_1 = __importDefault(require("./home"));
 var Controller;
 (function (Controller) {
     // -- Admin --
@@ -127,5 +128,6 @@ var Controller;
     Controller.getSpPostById = getPostById_1.default;
     Controller.updateSpPost = updatePost_1.default;
     Controller.deleteSpPost = deletePost_1.default;
+    Controller.home = home_1.default;
 })(Controller || (Controller = {}));
 exports.default = Controller;

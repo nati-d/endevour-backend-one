@@ -13,8 +13,10 @@ export default {
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: false, // in production use 'true'
-        httpOnly: true,
+        secure: process.env.NODE_ENV == 'production', // in production use 'true'
+        httpOnly: false,
+        // domain: 'endevour.org',
+        // sameSite: false,
         maxAge: 1000 * 60 * 60 * 24,
     },
 }

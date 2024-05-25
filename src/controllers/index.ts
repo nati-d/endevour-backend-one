@@ -67,6 +67,8 @@ import _getSpPostById from "./service_provider/post/getPostById";
 import _updateSpPost from "./service_provider/post/updatePost";
 import _deleteSpPost from "./service_provider/post/deletePost";
 
+import _home from "./home";
+
 namespace Controller {
   // -- Admin --
   export const addAdmin = _addAdmin;
@@ -184,6 +186,8 @@ namespace Controller {
   export const updateSpPost = _updateSpPost;
 
   export const deleteSpPost = _deleteSpPost;
+
+  export const home = _home;
 }
 
 export default Controller;

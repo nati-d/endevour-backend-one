@@ -6,12 +6,6 @@ import ApiResponse from "../../types/response";
 
 export default async (req: Request, res: Response) => {
 
-    const { error } = Validator.grant.deleteGrant.validate(req.body);
-
-    if (error) {
-        return res.status(400).json(new ApiResponse(false, "unidentified request content", error.details));
-    }
-
     try {
         await prisma.client.grant.delete({
             where: {
