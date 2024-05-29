@@ -25,6 +25,9 @@ router.put("/update/:tender_id", Tender.updateTender);
 
 router.delete("/delete/:tender_id", Tender.deleteTender);
 
+router.post("/save-tender", Tender.saveTender);
+
+router.get("/get-saved-tenders", Tender.getSavedTenders);
 // Accessed by only admins(authorized)
 router.use(Middlewares.adminAuth);
 

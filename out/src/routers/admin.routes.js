@@ -17,7 +17,7 @@ router.put("/update-profile", index_1.default.updateAdminProfile);
 router.put("/change-password", index_1.default.changeAdminPassword);
 // Accessed only by super_admins
 router.use(index_2.default.superAdminAuth);
-router.post("/auth/add-admin", index_1.default.addAdmin);
+router.post("/auth/add-admin", index_1.default.addAdmin, index_2.default.sendEmail);
 router.get("/get-admins", index_1.default.getAdmins);
 router.put("/update-role", index_1.default.updateAdminRole);
 exports.default = router;

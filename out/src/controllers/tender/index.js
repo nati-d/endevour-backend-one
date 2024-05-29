@@ -14,6 +14,8 @@ const updateTender_1 = __importDefault(require("./updateTender"));
 const getTender_1 = __importDefault(require("./getTender"));
 const getTenders_1 = __importDefault(require("./getTenders"));
 const searchByKeyWord_1 = __importDefault(require("./searchByKeyWord"));
+const saveTender_1 = __importDefault(require("./saveTender"));
+const getSavedTenders_1 = __importDefault(require("./getSavedTenders"));
 var Tender;
 (function (Tender) {
     // -- Tender category --//
@@ -28,6 +30,8 @@ var Tender;
     Tender.getTender = getTender_1.default;
     Tender.getTenders = getTenders_1.default;
     Tender.deleteTender = deleteTender_1.default;
+    Tender.saveTender = saveTender_1.default;
+    Tender.getSavedTenders = getSavedTenders_1.default;
     // -- Seach for keywords --
     Tender.searchTenderByKeyWord = searchByKeyWord_1.default;
 })(Tender || (Tender = {}));

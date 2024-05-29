@@ -9,7 +9,7 @@ const joi_1 = __importDefault(require("joi"));
 const client_1 = require("@prisma/client");
 const ValidateSubscriber = joi_1.default.object({
     email: joi_1.default.string().email(),
-    subscriber_for: joi_1.default.string().valid("All", "Tender", "Job"),
+    subscribe_for: joi_1.default.string().valid("All", "Tender", "Job"),
 });
 const emailSubscription = async (req, res) => {
     const { error } = ValidateSubscriber.validate(req.body);

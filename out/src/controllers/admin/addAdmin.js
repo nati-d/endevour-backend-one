@@ -7,10 +7,9 @@ const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient
 const admin_1 = require("../../validation/admin");
 const lodash_1 = __importDefault(require("lodash"));
 const response_1 = __importDefault(require("../../types/response"));
-const sendEmail_1 = __importDefault(require("../../services/notifications/sendEmail"));
 const hashPassword_1 = __importDefault(require("../../helpers/hashPassword"));
 const client_1 = require("@prisma/client");
-const addAdmin = async (req, res) => {
+const addAdmin = async (req, res, next) => {
     const { first_name, last_name, email, password, phone_number, role } = req.body;
     const { error } = admin_1.newAdmin.validate(req.body);
     if (error)
@@ -27,8 +26,20 @@ const addAdmin = async (req, res) => {
                 role,
             },
         });
-        await (0, sendEmail_1.default)(email, "Endevour Admin Credential", `<p> Email: <b> ${email}</b></p> <p> Password: <b>${password}</b></p> `);
-        return res.status(201).json(new response_1.default(true, `Admin added successfully. We have send the credential to ${email}`, lodash_1.default.pickBy(createAdmin, (value, key) => key !== "password")));
+        req.emailData = {
+            sendTo: email,
+            subject: "Endevour Admin Credential",
+            html: `<p> Email: <b> ${email}</b></p> <p> Password: <b>${password}</b></p> `,
+            queryOnFail: async () => await prismaClient_1.default.admin.delete({
+                where: {
+                    email,
+                },
+            }),
+            resMessage: `Admin added successfully. We have send the credential to ${email}`,
+            otherData: lodash_1.default.pickBy(createAdmin, (value, key) => key !== "password"),
+            statusCode: 201,
+        };
+        next();
     }
     catch (error) {
         console.log(error);
@@ -38,11 +49,6 @@ const addAdmin = async (req, res) => {
                     .status(400)
                     .json(new response_1.default(false, "Admin email already exists!"));
         }
-        await prismaClient_1.default.admin.delete({
-            where: {
-                email,
-            },
-        });
         return res
             .status(500)
             .json(new response_1.default(false, "Failed to created new admin please try again!", null, error));
