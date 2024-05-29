@@ -6,7 +6,7 @@ import { Prisma } from "@prisma/client";
 
 const ValidateSubscriber = Joi.object({
   email: Joi.string().email(),
-  subscriber_for: Joi.string().valid("All", "Tender", "Job"),
+  subscribe_for: Joi.string().valid("All", "Tender", "Job"),
 });
 
 const emailSubscription = async (req: Request, res: Response) => {

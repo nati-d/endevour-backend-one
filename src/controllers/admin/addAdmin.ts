@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import prisma from "../../prisma/client/prismaClient";
 import { Admin } from "../../types/types";
 import { newAdmin } from "../../validation/admin";
@@ -8,7 +8,7 @@ import sendEmail from "../../services/notifications/sendEmail";
 import hashPassword from "../../helpers/hashPassword";
 import { Prisma } from "@prisma/client";
 
-const addAdmin = async (req: Request, res: Response) => {
+const addAdmin = async (req: Request, res: Response, next: NextFunction) => {
   const { first_name, last_name, email, password, phone_number, role } =
     req.body as Admin;
 
@@ -30,19 +30,22 @@ const addAdmin = async (req: Request, res: Response) => {
       },
     });
 
-    await sendEmail(
-      email,
-      "Endevour Admin Credential",
-      `<p> Email: <b> ${email}</b></p> <p> Password: <b>${password}</b></p> `
-    );
+    req.emailData = {
+      sendTo: email,
+      subject: "Endevour Admin Credential",
+      html: `<p> Email: <b> ${email}</b></p> <p> Password: <b>${password}</b></p> `,
+      queryOnFail: async () =>
+        await prisma.admin.delete({
+          where: {
+            email,
+          },
+        }),
+      resMessage: `Admin added successfully. We have send the credential to ${email}`,
+      otherData: _.pickBy(createAdmin, (value, key) => key !== "password"),
+      statusCode: 201,
+    };
 
-    return res.status(201).json(
-      new ApiResponse(
-        true,
-        `Admin added successfully. We have send the credential to ${email}`,
-        _.pickBy(createAdmin, (value, key) => key !== "password")
-      )
-    );
+    next();
   } catch (error) {
     console.log(error);
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -51,12 +54,6 @@ const addAdmin = async (req: Request, res: Response) => {
           .status(400)
           .json(new ApiResponse(false, "Admin email already exists!"));
     }
-
-    await prisma.admin.delete({
-      where: {
-        email,
-      },
-    });
 
     return res
       .status(500)

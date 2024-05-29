@@ -22,7 +22,7 @@ router.put("/change-password", Controller.changeAdminPassword);
 // Accessed only by super_admins
 router.use(Middleware.superAdminAuth);
 
-router.post("/auth/add-admin", Controller.addAdmin);
+router.post("/auth/add-admin", Controller.addAdmin, Middleware.sendEmail);
 router.get("/get-admins", Controller.getAdmins);
 router.put("/update-role", Controller.updateAdminRole);
 
