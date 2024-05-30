@@ -15,6 +15,25 @@ export default async (req: Request, res: Response) => {
     let user: any;
 
     try {
+        const otpCode = await prisma.user_opts.findFirst({
+            where: { opt_code: req.body.opt_code }
+        });
+
+        if (!otpCode)
+        return res.status(404).json(new ApiResponse(false, "invalid or expired otp code"));
+
+        const now = new Date();
+        const date = new Date(otpCode.created_at);
+        const diff = now.getTime() - date.getTime();
+
+        if (diff > 300000)
+        return res.status(401).json(new ApiResponse(false, "invalid or expired opt code"));
+    } catch(error) {
+        console.error(error);
+        return res.status(401).json(new ApiResponse(false, "invalid or expired otp code"));
+    }
+
+    try {
         req.body.password = await bcrypt.hash(req.body.password, 10);
 
         const { first_name, last_name, email, phone_number, location } = req.body;

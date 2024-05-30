@@ -11,6 +11,8 @@ router.post("/auth/signup", Controller.userSignup);
 
 router.post("/auth/signin", Controller.userSignin);
 
+router.post("/auth/register", Controller.sendOtp);
+
 savedRouter.post("/job", [Middleware.tokenAuth], Controller.saved.saveJob);
 
 savedRouter.delete("/job", [Middleware.tokenAuth], Controller.saved.deleteJob);

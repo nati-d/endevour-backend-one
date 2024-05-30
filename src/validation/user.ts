@@ -11,7 +11,8 @@ export const userSignupSchema = Joi.object({
     email: Joi.string().email().required(),
     phone_number: Joi.string().pattern(/^\d{12}$/),
     location: locationSchema,
-    password: Joi.string().min(8).required()
+    password: Joi.string().min(8).required(),
+    opt_code: Joi.string().length(6)
 });
 
 export default { userSignupSchema };

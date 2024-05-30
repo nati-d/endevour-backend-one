@@ -15,6 +15,22 @@ exports.default = async (req, res) => {
         return res.status(400).send(new response_1.default(false, "Invalid value set", error.details));
     let user;
     try {
+        const otpCode = await prismaClient_1.default.user_opts.findFirst({
+            where: { opt_code: req.body.opt_code }
+        });
+        if (!otpCode)
+            return res.status(404).json(new response_1.default(false, "invalid or expired otp code"));
+        const now = new Date();
+        const date = new Date(otpCode.created_at);
+        const diff = now.getTime() - date.getTime();
+        if (diff > 300000)
+            return res.status(401).json(new response_1.default(false, "invalid or expired opt code"));
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(401).json(new response_1.default(false, "invalid or expired otp code"));
+    }
+    try {
         req.body.password = await bcrypt_1.default.hash(req.body.password, 10);
         const { first_name, last_name, email, phone_number, location } = req.body;
         user = await prismaClient_1.default.user.create({
