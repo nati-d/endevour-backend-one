@@ -15,8 +15,8 @@ export default async (req: Request, res: Response) => {
     let user: any;
 
     try {
-        const otpCode = await prisma.user_opts.findFirst({
-            where: { opt_code: req.body.opt_code }
+        const otpCode = await prisma.user_otps.findFirst({
+            where: { otp_code: req.body.otp_code }
         });
 
         if (!otpCode)
@@ -27,7 +27,7 @@ export default async (req: Request, res: Response) => {
         const diff = now.getTime() - date.getTime();
 
         if (diff > 300000)
-        return res.status(401).json(new ApiResponse(false, "invalid or expired opt code"));
+        return res.status(401).json(new ApiResponse(false, "invalid or expired otp code"));
     } catch(error) {
         console.error(error);
         return res.status(401).json(new ApiResponse(false, "invalid or expired otp code"));

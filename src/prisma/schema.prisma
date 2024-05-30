@@ -96,10 +96,10 @@ model User_credential {
   @@unique([user_id])
 }
 
-model User_opts {
+model User_otps {
     id          Int         @id @default(autoincrement())
     email       String      @unique  @db.VarChar(60)
-    opt_code    String      @db.VarChar(10)
+    otp_code    String      @db.VarChar(10)
     valid       Boolean     @default(true)
     created_at  DateTime    @default(now())
     updated_at  DateTime    @default(now()) @updatedAt

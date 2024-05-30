@@ -12,7 +12,7 @@ export const userSignupSchema = Joi.object({
     phone_number: Joi.string().pattern(/^\d{12}$/),
     location: locationSchema,
     password: Joi.string().min(8).required(),
-    opt_code: Joi.string().length(6)
+    otp_code: Joi.string().length(6)
 });
 
 export default { userSignupSchema };
