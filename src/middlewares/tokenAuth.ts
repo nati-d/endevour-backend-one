@@ -23,7 +23,6 @@ const tokenAuth = (req: Request, res: Response, next: NextFunction) => {
     req.auth = decoded;
     next();
   } catch (error) {
-
     return res
       .status(400)
       .json(new ApiResponse(false, "Access denied. Invalid token"));

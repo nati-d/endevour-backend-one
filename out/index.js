@@ -13,8 +13,8 @@ require("./src/services");
 const app = (0, express_1.default)();
 // app.use(session(Config.cookie));
 app.use((0, cors_1.default)({
-    origin: '*',
-    credentials: true
+    origin: "*",
+    credentials: true,
 }));
 app.use(express_1.default.json());
 app.use("/public", express_1.default.static("public"));
@@ -36,5 +36,6 @@ app.use("/api/blog", routers_1.default.blog);
 app.use("/api/service-provider", routers_1.default.sp);
 app.use("/api/tag", routers_1.default.tag);
 app.use("/api/verify", routers_1.default.verification);
+app.use("/api/feadback", routers_1.default.customerFeadback);
 const port = 3000;
 app.listen(port, () => console.log("Server started at port", port));

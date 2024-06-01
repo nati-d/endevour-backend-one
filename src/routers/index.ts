@@ -15,6 +15,8 @@ import _auth from "./auth";
 import _home from "./home";
 
 import _verification from "./verification.routes";
+
+import _customerFeadback from "./contactUs.routes";
 namespace Routers {
   export const adminRoutes = _admin;
   export const user = _user;
@@ -30,6 +32,7 @@ namespace Routers {
   export const auth = _auth;
   export const home = _home;
   export const verification = _verification;
+  export const customerFeadback = _customerFeadback;
 }
 
 export default Routers;

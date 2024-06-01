@@ -36,7 +36,12 @@ const getTender = async (req: Request, res: Response) => {
     return res
       .status(500)
       .json(
-        new ApiResponse(false, "Something went wrong while getting tender.")
+        new ApiResponse(
+          false,
+          "Something went wrong while getting tender.",
+          null,
+          error
+        )
       );
   }
 };

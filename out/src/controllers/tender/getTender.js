@@ -34,7 +34,7 @@ const getTender = async (req, res) => {
         console.log(error);
         return res
             .status(500)
-            .json(new response_1.default(false, "Something went wrong while getting tender."));
+            .json(new response_1.default(false, "Something went wrong while getting tender.", null, error));
     }
 };
 exports.default = getTender;
