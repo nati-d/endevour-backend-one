@@ -59,21 +59,6 @@ export default async (req: Request, res: Response) => {
         return res.status(500).json(new ApiResponse(false, "Unknown error at registering user", error))
     }
 
-    // try {
-
-    //     const token = jwt.sign(user, 'jwtprivatekey');
-    //     return res.header('authorization', token).status(201).json(new ApiResponse(true, "User registered successfully", token));
-
-    // } catch (error) {
-    //     console.error("Error signing JWT token:", error);
-
-    //     return res.status(500).send({
-    //         status: false,
-    //         message: "Error signing JWT token",
-    //         error: error,
-    //     });
-    // }
-
     try {
         const random = new Random(MersenneTwister19937.autoSeed());
         otpCode = random.integer(100000, 999999);

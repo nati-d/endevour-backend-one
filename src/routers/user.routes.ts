@@ -11,6 +11,8 @@ router.post("/auth/signup", Controller.userSignup);
 
 router.post("/auth/signin", Controller.userSignin);
 
+router.put("/auth/update", [Middleware.tokenAuth], Controller.userUpdate);
+
 router.post("/auth/verify-otp", Controller.verifyOtp);
 
 savedRouter.post("/job", [Middleware.tokenAuth], Controller.saved.saveJob);
