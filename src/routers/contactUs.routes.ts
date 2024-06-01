@@ -13,5 +13,9 @@ router.use(Middlewares.adminAuth);
 router.get("/get-feadbacks", CustomerFeadback.getFeadbacks);
 router.get("/get-feadback/:feadback_id", CustomerFeadback.getFeadback);
 router.delete("/delete/:feadback_id", CustomerFeadback.deleteFeadback);
-router.post("/response-to-feadback", CustomerFeadback.responseToFeadback);
+router.post(
+  "/response-to-feadback",
+  CustomerFeadback.responseToFeadback,
+  Middlewares.sendEmail
+);
 export default router;
