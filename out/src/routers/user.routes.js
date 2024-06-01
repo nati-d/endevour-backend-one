@@ -33,6 +33,7 @@ const router = express_1.default.Router();
 const savedRouter = (0, express_1.Router)();
 router.post("/auth/signup", controllers_1.default.userSignup);
 router.post("/auth/signin", controllers_1.default.userSignin);
+router.put("/auth/update", [middlewares_1.default.tokenAuth], controllers_1.default.userUpdate);
 router.post("/auth/verify-otp", controllers_1.default.verifyOtp);
 savedRouter.post("/job", [middlewares_1.default.tokenAuth], controllers_1.default.saved.saveJob);
 savedRouter.delete("/job", [middlewares_1.default.tokenAuth], controllers_1.default.saved.deleteJob);

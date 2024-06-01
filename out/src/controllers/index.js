@@ -15,6 +15,7 @@ const changePassword_1 = __importDefault(require("./admin/changePassword"));
 // -- Admin Controllers end --
 const signup_1 = __importDefault(require("./user/signup"));
 const signin_1 = __importDefault(require("./user/signin"));
+const update_1 = __importDefault(require("./user/update"));
 const verifyOtp_1 = __importDefault(require("./user/verifyOtp"));
 const saved_1 = __importDefault(require("./user/saved"));
 const createJobPost_1 = __importDefault(require("./job/createJobPost"));
@@ -77,6 +78,7 @@ var Controller;
     // -- User -- //
     Controller.userSignup = signup_1.default;
     Controller.userSignin = signin_1.default;
+    Controller.userUpdate = update_1.default;
     Controller.verifyOtp = verifyOtp_1.default;
     Controller.saved = saved_1.default;
     // -- Job post -- //
