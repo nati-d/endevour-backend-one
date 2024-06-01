@@ -32,6 +32,7 @@ const tag_routes_1 = __importDefault(require("./tag.routes"));
 const auth_1 = __importDefault(require("./auth"));
 const home_1 = __importDefault(require("./home"));
 const verification_routes_1 = __importDefault(require("./verification.routes"));
+const contactUs_routes_1 = __importDefault(require("./contactUs.routes"));
 var Routers;
 (function (Routers) {
     Routers.adminRoutes = admin_routes_1.default;
@@ -48,5 +49,6 @@ var Routers;
     Routers.auth = auth_1.default;
     Routers.home = home_1.default;
     Routers.verification = verification_routes_1.default;
+    Routers.customerFeadback = contactUs_routes_1.default;
 })(Routers || (Routers = {}));
 exports.default = Routers;

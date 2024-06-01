@@ -6,7 +6,7 @@ const router = express.Router();
 // Accessed by all user.
 router.get("/all/tenders", Middlewares.tokenForAdmin, Tender.getTenders);
 
-router.get("/:tender_id", Tender.getTender);
+router.get("/get/:tender_id", Tender.getTender);
 
 router.get("/category/get-all-categories", Tender.getAllTenderCategories);
 
@@ -28,6 +28,7 @@ router.delete("/delete/:tender_id", Tender.deleteTender);
 router.post("/save-tender", Tender.saveTender);
 
 router.get("/get-saved-tenders", Tender.getSavedTenders);
+
 // Accessed by only admins(authorized)
 router.use(Middlewares.adminAuth);
 
