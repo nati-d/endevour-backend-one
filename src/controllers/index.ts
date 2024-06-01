@@ -11,7 +11,7 @@ import _changeAdminPassword from "./admin/changePassword";
 
 import _userSignup from "./user/signup";
 import _userSignin from "./user/signin";
-import _sendOtp from "./user/sendOtp";
+import _verifyOtp from "./user/verifyOtp";
 import _saved from "./user/saved";
 
 import _insertJobPost from "./job/createJobPost";
@@ -92,7 +92,7 @@ namespace Controller {
 
   export const userSignin = _userSignin;
 
-    export const sendOtp = _sendOtp;
+    export const verifyOtp = _verifyOtp;
 
   export const saved = _saved;
   // -- Job post -- //

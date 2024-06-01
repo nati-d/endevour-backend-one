@@ -29,6 +29,11 @@ exports.default = async (req, res) => {
             });
             if (!user)
                 return res.status(400).json(new response_1.default(false, "user not found"));
+            let verification = await prisma_1.default.client.user_otps.findFirst({
+                where: { email: req.body.email, valid: true }
+            });
+            if (!verification)
+                return res.status(401).json(new response_1.default(false, "email is not verified"));
             const comparePassword = await bcrypt_1.default.compare(req.body.password, user.password);
             if (!comparePassword)
                 return res
