@@ -96,6 +96,15 @@ model User_credential {
   @@unique([user_id])
 }
 
+model User_otps {
+    id          Int         @id @default(autoincrement())
+    email       String      @unique  @db.VarChar(60)
+    otp_code    String      @db.VarChar(10)
+    valid       Boolean     @default(true)
+    created_at  DateTime    @default(now())
+    updated_at  DateTime    @default(now()) @updatedAt
+}
+
 enum Credential_provider {
   google
   facebook
@@ -263,6 +272,7 @@ model Job_post {
   verified_at        DateTime?
   verified_by        Int?
   posted_by          Int?
+  location           String?
   created_at         DateTime      @default(now())
   updated_at         DateTime      @default(now()) @updatedAt
 

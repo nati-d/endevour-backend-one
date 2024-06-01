@@ -14,7 +14,7 @@ exports.userSignupSchema = joi_1.default.object({
     last_name: joi_1.default.string().required(),
     email: joi_1.default.string().email().required(),
     phone_number: joi_1.default.string().pattern(/^\d{12}$/),
-    location: exports.locationSchema,
-    password: joi_1.default.string().min(8).required()
+    location: joi_1.default.string(),
+    password: joi_1.default.string().min(8).required(),
 });
 exports.default = { userSignupSchema: exports.userSignupSchema };
