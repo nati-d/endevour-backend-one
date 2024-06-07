@@ -23,7 +23,14 @@ export default async (req: Request, res: Response) => {
                     }
                 },
                 blog_: {
-
+                    select: {
+                        id: true,
+                        title: true,
+                        overview: true,
+                        body: true,
+                        posted_by: true,
+                        verified_by: true,
+                    }
                 }
             }
         });

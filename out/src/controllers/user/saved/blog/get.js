@@ -13,6 +13,29 @@ exports.default = async (req, res) => {
             take: 10,
             skip: page,
             where: { user: req.auth.id },
+            include: {
+                user_: {
+                    select: {
+                        id: true,
+                        first_name: true,
+                        last_name: true,
+                        email: true,
+                        phone_number: true,
+                        profile_image: true,
+                        location: true,
+                    }
+                },
+                blog_: {
+                    select: {
+                        id: true,
+                        title: true,
+                        overview: true,
+                        body: true,
+                        posted_by: true,
+                        verified_by: true,
+                    }
+                }
+            }
         });
         let totalData = await prisma_1.default.client.saved_blog.count({ where: { user: req.auth.id } });
         totalPages = Math.ceil(totalData / 10);

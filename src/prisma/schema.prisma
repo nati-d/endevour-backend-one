@@ -314,8 +314,8 @@ model Saved_job {
   job        Int
   created_at DateTime @default(now())
 
-  User User     @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  Job  Job_post @relation(fields: [job], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user_ User     @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  job_  Job_post @relation(fields: [job], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   @@id([user, job])
 }

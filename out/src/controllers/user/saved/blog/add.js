@@ -25,7 +25,16 @@ exports.default = async (req, res) => {
                         location: true,
                     }
                 },
-                blog_: {}
+                blog_: {
+                    select: {
+                        id: true,
+                        title: true,
+                        overview: true,
+                        body: true,
+                        posted_by: true,
+                        verified_by: true,
+                    }
+                }
             }
         });
         return res.status(201).json(new response_1.default(true, "data saved successfully", saved));
