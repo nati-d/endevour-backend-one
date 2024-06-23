@@ -12,6 +12,29 @@ exports.default = async (req, res) => {
             data: {
                 user: req.auth.id,
                 service_provider: req.body.id
+            },
+            include: {
+                user_: {
+                    select: {
+                        id: true,
+                        first_name: true,
+                        last_name: true,
+                        email: true,
+                        phone_number: true,
+                        profile_image: true,
+                        location: true,
+                    }
+                },
+                service_provider_: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        verified_by: true,
+                        service_category: true,
+                        about: true
+                    }
+                }
             }
         });
         return res.status(201).json(new response_1.default(true, "data saved successfully", saved));

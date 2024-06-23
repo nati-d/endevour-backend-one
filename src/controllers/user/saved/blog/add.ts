@@ -9,6 +9,29 @@ export default async (req: Request, res: Response) => {
             data: {
                 user: req.auth.id,
                 blog: req.body.id
+            },
+            include: {
+                user_: {
+                    select: {
+                        id: true,
+                        first_name: true,
+                        last_name: true,
+                        email: true,
+                        phone_number: true,
+                        profile_image: true,
+                        location: true,
+                    }
+                },
+                blog_: {
+                    select: {
+                        id: true,
+                        title: true,
+                        overview: true,
+                        body: true,
+                        posted_by: true,
+                        verified_by: true,
+                    }
+                }
             }
         });
 
