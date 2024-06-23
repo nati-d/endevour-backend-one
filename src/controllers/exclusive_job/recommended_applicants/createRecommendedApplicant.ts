@@ -68,7 +68,7 @@ const createRecommendedApplicant = async (req: Request, res: Response) => {
     const createdRecommendedApplicant =
       await prisma.recommended_applicant.create({
         data: {
-         remark,
+          remark,
           cv,
           job: getJob.id,
           recommender: getRecommender.id,

@@ -3,7 +3,11 @@ const router = express.Router();
 import Common from "../controllers/common";
 import Middleware from "../middlewares/index";
 
-router.post("/forgot-password/get-confirmation-code", Common.forgotPassword);
+router.post(
+  "/forgot-password/get-confirmation-code",
+  Common.forgotPassword,
+  Middleware.sendEmail
+);
 
 router.post("/email-subscription", Common.emailSubscription);
 

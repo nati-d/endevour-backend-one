@@ -5,8 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const prismaClient_1 = __importDefault(require("../../../prisma/client/prismaClient"));
 const response_1 = __importDefault(require("../../../types/response"));
-const sendEmail_1 = __importDefault(require("../../../services/notifications/sendEmail"));
-const forgotPassword = async (req, res) => {
+const forgotPassword = async (req, res, next) => {
     const { email, type } = req.body;
     let user;
     if (type !== "admin" && type !== "user")
@@ -42,31 +41,40 @@ const forgotPassword = async (req, res) => {
     }
     const confirmationCode = Math.floor(Math.random() * 10000) + 1;
     try {
-        await (0, sendEmail_1.default)(email, "Password Reset Code.", `<p> Confirmation code</p>: <b>${confirmationCode}</b>`);
-    }
-    catch (error) {
-        console.log(error);
-        return res
-            .status(500)
-            .json(new response_1.default(false, "Failed to send confirmation code please try later."));
-    }
-    try {
         const insertCode = await prismaClient_1.default.password_reset.create({
             data: {
                 email,
                 confirmation_code: confirmationCode,
             },
         });
-        return res.status(201).json(new response_1.default(true, "Confirmation code has been send successfully.", {
-            codeId: insertCode.id,
-            userId: user.email,
-        }));
+        req.emailData = {
+            sendTo: email,
+            subject: "Password Reset Code.",
+            html: `<p> Confirmation code</p>: <b>${confirmationCode}</b>`,
+            async queryOnFail() {
+                await prismaClient_1.default.password_reset.delete({
+                    where: {
+                        id: insertCode.id,
+                    },
+                });
+            },
+            resMessage: "Confirmation code has been send successfully.",
+            statusCode: 201,
+            otherData: { codeId: insertCode.id, userId: user.email },
+        };
+        // return res.status(201).json(
+        //   new ApiResponse(true, "Confirmation code has been send successfully.", {
+        //     codeId: insertCode.id,
+        //     userId: user.email,
+        //   })
+        // );
+        next();
     }
     catch (error) {
         console.log(error);
         return res
             .status(500)
-            .json(new response_1.default(false, "Failed while managing confirmation code"));
+            .json(new response_1.default(false, "Failed to send confirmation code please try later."));
     }
 };
 exports.default = forgotPassword;
