@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const prisma_1 = __importDefault(require("../../../../prisma/"));
 const client_1 = require("@prisma/client");
 const response_1 = __importDefault(require("../../../../types/response"));
+const sendEmailConfig_1 = __importDefault(require("../../../../configs/sendEmailConfig"));
 exports.default = async (req, res, next) => {
     try {
         let saved = await prisma_1.default.client.procurement.upsert({
@@ -54,13 +55,8 @@ exports.default = async (req, res, next) => {
                 }
             }
         });
-        req.emailData = {
-            sendTo: req.auth?.email,
-            subject: "subject",
-            html: "html"
-        };
-        // res.status(201).json(new ApiResponse(true, "data saved successfully", saved));
-        next();
+        await (0, sendEmailConfig_1.default)(req.auth?.email, "procurement", JSON.stringify(saved));
+        res.status(201).json(new response_1.default(true, "data send to email successfully"));
     }
     catch (error) {
         console.error(error);
