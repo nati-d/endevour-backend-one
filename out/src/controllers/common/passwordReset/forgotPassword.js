@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const prismaClient_1 = __importDefault(require("../../../prisma/client/prismaClient"));
 const response_1 = __importDefault(require("../../../types/response"));
+const otp_1 = __importDefault(require("../../../templates/otp"));
 const forgotPassword = async (req, res, next) => {
     const { email, type } = req.body;
     let user;
@@ -50,7 +51,7 @@ const forgotPassword = async (req, res, next) => {
         req.emailData = {
             sendTo: email,
             subject: "Password Reset Code.",
-            html: `<p> Confirmation code</p>: <b>${confirmationCode}</b>`,
+            html: (0, otp_1.default)(confirmationCode),
             async queryOnFail() {
                 await prismaClient_1.default.password_reset.delete({
                     where: {
@@ -62,12 +63,6 @@ const forgotPassword = async (req, res, next) => {
             statusCode: 201,
             otherData: { codeId: insertCode.id, userId: user.email },
         };
-        // return res.status(201).json(
-        //   new ApiResponse(true, "Confirmation code has been send successfully.", {
-        //     codeId: insertCode.id,
-        //     userId: user.email,
-        //   })
-        // );
         next();
     }
     catch (error) {

@@ -6,6 +6,7 @@ import { User } from "../../../types/types";
 import Validator from "../../../validation";
 import { Prisma } from "@prisma/client";
 import hashPassword from "../../../helpers/hashPassword";
+import recommenderInvitation from "../../../templates/recommenderInvitation";
 
 const createRecommender = async (
   req: Request,
@@ -40,8 +41,9 @@ const createRecommender = async (
     req.emailData = {
       sendTo: email,
       subject: "Invited to be recommender of endevour exclusive job.",
-      html: `<p> 
-      <b>email: </b> ${email}<br/> <b>password: </b> ${password} <br/> You can login by goint to this link <a href="https://endevour.org/auth/sign-in">Login at endevour.org</a></p> `,
+      // html: `<p>
+      // <b>email: </b> ${email}<br/> <b>password: </b> ${password} <br/> You can login by goint to this link <a href="https://endevour.org/auth/sign-in">Login at endevour.org</a></p> `,
+      html: recommenderInvitation(first_name),
       statusCode: 201,
       resMessage: "Recommender created successfully.",
       otherData: _.pickBy(newRecommender, (value, key) => key !== "password"),
