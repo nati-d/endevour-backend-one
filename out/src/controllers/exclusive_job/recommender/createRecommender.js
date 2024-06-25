@@ -9,6 +9,7 @@ const lodash_1 = __importDefault(require("lodash"));
 const validation_1 = __importDefault(require("../../../validation"));
 const client_1 = require("@prisma/client");
 const hashPassword_1 = __importDefault(require("../../../helpers/hashPassword"));
+const recommenderInvitation_1 = __importDefault(require("../../../templates/recommenderInvitation"));
 const createRecommender = async (req, res, next) => {
     try {
         const { error } = validation_1.default.recommender.Recommender.validate(req.body);
@@ -31,8 +32,9 @@ const createRecommender = async (req, res, next) => {
         req.emailData = {
             sendTo: email,
             subject: "Invited to be recommender of endevour exclusive job.",
-            html: `<p> 
-      <b>email: </b> ${email}<br/> <b>password: </b> ${password} <br/> You can login by goint to this link <a href="https://endevour.org/auth/sign-in">Login at endevour.org</a></p> `,
+            // html: `<p>
+            // <b>email: </b> ${email}<br/> <b>password: </b> ${password} <br/> You can login by goint to this link <a href="https://endevour.org/auth/sign-in">Login at endevour.org</a></p> `,
+            html: (0, recommenderInvitation_1.default)(first_name),
             statusCode: 201,
             resMessage: "Recommender created successfully.",
             otherData: lodash_1.default.pickBy(newRecommender, (value, key) => key !== "password"),

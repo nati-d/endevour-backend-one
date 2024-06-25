@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import prisma from "../../../prisma/client/prismaClient";
 import ApiResponse from "../../../types/response";
 import sendEmail from "../../../services/notifications/sendEmail";
+import otp from "../../../templates/otp";
 
 const forgotPassword = async (
   req: Request,
@@ -55,7 +56,7 @@ const forgotPassword = async (
     req.emailData = {
       sendTo: email,
       subject: "Password Reset Code.",
-      html: `<p> Confirmation code</p>: <b>${confirmationCode}</b>`,
+      html: otp(confirmationCode),
       async queryOnFail() {
         await prisma.password_reset.delete({
           where: {
@@ -67,12 +68,7 @@ const forgotPassword = async (
       statusCode: 201,
       otherData: { codeId: insertCode.id, userId: user.email },
     };
-    // return res.status(201).json(
-    //   new ApiResponse(true, "Confirmation code has been send successfully.", {
-    //     codeId: insertCode.id,
-    //     userId: user.email,
-    //   })
-    // );
+
     next();
   } catch (error) {
     console.log(error);
