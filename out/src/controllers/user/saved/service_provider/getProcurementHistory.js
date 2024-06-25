@@ -36,9 +36,15 @@ exports.default = async (req, res) => {
                 }
             }
         });
-        let totalData = await prisma_1.default.client.procurement.count();
+        let totalData = await prisma_1.default.client.procurement.count({
+            where: {
+                user: user,
+                service_provider: sp
+            }
+        });
         totalPages = Math.ceil(totalData / 10);
-        return res.status(200).json(new response_1.default(true, "data fetched successfully", { data,
+        return res.status(200).json(new response_1.default(true, "data fetched successfully", {
+            data,
             total_pages: totalPages,
             current_page: currentPage,
             next_page: currentPage >= totalPages ? null : currentPage + 1
