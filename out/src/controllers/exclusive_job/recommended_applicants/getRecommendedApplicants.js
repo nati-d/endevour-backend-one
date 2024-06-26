@@ -21,11 +21,16 @@ const getRecommendedApplicants = async (req, res) => {
             },
             include: {
                 exclusive_job: true,
+                user: {
+                    select: {
+                        first_name: true,
+                        last_name: true,
+                        email: true,
+                    },
+                },
             },
         });
-        return res
-            .status(200)
-            .json(new response_1.default(true, "Applicants for this job getted successfully. ", {
+        return res.status(200).json(new response_1.default(true, "Applicants for this job getted successfully. ", {
             applicants: getApplicants,
             totalPages: numberOfPages,
             currentPage: Number(page),
