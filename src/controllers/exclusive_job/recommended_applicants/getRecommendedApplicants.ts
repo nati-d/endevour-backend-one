@@ -19,22 +19,27 @@ const getRecommendedApplicants = async (req: Request, res: Response) => {
       },
       include: {
         exclusive_job: true,
+        user: {
+          select: {
+            first_name: true,
+            last_name: true,
+            email: true,
+          },
+        },
       },
     });
 
-    return res
-      .status(200)
-      .json(
-        new ApiResponse(true, "Applicants for this job getted successfully. ", {
-          applicants: getApplicants,
-          totalPages: numberOfPages,
-          currentPage: Number(page),
-          nextPage:
-            page && parseInt(page?.toString()) < numberOfPages
-              ? parseInt(page.toString()) + 1
-              : null,
-        })
-      );
+    return res.status(200).json(
+      new ApiResponse(true, "Applicants for this job getted successfully. ", {
+        applicants: getApplicants,
+        totalPages: numberOfPages,
+        currentPage: Number(page),
+        nextPage:
+          page && parseInt(page?.toString()) < numberOfPages
+            ? parseInt(page.toString()) + 1
+            : null,
+      })
+    );
   } catch (error) {
     console.log(error);
 
