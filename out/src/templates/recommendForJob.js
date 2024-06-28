@@ -60,7 +60,7 @@ const recommendForJob = (description, recommendationLink) => {
       <div class="header">
         <h2>Welcome to Devidends!</h2>
       </div>
-      <p>Dear [Recommender's Name],</p>
+      <p>Dear Devidends Recommender,</p>
       <p>We are excited to have you as a recommender at Devidends!</p>
       <p>
         Your insights are invaluable to us. Here are the current job openings
