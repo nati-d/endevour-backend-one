@@ -2,21 +2,24 @@ import { createClient } from "redis";
 import RedisStore from "connect-redis";
 
 let redisClient = createClient();
-redisClient.connect().catch();
+redisClient.connect().catch(console.error);
 
 export default {
     store: new RedisStore({
         client: redisClient,
-        prefix: "endevour:"
+        prefix: process.env.REDIS_PREFIX as string
     }),
-    secret: process.env.REDIS_SECRET as string,
+    secret: process.env.COOKIE_SECRET_KEY as string,
     resave: false,
     saveUninitialized: false,
+    proxy: true,
+    rolling: true,
     cookie: {
-        secure: process.env.NODE_ENV == 'production', // in production use 'true'
-        httpOnly: false,
-        // domain: 'endevour.org',
-        // sameSite: false,
         maxAge: 1000 * 60 * 60 * 24,
-    },
+        secure: ( process.env.ENV as string ) == "production",
+        domain: process.env.COOKIE_DOMAIN as string,
+        sameSite: false,
+    }
 }
+
+export { redisClient };

@@ -1,30 +1,22 @@
 import express from "express";
-// import session from "express-session";
+import session from "express-session";
 import cors from "cors";
 import "dotenv/config";
-// import passport from "passport";
+import passport from "passport";
 import Router from "./src/routers";
 import Config from "./src/configs";
 require("./src/services");
 
 const app = express();
 
-// app.use(session(Config.cookie));
-
-app.use(
-  cors({
-    origin: "*",
-    credentials: true,
-  })
-);
-
+app.use(session(Config.cookie));
+app.use(cors());
 app.use(express.json());
 app.use("/public", express.static("public"));
-
 app.set("trust proxy", 1);
 
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/auth", Router.auth);
 
