@@ -1,13 +1,15 @@
-import { createClient } from "redis";
-import RedisStore from "connect-redis";
+import session from "express-session";
+import sqlite from 'sqlite3';
+import sqliteFactory from 'express-session-sqlite';
 
-let redisClient = createClient();
-redisClient.connect().catch(console.error);
+const Store = sqliteFactory(session);
 
 export default {
-    store: new RedisStore({
-        client: redisClient,
-        prefix: process.env.REDIS_PREFIX as string
+    store: new Store({
+        driver: sqlite.Database,
+        path: process.env.SQLITE_STORE_PATH as string,
+        ttl: 1234,
+        prefix: process.env.SESSION_KEY_PREFIX as string,
     }),
     secret: process.env.COOKIE_SECRET_KEY as string,
     resave: false,
@@ -21,5 +23,3 @@ export default {
         sameSite: false,
     }
 }
-
-export { redisClient };
