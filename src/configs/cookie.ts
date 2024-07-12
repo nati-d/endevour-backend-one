@@ -1,22 +1,25 @@
-import { createClient } from "redis";
-import RedisStore from "connect-redis";
+import session from "express-session";
+import sqlite from 'sqlite3';
+import sqliteFactory from 'express-session-sqlite';
 
-let redisClient = createClient();
-redisClient.connect().catch();
+const Store = sqliteFactory(session);
 
 export default {
-    store: new RedisStore({
-        client: redisClient,
-        prefix: "endevour:"
+    store: new Store({
+        driver: sqlite.Database,
+        path: process.env.SQLITE_STORE_PATH as string,
+        ttl: 1234,
+        prefix: process.env.SESSION_KEY_PREFIX as string,
     }),
-    secret: process.env.REDIS_SECRET as string,
+    secret: process.env.COOKIE_SECRET_KEY as string,
     resave: false,
     saveUninitialized: false,
+    proxy: true,
+    rolling: true,
     cookie: {
-        secure: process.env.NODE_ENV == 'production', // in production use 'true'
-        httpOnly: false,
-        // domain: 'endevour.org',
-        // sameSite: false,
         maxAge: 1000 * 60 * 60 * 24,
-    },
+        secure: ( process.env.ENV as string ) == "production",
+        domain: process.env.COOKIE_DOMAIN as string,
+        sameSite: false,
+    }
 }

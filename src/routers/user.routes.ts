@@ -9,6 +9,8 @@ router.post("/auth/signup", Controller.userSignup);
 
 router.post("/auth/signin", Controller.userSignin);
 
+router.get("/auth/sign-in-with-google", Controller.userGoogleLogin);
+
 router.put("/auth/update", [Middleware.tokenAuth], Controller.userUpdate);
 
 router.post("/auth/verify-otp", Controller.verifyOtp);

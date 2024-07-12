@@ -11,6 +11,7 @@ import _changeAdminPassword from "./admin/changePassword";
 
 import _userSignup from "./user/signup";
 import _userSignin from "./user/signin";
+import _userGoogleLogin from "./user/googleLogin";
 import _userUpdate from "./user/update";
 import _verifyOtp from "./user/verifyOtp";
 import _saved from "./user/saved";
@@ -97,6 +98,8 @@ namespace Controller {
   export const userSignup = _userSignup;
 
   export const userSignin = _userSignin;
+
+  export const userGoogleLogin = _userGoogleLogin;
 
   export const userUpdate = _userUpdate;
 
