@@ -72,6 +72,11 @@ import _deleteSpPost from "./service_provider/post/deletePost";
 
 import _home from "./home";
 
+import _requestForCVEditing from "./user/cv-editing/requestForEditing";
+import _getCVEditingRequests from "./user/cv-editing/getCVEditingRequests";
+
+import _createPersonalizedAlert from "./personalized-alert/createPersonalizedAlert";
+import _getPersonalizedAlert from "./personalized-alert/getPersonalizedAlert";
 namespace Controller {
   // -- Admin --
   export const addAdmin = _addAdmin;
@@ -94,11 +99,11 @@ namespace Controller {
 
   export const userSignin = _userSignin;
 
-    export const userGoogleLogin = _userGoogleLogin;
+  export const userGoogleLogin = _userGoogleLogin;
 
-    export const userUpdate = _userUpdate;
+  export const userUpdate = _userUpdate;
 
-    export const verifyOtp = _verifyOtp;
+  export const verifyOtp = _verifyOtp;
 
   export const saved = _saved;
   // -- Job post -- //
@@ -197,6 +202,14 @@ namespace Controller {
   export const deleteSpPost = _deleteSpPost;
 
   export const home = _home;
+
+  //-- CV Editing --
+  export const requestForCVEditing = _requestForCVEditing;
+  export const getCVEditingRequests = _getCVEditingRequests;
+
+  // -- Personalized alert --
+  export const createPersonalizedAlert = _createPersonalizedAlert;
+  export const getPersonalizedAlert = _getPersonalizedAlert;
 }
 
 export default Controller;

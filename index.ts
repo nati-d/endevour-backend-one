@@ -50,5 +50,6 @@ app.use("/api/verify", Router.verification);
 
 app.use("/api/feadback", Router.customerFeadback);
 
+app.use("/api/personalized-alert", Router.personalizedAlert);
 const port = 3000;
 app.listen(port, () => console.log("Server started at port", port));

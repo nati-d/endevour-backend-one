@@ -60,4 +60,6 @@ savedRouter.get("/service-provider", [middlewares_1.default.tokenAuth], controll
 savedRouter.post("/procurement", middlewares_1.default.tokenAuth, controllers_1.default.saved.procurement, middlewares_1.default.sendEmail);
 savedRouter.get("/get-procurement-history", [middlewares_1.default.tokenAuth, middlewares_1.default.adminAuth], controllers_1.default.saved.getProcurementHistory);
 router.use("/saved", savedRouter);
+router.post("/request-for-cv-editing", middlewares_1.default.tokenAuth, controllers_1.default.requestForCVEditing);
+router.get("/get-cv-editing-requests", [middlewares_1.default.tokenAuth, middlewares_1.default.adminAuth], controllers_1.default.getCVEditingRequests);
 exports.default = router;

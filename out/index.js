@@ -35,5 +35,6 @@ app.use("/api/service-provider", routers_1.default.sp);
 app.use("/api/tag", routers_1.default.tag);
 app.use("/api/verify", routers_1.default.verification);
 app.use("/api/feadback", routers_1.default.customerFeadback);
+app.use("/api/personalized-alert", routers_1.default.personalizedAlert);
 const port = 3000;
 app.listen(port, () => console.log("Server started at port", port));
