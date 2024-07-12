@@ -79,6 +79,8 @@ model User {
   exclusive_jobs         Exclusive_job[]
   recommended_applicants Recommended_applicant[]
   procurement            Procurement[]
+  personalized_alerts    Personalized_alerts[]
+  cv_editing_requests    cv_editing_requests[]
 
   @@index([first_name, last_name])
 }
@@ -97,12 +99,12 @@ model User_credential {
 }
 
 model User_otps {
-    id          Int         @id @default(autoincrement())
-    email       String      @unique  @db.VarChar(60)
-    otp_code    String      @db.VarChar(10)
-    valid       Boolean     @default(true)
-    created_at  DateTime    @default(now())
-    updated_at  DateTime    @default(now()) @updatedAt
+  id         Int      @id @default(autoincrement())
+  email      String   @unique @db.VarChar(60)
+  otp_code   String   @db.VarChar(10)
+  valid      Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 }
 
 enum Credential_provider {
@@ -314,8 +316,8 @@ model Saved_job {
   job        Int
   created_at DateTime @default(now())
 
-  User User     @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  Job  Job_post @relation(fields: [job], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user_ User     @relation(fields: [user], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  job_  Job_post @relation(fields: [job], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   @@id([user, job])
 }
@@ -536,4 +538,21 @@ model Customer_feadbacks {
   email     String
   subject   String
   message   String
+}
+
+model cv_editing_requests {
+  id         Int      @unique @default(autoincrement())
+  user_id    Int
+  status     String   @default("waiting")
+  created_at DateTime @default(now())
+  user       User     @relation(fields: [user_id], references: [id])
+}
+
+model Personalized_alerts {
+  id         Int    @unique @default(autoincrement())
+  name       String
+  repetition String
+  alert_for  String
+  user_id    Int
+  user       User   @relation(fields: [user_id], references: [id])
 }

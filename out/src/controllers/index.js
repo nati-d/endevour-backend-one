@@ -64,6 +64,10 @@ const getPostById_1 = __importDefault(require("./service_provider/post/getPostBy
 const updatePost_1 = __importDefault(require("./service_provider/post/updatePost"));
 const deletePost_1 = __importDefault(require("./service_provider/post/deletePost"));
 const home_1 = __importDefault(require("./home"));
+const requestForEditing_1 = __importDefault(require("./user/cv-editing/requestForEditing"));
+const getCVEditingRequests_1 = __importDefault(require("./user/cv-editing/getCVEditingRequests"));
+const createPersonalizedAlert_1 = __importDefault(require("./personalized-alert/createPersonalizedAlert"));
+const getPersonalizedAlert_1 = __importDefault(require("./personalized-alert/getPersonalizedAlert"));
 var Controller;
 (function (Controller) {
     // -- Admin --
@@ -133,5 +137,11 @@ var Controller;
     Controller.updateSpPost = updatePost_1.default;
     Controller.deleteSpPost = deletePost_1.default;
     Controller.home = home_1.default;
+    //-- CV Editing --
+    Controller.requestForCVEditing = requestForEditing_1.default;
+    Controller.getCVEditingRequests = getCVEditingRequests_1.default;
+    // -- Personalized alert --
+    Controller.createPersonalizedAlert = createPersonalizedAlert_1.default;
+    Controller.getPersonalizedAlert = getPersonalizedAlert_1.default;
 })(Controller || (Controller = {}));
 exports.default = Controller;
