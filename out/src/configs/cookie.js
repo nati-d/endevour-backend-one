@@ -3,16 +3,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.redisClient = void 0;
-const redis_1 = require("redis");
-const connect_redis_1 = __importDefault(require("connect-redis"));
-let redisClient = (0, redis_1.createClient)();
-exports.redisClient = redisClient;
-redisClient.connect().catch(console.error);
+const express_session_1 = __importDefault(require("express-session"));
+const sqlite3_1 = __importDefault(require("sqlite3"));
+const express_session_sqlite_1 = __importDefault(require("express-session-sqlite"));
+const Store = (0, express_session_sqlite_1.default)(express_session_1.default);
 exports.default = {
-    store: new connect_redis_1.default({
-        client: redisClient,
-        prefix: process.env.REDIS_PREFIX
+    store: new Store({
+        driver: sqlite3_1.default.Database,
+        path: process.env.SQLITE_STORE_PATH,
+        ttl: 1234,
+        prefix: process.env.SESSION_KEY_PREFIX,
     }),
     secret: process.env.COOKIE_SECRET_KEY,
     resave: false,

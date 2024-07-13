@@ -5,16 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const prisma_1 = __importDefault(require("../../prisma/"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const cookie_1 = require("../../configs/cookie");
 const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
-    let cookie = (await cookie_1.redisClient.get(`endevour:${req.sessionID}`));
-    let cookie_ = JSON.parse(cookie);
-    let user;
+    let user = req.user;
     try {
         user = await prisma_1.default.client.user.findFirst({
             where: {
-                email: cookie_?.passport?.user?.email
+                email: user.email
             },
             select: {
                 id: true,
@@ -28,7 +25,7 @@ exports.default = async (req, res) => {
     }
     catch (error) {
         console.error(error);
-        res.status(500).json(new response_1.default(false, 'error while processing request'));
+        return res.status(500).json(new response_1.default(false, 'error while processing request'));
     }
     try {
         const token = jsonwebtoken_1.default.sign(JSON.stringify(user), process.env.JWT_KEY);
