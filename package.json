@@ -19,7 +19,7 @@
     "author": "AmanuelWonde, AbelMaireg",
     "license": "ISC",
     "dependencies": {
-        "@prisma/client": "^5.14.0",
+        "@prisma/client": "^5.x.x",
         "@react-email/render": "^0.0.13",
         "bcrypt": "^5.1.1",
         "cookie": "^0.6.0",
@@ -58,7 +58,7 @@
         "@types/random-js": "^2.0.0",
         "@types/sqlite3": "^3.1.11",
         "nodemon": "^3.1.0",
-        "prisma": "^5.14.0",
+        "prisma": "^5.x.x",
         "typescript": "^5.4.3"
     }
 }
