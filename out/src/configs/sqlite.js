@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDbConnection = void 0;
+exports.getDbConnection = getDbConnection;
 const sqlite3_1 = __importDefault(require("sqlite3"));
 const sqlite_1 = require("sqlite");
 async function getDbConnection() {
@@ -13,4 +13,3 @@ async function getDbConnection() {
     });
     return db;
 }
-exports.getDbConnection = getDbConnection;
