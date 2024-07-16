@@ -12,7 +12,7 @@ const tokenAuth = (req, res, next) => {
             .status(401)
             .json(new response_1.default(false, "Access denied. Token not provided"));
     try {
-        const decoded = jsonwebtoken_1.default.verify(token, "jwtprivatekey");
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_KEY || "");
         req.auth = decoded;
         next();
     }
