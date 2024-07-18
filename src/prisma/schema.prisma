@@ -249,12 +249,12 @@ model Job_category {
 }
 
 model Salary {
-  id          Int         @id @unique
-  low_end     Float
-  high_end    Float
-  periodicity Periodicity
-  currency    String
-  job         Job_post    @relation(fields: [id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  id          Int          @id @unique
+  low_end     Float?
+  high_end    Float?
+  periodicity Periodicity?
+  currency    String?
+  job         Job_post     @relation(fields: [id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   @@index([low_end, high_end])
   @@index([high_end, low_end])
