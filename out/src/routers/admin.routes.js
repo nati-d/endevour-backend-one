@@ -20,4 +20,5 @@ router.use(index_2.default.superAdminAuth);
 router.post("/auth/add-admin", index_1.default.addAdmin, index_2.default.sendEmail);
 router.get("/get-admins", index_1.default.getAdmins);
 router.put("/update-role", index_1.default.updateAdminRole);
+router.get("/dashboard/get-datas", index_1.default.getDashboardData);
 exports.default = router;

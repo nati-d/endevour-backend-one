@@ -12,6 +12,7 @@ const uploadProfileImg_1 = __importDefault(require("./admin/uploadProfileImg"));
 const updateProfile_1 = __importDefault(require("./admin/updateProfile"));
 const modifyRole_1 = __importDefault(require("./admin/modifyRole"));
 const changePassword_1 = __importDefault(require("./admin/changePassword"));
+const getDashboardData_1 = __importDefault(require("./admin/dashboard/getDashboardData"));
 // -- Admin Controllers end --
 const signup_1 = __importDefault(require("./user/signup"));
 const signin_1 = __importDefault(require("./user/signin"));
@@ -80,6 +81,7 @@ var Controller;
     Controller.updateAdminRole = modifyRole_1.default;
     Controller.changeAdminPassword = changePassword_1.default;
     Controller.updateAdminProfile = updateProfile_1.default;
+    Controller.getDashboardData = getDashboardData_1.default;
     // -- User -- //
     Controller.userSignup = signup_1.default;
     Controller.userSignin = signin_1.default;
