@@ -7,6 +7,7 @@ import _adminProfileImgUpload from "./admin/uploadProfileImg";
 import _updateAdminProfile from "./admin/updateProfile";
 import _updateAdminRole from "./admin/modifyRole";
 import _changeAdminPassword from "./admin/changePassword";
+import _getDashboardData from "./admin/dashboard/getDashboardData";
 // -- Admin Controllers end --
 
 import _userSignup from "./user/signup";
@@ -77,6 +78,7 @@ import _getCVEditingRequests from "./user/cv-editing/getCVEditingRequests";
 
 import _createPersonalizedAlert from "./personalized-alert/createPersonalizedAlert";
 import _getPersonalizedAlert from "./personalized-alert/getPersonalizedAlert";
+
 namespace Controller {
   // -- Admin --
   export const addAdmin = _addAdmin;
@@ -94,6 +96,8 @@ namespace Controller {
   export const changeAdminPassword = _changeAdminPassword;
 
   export const updateAdminProfile = _updateAdminProfile;
+
+  export const getDashboardData = _getDashboardData;
   // -- User -- //
   export const userSignup = _userSignup;
 

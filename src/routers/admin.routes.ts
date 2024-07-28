@@ -26,4 +26,5 @@ router.post("/auth/add-admin", Controller.addAdmin, Middleware.sendEmail);
 router.get("/get-admins", Controller.getAdmins);
 router.put("/update-role", Controller.updateAdminRole);
 
+router.get("/dashboard/get-datas", Controller.getDashboardData);
 export default router;
