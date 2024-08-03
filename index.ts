@@ -16,6 +16,7 @@ app.use("/public", express.static("public"));
 app.set("trust proxy", 1);
 
 app.use(passport.initialize());
+
 app.use(passport.session());
 
 app.use("/auth", Router.auth);

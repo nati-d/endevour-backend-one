@@ -25,6 +25,7 @@
         "cookie": "^0.6.0",
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
+        "edevour-backend": "file:",
         "express": "^4.19.1",
         "express-session": "^1.18.0",
         "express-session-sqlite": "^2.1.1",
