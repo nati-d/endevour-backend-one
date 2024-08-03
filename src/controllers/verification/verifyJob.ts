@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import prisma from "../../prisma/client/prismaClient";
 import ApiResponse from "../../types/response";
+import jobPostVerificatoin from "../../templates/jobPostVerification";
 
 const verifyJob = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -36,6 +37,8 @@ const verifyJob = async (req: Request, res: Response, next: NextFunction) => {
         user: {
           select: {
             email: true,
+            first_name: true,
+            last_name: true,
           },
         },
       },
@@ -43,10 +46,13 @@ const verifyJob = async (req: Request, res: Response, next: NextFunction) => {
 
     if (!verifiedJob.user?.email) return;
 
+    const template = jobPostVerificatoin(
+      `${verifiedJob.user.first_name + " " + verifiedJob.user.last_name}`
+    );
     req.emailData = {
       sendTo: verifiedJob.user?.email,
       subject: "Job post verification",
-      html: "<p> Congratulations your job post is verified.",
+      html: template,
       otherData: verifiedJob,
       resMessage: "Job verified successfully.",
       statusCode: 201,

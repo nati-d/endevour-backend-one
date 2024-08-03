@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient"));
 const response_1 = __importDefault(require("../../types/response"));
+const jobPostVerification_1 = __importDefault(require("../../templates/jobPostVerification"));
 const verifyJob = async (req, res, next) => {
     try {
         const { job_id } = req.params;
@@ -31,16 +32,19 @@ const verifyJob = async (req, res, next) => {
                 user: {
                     select: {
                         email: true,
+                        first_name: true,
+                        last_name: true,
                     },
                 },
             },
         });
         if (!verifiedJob.user?.email)
             return;
+        const template = (0, jobPostVerification_1.default)(`${verifiedJob.user.first_name + " " + verifiedJob.user.last_name}`);
         req.emailData = {
             sendTo: verifiedJob.user?.email,
             subject: "Job post verification",
-            html: "<p> Congratulations your job post is verified.",
+            html: template,
             otherData: verifiedJob,
             resMessage: "Job verified successfully.",
             statusCode: 201,

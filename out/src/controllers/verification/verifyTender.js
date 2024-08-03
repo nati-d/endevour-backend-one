@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient"));
 const response_1 = __importDefault(require("../../types/response"));
+const tenderPostVerification_1 = __importDefault(require("../../templates/tenderPostVerification"));
 const verifyTender = async (req, res, next) => {
     try {
         const { tender_id } = req.params;
@@ -31,16 +32,19 @@ const verifyTender = async (req, res, next) => {
                 user: {
                     select: {
                         email: true,
+                        first_name: true,
+                        last_name: true,
                     },
                 },
             },
         });
         if (!verifiedTender.user?.email)
             return;
+        const template = (0, tenderPostVerification_1.default)(`${verifiedTender.user.first_name + " " + verifiedTender.user.last_name}`);
         req.emailData = {
             sendTo: verifiedTender.user?.email,
             subject: "Tender post verification",
-            html: "<p> Congratulations your tender is verified.",
+            html: template,
             otherData: verifiedTender,
             resMessage: "Tender verified successfully.",
             statusCode: 201,
