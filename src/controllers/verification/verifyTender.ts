@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import prisma from "../../prisma/client/prismaClient";
 import ApiResponse from "../../types/response";
+import tenderPostVerification from "../../templates/tenderPostVerification";
 
 const verifyTender = async (
   req: Request,
@@ -39,6 +40,8 @@ const verifyTender = async (
         user: {
           select: {
             email: true,
+            first_name: true,
+            last_name: true,
           },
         },
       },
@@ -46,10 +49,13 @@ const verifyTender = async (
 
     if (!verifiedTender.user?.email) return;
 
+    const template = tenderPostVerification(
+      `${verifiedTender.user.first_name + " " + verifiedTender.user.last_name}`
+    );
     req.emailData = {
       sendTo: verifiedTender.user?.email,
       subject: "Tender post verification",
-      html: "<p> Congratulations your tender is verified.",
+      html: template,
       otherData: verifiedTender,
       resMessage: "Tender verified successfully.",
       statusCode: 201,
