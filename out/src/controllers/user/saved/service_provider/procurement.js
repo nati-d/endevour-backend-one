@@ -7,18 +7,20 @@ const prisma_1 = __importDefault(require("../../../../prisma/"));
 const client_1 = require("@prisma/client");
 const response_1 = __importDefault(require("../../../../types/response"));
 const sendEmailConfig_1 = __importDefault(require("../../../../configs/sendEmailConfig"));
+const serviceProviderContactRequest_1 = __importDefault(require("../../../../templates/serviceProviderContactRequest"));
 exports.default = async (req, res, next) => {
     try {
         let saved = await prisma_1.default.client.procurement.upsert({
             where: {
                 user_service_provider: {
                     user: req.auth.id,
-                    service_provider: req.body.id
-                }
+                    service_provider: req.body.id,
+                },
             },
             update: {},
             create: {
-                user: req.auth.id, service_provider: req.body.id
+                user: req.auth.id,
+                service_provider: req.body.id,
             },
             include: {
                 user_: {
@@ -36,36 +38,45 @@ exports.default = async (req, res, next) => {
                         token: false,
                         is_recommender: false,
                         created_at: false,
-                        updated_at: false
-                    }
+                        updated_at: false,
+                    },
                 },
                 service_provider_: {
                     select: {
                         id: false,
                         name: true,
-                        phone: false,
+                        phone: true,
                         email: true,
                         about: true,
                         verified_by: false,
                         service_category: true,
                         password: false,
                         created_at: false,
-                        updated_at: false
-                    }
-                }
-            }
+                        updated_at: false,
+                    },
+                },
+            },
         });
-        await (0, sendEmailConfig_1.default)(req.auth?.email, "procurement", JSON.stringify(saved));
-        res.status(201).json(new response_1.default(true, "data send to email successfully"));
+        const template = (0, serviceProviderContactRequest_1.default)(saved.service_provider_.name, saved.service_provider_.phone, saved.service_provider_.email, saved.service_provider_.about);
+        await (0, sendEmailConfig_1.default)(req.auth?.email, "Service Provider Contact Informations", template);
+        res
+            .status(201)
+            .json(new response_1.default(true, "data send to email successfully"));
     }
     catch (error) {
         console.error(error);
         if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
-            if (error.code == 'P2002')
-                return res.status(409).json(new response_1.default(false, "content already saved"));
-            if (error.code == 'P2003')
-                return res.status(404).json(new response_1.default(false, "resource to be saved does not exist"));
+            if (error.code == "P2002")
+                return res
+                    .status(409)
+                    .json(new response_1.default(false, "content already saved"));
+            if (error.code == "P2003")
+                return res
+                    .status(404)
+                    .json(new response_1.default(false, "resource to be saved does not exist"));
         }
-        return res.status(500).json(new response_1.default(false, "error while processing request"));
+        return res
+            .status(500)
+            .json(new response_1.default(false, "error while processing request"));
     }
 };
