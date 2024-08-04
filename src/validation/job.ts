@@ -4,7 +4,7 @@ const ARRAY_OF_STRINGS = joi.array().items(joi.string());
 const CONTRACT_TYPE_SET = joi
   .string()
   .valid("REMOTE", "PARTIME", "FULLTIME", "CONTRACT");
-const CURRENCY_SET = joi.string().valid("DOLLAR", "BIRR", "EURO", "");
+const CURRENCY_SET = joi.string().valid("DOLLAR", "BIRR", "EURO");
 const PERIODICITY_SET = joi
   .string()
   .valid("HOURLY", "MONTHLY", "WEEKLY", "DAILY");
@@ -38,10 +38,10 @@ const jobPost = joi.object({
   year_of_experience: joi.number().integer().min(0).required(),
   category: joi.number().integer().min(1).required(),
   closing_date: joi.date().iso().required(),
-  low_end: joi.number().positive(),
-  high_end: joi.number().positive(),
+  low_end: joi.number().positive().allow(null),
+  high_end: joi.number().positive().allow(null),
   periodicity: PERIODICITY_SET,
-  currency: CURRENCY_SET,
+  currency: CURRENCY_SET.allow(null),
   tags: ARRAY_OF_STRINGS,
 });
 
