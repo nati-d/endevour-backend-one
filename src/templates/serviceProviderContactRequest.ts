@@ -64,7 +64,7 @@ const serviceProviderContactRequest = (
 <body>
     <div class="container">
         <div class="header">
-            <img src="devidends.jpg" alt="Company Logo" class="logo">
+            <img src="https://www.endevour.org/_next/static/media/Main%20black%20.faeff295.png" alt="Company Logo" class="logo">
             <h2>Service Provider Contact Information</h2>
         </div>
 
