@@ -6,6 +6,7 @@ const ARRAY_OF_NUMBERS = joi.array().items(joi.number());
 const createSp = joi.object({
   name: joi.string().required(),
   email: joi.string(),
+  phone: joi.string().min(10).max(10),
   about: joi.string().required(),
   password: joi.string().required(),
   category: ARRAY_OF_NUMBERS,

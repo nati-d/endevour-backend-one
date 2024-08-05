@@ -9,6 +9,7 @@ const ARRAY_OF_NUMBERS = joi_1.default.array().items(joi_1.default.number());
 const createSp = joi_1.default.object({
     name: joi_1.default.string().required(),
     email: joi_1.default.string(),
+    phone: joi_1.default.string().min(10).max(10),
     about: joi_1.default.string().required(),
     password: joi_1.default.string().required(),
     category: ARRAY_OF_NUMBERS,
