@@ -79,7 +79,7 @@ const serviceProviderContactRequest = (
             <h3>Contact Details:</h3>
             <p><strong>Name:</strong> ${name}</p>
             <p><strong>Company:</strong> ${company}</p>
-            <p><strong>Email:</strong> <a href="mailto:${email}</a></p>
+            <p><strong>Email:</strong> <a href="mailto:${email}</a>${email}</p>
             <p><strong>Phone:</strong> <a href="tel:${phone}</a></p>
             <p><strong>Website:</strong> ${website}</p>
             <p><strong>Company Address:</strong> ${address}</p>
