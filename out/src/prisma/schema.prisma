@@ -186,6 +186,9 @@ model Service_provider {
   phone            String?
   email            String
   about            String   @db.Text
+  company          String?
+  website          String?
+  address          String?
   verified_by      Int?
   service_category String
   password         String
