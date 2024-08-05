@@ -34,6 +34,9 @@ exports.default = async (req, res) => {
                 about: req.body.about,
                 service_category: req.body.service_category,
                 password,
+                company: req.body.company,
+                website: req.body.website,
+                address: req.body.address,
             },
         });
         delete sp?.password;

@@ -2,7 +2,10 @@ const serviceProviderContactRequest = (
   name: string,
   phone: string | null,
   email: string,
-  about: string
+  about: string,
+  company: string | null,
+  website: string | null,
+  address: string | null
 ) => {
   return `<html>
 <head>
@@ -68,15 +71,18 @@ const serviceProviderContactRequest = (
             <h2>Service Provider Contact Information</h2>
         </div>
 
-        <p>Dear [Recipient's Name],</p>
+        <p>Dear ${name},</p>
 
         <p>Thank you for reaching out to us through our website. We are pleased to provide you with the contact information for the service provider you requested.</p>
 
         <div class="contact-details">
             <h3>Contact Details:</h3>
-            <p><strong>Company:</strong> ${name}</p>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Company:</strong> ${company}</p>
             <p><strong>Email:</strong> <a href="mailto:${email}</a></p>
             <p><strong>Phone:</strong> <a href="tel:${phone}</a></p>
+            <p><strong>Website:</strong> ${website}</p>
+            <p><strong>Company Address:</strong> ${address}</p>
             <p><strong>Work Details:</strong> ${about}</p>
         </div>
 

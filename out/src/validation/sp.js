@@ -12,7 +12,10 @@ const createSp = joi_1.default.object({
     about: joi_1.default.string().required(),
     password: joi_1.default.string().required(),
     category: ARRAY_OF_NUMBERS,
-    service_category: joi_1.default.string().required()
+    service_category: joi_1.default.string().required(),
+    website: joi_1.default.string().allow(null),
+    company: joi_1.default.string(),
+    address: joi_1.default.string(),
 });
 const updateSp = joi_1.default.object({
     id: joi_1.default.number(),
@@ -25,5 +28,5 @@ const updateSp = joi_1.default.object({
 });
 exports.default = {
     createSp,
-    updateSp
+    updateSp,
 };
