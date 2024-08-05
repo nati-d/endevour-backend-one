@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const serviceProviderContactRequest = (name, phone, email, about) => {
+const serviceProviderContactRequest = (name, phone, email, about, company, website, address) => {
     return `<html>
 <head>
     <title>Service Provider Contact Information</title>
@@ -65,15 +65,18 @@ const serviceProviderContactRequest = (name, phone, email, about) => {
             <h2>Service Provider Contact Information</h2>
         </div>
 
-        <p>Dear [Recipient's Name],</p>
+        <p>Dear ${name},</p>
 
         <p>Thank you for reaching out to us through our website. We are pleased to provide you with the contact information for the service provider you requested.</p>
 
         <div class="contact-details">
             <h3>Contact Details:</h3>
-            <p><strong>Company:</strong> ${name}</p>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Company:</strong> ${company}</p>
             <p><strong>Email:</strong> <a href="mailto:${email}</a></p>
             <p><strong>Phone:</strong> <a href="tel:${phone}</a></p>
+            <p><strong>Website:</strong> ${website}</p>
+            <p><strong>Company Address:</strong> ${address}</p>
             <p><strong>Work Details:</strong> ${about}</p>
         </div>
 

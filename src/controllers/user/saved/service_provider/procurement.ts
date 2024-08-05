@@ -45,6 +45,9 @@ export default async (req: Request, res: Response, next: NextFunction) => {
             phone: true,
             email: true,
             about: true,
+            company: true,
+            website: true,
+            address: true,
             verified_by: false,
             service_category: true,
             password: false,
@@ -59,7 +62,10 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       saved.service_provider_.name,
       saved.service_provider_.phone,
       saved.service_provider_.email,
-      saved.service_provider_.about
+      saved.service_provider_.about,
+      saved.service_provider_.company,
+      saved.service_provider_.website,
+      saved.service_provider_.address
     );
     await mailto(
       req.auth?.email,

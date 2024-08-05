@@ -48,6 +48,9 @@ exports.default = async (req, res, next) => {
                         phone: true,
                         email: true,
                         about: true,
+                        company: true,
+                        website: true,
+                        address: true,
                         verified_by: false,
                         service_category: true,
                         password: false,
@@ -57,7 +60,7 @@ exports.default = async (req, res, next) => {
                 },
             },
         });
-        const template = (0, serviceProviderContactRequest_1.default)(saved.service_provider_.name, saved.service_provider_.phone, saved.service_provider_.email, saved.service_provider_.about);
+        const template = (0, serviceProviderContactRequest_1.default)(saved.service_provider_.name, saved.service_provider_.phone, saved.service_provider_.email, saved.service_provider_.about, saved.service_provider_.company, saved.service_provider_.website, saved.service_provider_.address);
         await (0, sendEmailConfig_1.default)(req.auth?.email, "Service Provider Contact Informations", template);
         res
             .status(201)
