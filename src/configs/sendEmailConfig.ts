@@ -15,13 +15,13 @@ const sendEmailConfig = (
     port: 465,
     secure: true,
     auth: {
-      user: "test@api.endevour.org",
-      pass: "!I}mul~=Az9.",
+      user: "opportunities@devidends.org",
+      pass: "Lzg-5_)OQmEB",
     },
   });
 
   return transporter.sendMail({
-    from: "test@api.endevour.org",
+    from: "opportunities@devidends.org",
     to: sendTo,
     subject: subject,
     html: html,
