@@ -8,14 +8,18 @@ export default async (req: Request, res: Response) => {
   try {
     let categories: any;
     let totalPages: number = 0;
-    let page = req.query.page ? (parseInt(req.query.page as string) - 1) * 10 : req.body.page ? (req.body.page - 1) * 10 : 0;
+    let page = req.query.page
+      ? (parseInt(req.query.page as string) - 1) * 10
+      : req.body.page
+      ? (req.body.page - 1) * 10
+      : 0;
     let currentPage = page ? page / 10 + 1 : 1;
 
     categories = await prisma.client.service_provider_category.findMany({
       take: 10,
       skip: page,
       orderBy: {
-        name: "desc",
+        created_at: "desc",
       },
     });
 
@@ -36,13 +40,18 @@ export default async (req: Request, res: Response) => {
 
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2022")
-      return res
-        .status(400)
-        .json(new ApiResponse(false, "Not authorized to get service provider categories"));
+        return res
+          .status(400)
+          .json(
+            new ApiResponse(
+              false,
+              "Not authorized to get service provider categories"
+            )
+          );
     }
 
     return res
       .status(500)
       .json(new ApiResponse(false, "Error while fetching categories", error));
   }
-}
+};

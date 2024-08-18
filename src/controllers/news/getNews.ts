@@ -8,11 +8,11 @@ export default async (req: Request, res: Response) => {
   const { error } = Validator.news.getNews.validate(req.body);
 
   if (error)
-  return res
-    .status(400)
-    .json(
-      new ApiResponse(false, "unidentified request content", error.details)
-    );
+    return res
+      .status(400)
+      .json(
+        new ApiResponse(false, "unidentified request content", error.details)
+      );
 
   try {
     let id = parseInt(req.query.id as string) || req.body.id;
@@ -43,8 +43,8 @@ export default async (req: Request, res: Response) => {
     let page = req.query.page
       ? (parseInt(req.query.page as string) - 1) * 10
       : req.body.page
-        ? (req.body.page - 1) * 10
-        : 0;
+      ? (req.body.page - 1) * 10
+      : 0;
     let currentPage = page ? page / 10 + 1 : 1;
 
     news = await prisma.client.news.findMany({
@@ -52,23 +52,25 @@ export default async (req: Request, res: Response) => {
       skip: page,
       where,
       include: {
-          tags: { select: { name: true } },
-          admin: {
-            select: {
-              id: true,
-              first_name: true,
-              last_name: true,
-              email: false,
-              phone_number: false,
-              password: false,
-              role: false,
-              profile_image: true,
-              created_at: false,
-              updated_at: false,
-            }
-          }
+        tags: { select: { name: true } },
+        admin: {
+          select: {
+            id: true,
+            first_name: true,
+            last_name: true,
+            email: false,
+            phone_number: false,
+            password: false,
+            role: false,
+            profile_image: true,
+            created_at: false,
+            updated_at: false,
+          },
         },
-      orderBy: { id: "desc" },
+      },
+      orderBy: {
+        created_at: "desc",
+      },
     });
 
     totalPages = await prisma.client.news.count({ where });
@@ -86,25 +88,23 @@ export default async (req: Request, res: Response) => {
 
     let _tags = __tags.map((data) => data.name);
 
-    res
-      .status(200)
-      .json(
-        new ApiResponse(true, "News getted successfully", {
-          news: news,
-          total_pages: totalPages,
-          current_page: currentPage,
-          next_page: currentPage >= totalPages ? null : currentPage + 1,
-          tags: _tags,
-        })
-      );
+    res.status(200).json(
+      new ApiResponse(true, "News getted successfully", {
+        news: news,
+        total_pages: totalPages,
+        current_page: currentPage,
+        next_page: currentPage >= totalPages ? null : currentPage + 1,
+        tags: _tags,
+      })
+    );
   } catch (error) {
     console.error("Error while posting news:", error);
 
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2022")
-      return res
-        .status(400)
-        .json(new ApiResponse(false, "Not authorized to post news", error));
+        return res
+          .status(400)
+          .json(new ApiResponse(false, "Not authorized to post news", error));
     }
 
     return res

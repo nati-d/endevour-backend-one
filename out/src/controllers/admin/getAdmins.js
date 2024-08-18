@@ -22,6 +22,9 @@ const getAdmins = async (req, res) => {
             where: {
                 role,
             },
+            orderBy: {
+                created_at: "desc",
+            },
         });
         const numberOfPages = Math.ceil(totalAdmins / adminsPerPage);
         const passwordRemoved = getAdmins.map((element) => lodash_1.default.pickBy(element, (value, key) => key !== "password"));

@@ -11,13 +11,17 @@ exports.default = async (req, res) => {
     try {
         let categories;
         let totalPages = 0;
-        let page = req.query.page ? ((0, lodash_1.parseInt)(req.query.page) - 1) * 10 : req.body.page ? (req.body.page - 1) * 10 : 0;
+        let page = req.query.page
+            ? ((0, lodash_1.parseInt)(req.query.page) - 1) * 10
+            : req.body.page
+                ? (req.body.page - 1) * 10
+                : 0;
         let currentPage = page ? page / 10 + 1 : 1;
         categories = await index_1.default.client.service_provider_category.findMany({
             take: 10,
             skip: page,
             orderBy: {
-                name: "desc",
+                created_at: "desc",
             },
         });
         totalPages = await index_1.default.client.service_provider_category.count();

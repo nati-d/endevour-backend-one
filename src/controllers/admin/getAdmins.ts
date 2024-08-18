@@ -21,6 +21,9 @@ const getAdmins = async (req: Request, res: Response) => {
       where: {
         role,
       },
+      orderBy: {
+        created_at: "desc",
+      },
     });
 
     const numberOfPages = Math.ceil(totalAdmins / adminsPerPage);

@@ -59,6 +59,9 @@ const getTenders = async (req: Request, res: Response) => {
           },
         },
       },
+      orderBy: {
+        created_at: "desc",
+      },
       include: {
         files: true,
         tender_category: {

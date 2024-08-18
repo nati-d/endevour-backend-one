@@ -5,36 +5,38 @@ import _, { parseInt } from "lodash";
 import ApiResponse from "../../types/response";
 
 export default async (req: Request, res: Response) => {
-
   try {
     let id = parseInt(req.query.id as string) || undefined;
-    let contract_type = !req.query.contract_type ? undefined
+    let contract_type = !req.query.contract_type
+      ? undefined
       : JSON.parse(req.query.contract_type as string) || undefined;
     let year_of_experience_lower_bound =
       parseInt(req.query.year_of_experience_lower_bound as string) || undefined;
     let year_of_experience_upper_bound =
       parseInt(req.query.year_of_experience_upper_bound as string) || undefined;
-    let category = !req.query.category ? undefined
+    let category = !req.query.category
+      ? undefined
       : JSON.parse(req.query.category as string) || undefined;
     let closing_date_lower_bound =
       (req.query.closing_date_lower_bound as string) || undefined;
     let closing_date_upper_bound =
       (req.query.closing_date_upper_bound as string) || undefined;
-    let verified_by = req.auth?.is_admin ? parseInt(req.query.verified_by as string) || undefined : { not: null };
+    let verified_by = req.auth?.is_admin
+      ? parseInt(req.query.verified_by as string) || undefined
+      : { not: null };
     let posted_by = parseInt(req.query.posted_by as string) || undefined;
     let salary_low_end =
       parseFloat(req.query.salary_low_end as string) || undefined;
     let salary_high_end =
       parseFloat(req.query.salary_high_end as string) || undefined;
-    let periodicity = !req.query.periodicity ? undefined
+    let periodicity = !req.query.periodicity
+      ? undefined
       : JSON.parse(req.query.periodicity as string) || undefined;
     let currency = !req.query.currency
       ? undefined
       : JSON.parse(req.query.currency as string) || undefined;
-    let date_lower_bound =
-      (req.query.date_lower_bound as string) || undefined;
-    let date_upper_bound =
-      (req.query.date_upper_bound as string) || undefined;
+    let date_lower_bound = (req.query.date_lower_bound as string) || undefined;
+    let date_upper_bound = (req.query.date_upper_bound as string) || undefined;
     let tags = !req.query.tags
       ? undefined
       : JSON.parse(req.query.tags as string) || undefined;
@@ -52,7 +54,11 @@ export default async (req: Request, res: Response) => {
         lte: closing_date_upper_bound,
       },
       verified_by:
-        verified_by == 0 ? { not: null } : verified_by == -1 ? null : verified_by,
+        verified_by == 0
+          ? { not: null }
+          : verified_by == -1
+          ? null
+          : verified_by,
       posted_by,
       salary: {
         low_end: { lte: salary_high_end },
@@ -69,7 +75,11 @@ export default async (req: Request, res: Response) => {
 
     let jobPosts: any;
     let totalPages: number = 0;
-    let page = req.query.page ? (parseInt(req.query.page as string) - 1) * 10 : req.body.page ? (req.body.page - 1) * 10 : 0;
+    let page = req.query.page
+      ? (parseInt(req.query.page as string) - 1) * 10
+      : req.body.page
+      ? (req.body.page - 1) * 10
+      : 0;
     let currentPage = page ? page / 10 + 1 : 1;
 
     jobPosts = await prisma.client.job_post.findMany({
@@ -105,8 +115,8 @@ export default async (req: Request, res: Response) => {
             location: false,
             verified_by: false,
             token: false,
-            is_recommender: false
-          }
+            is_recommender: false,
+          },
         },
         admin: {
           select: {
@@ -120,11 +130,11 @@ export default async (req: Request, res: Response) => {
             profile_image: true,
             created_at: false,
             updated_at: false,
-          }
-        }
+          },
+        },
       },
       orderBy: {
-        id: "desc",
+        created_at: "desc",
       },
     });
 
@@ -145,7 +155,7 @@ export default async (req: Request, res: Response) => {
 
     let __categories = await prisma.client.job_category.findMany({
       where: { job_posts: { some: {} } },
-      select: { name: true }
+      select: { name: true },
     });
 
     let _categories = __categories.map((date) => date.name);
@@ -157,7 +167,7 @@ export default async (req: Request, res: Response) => {
         current_page: currentPage,
         next_page: currentPage >= totalPages ? null : currentPage + 1,
         tags: _tags,
-        categories: _categories
+        categories: _categories,
       })
     );
   } catch (error) {

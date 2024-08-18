@@ -10,19 +10,24 @@ const response_1 = __importDefault(require("../../types/response"));
 exports.default = async (req, res) => {
     try {
         let id = (0, lodash_1.parseInt)(req.query.id) || undefined;
-        let contract_type = !req.query.contract_type ? undefined
+        let contract_type = !req.query.contract_type
+            ? undefined
             : JSON.parse(req.query.contract_type) || undefined;
         let year_of_experience_lower_bound = (0, lodash_1.parseInt)(req.query.year_of_experience_lower_bound) || undefined;
         let year_of_experience_upper_bound = (0, lodash_1.parseInt)(req.query.year_of_experience_upper_bound) || undefined;
-        let category = !req.query.category ? undefined
+        let category = !req.query.category
+            ? undefined
             : JSON.parse(req.query.category) || undefined;
         let closing_date_lower_bound = req.query.closing_date_lower_bound || undefined;
         let closing_date_upper_bound = req.query.closing_date_upper_bound || undefined;
-        let verified_by = req.auth?.is_admin ? (0, lodash_1.parseInt)(req.query.verified_by) || undefined : { not: null };
+        let verified_by = req.auth?.is_admin
+            ? (0, lodash_1.parseInt)(req.query.verified_by) || undefined
+            : { not: null };
         let posted_by = (0, lodash_1.parseInt)(req.query.posted_by) || undefined;
         let salary_low_end = parseFloat(req.query.salary_low_end) || undefined;
         let salary_high_end = parseFloat(req.query.salary_high_end) || undefined;
-        let periodicity = !req.query.periodicity ? undefined
+        let periodicity = !req.query.periodicity
+            ? undefined
             : JSON.parse(req.query.periodicity) || undefined;
         let currency = !req.query.currency
             ? undefined
@@ -44,7 +49,11 @@ exports.default = async (req, res) => {
                 gte: closing_date_lower_bound,
                 lte: closing_date_upper_bound,
             },
-            verified_by: verified_by == 0 ? { not: null } : verified_by == -1 ? null : verified_by,
+            verified_by: verified_by == 0
+                ? { not: null }
+                : verified_by == -1
+                    ? null
+                    : verified_by,
             posted_by,
             salary: {
                 low_end: { lte: salary_high_end },
@@ -60,7 +69,11 @@ exports.default = async (req, res) => {
         };
         let jobPosts;
         let totalPages = 0;
-        let page = req.query.page ? ((0, lodash_1.parseInt)(req.query.page) - 1) * 10 : req.body.page ? (req.body.page - 1) * 10 : 0;
+        let page = req.query.page
+            ? ((0, lodash_1.parseInt)(req.query.page) - 1) * 10
+            : req.body.page
+                ? (req.body.page - 1) * 10
+                : 0;
         let currentPage = page ? page / 10 + 1 : 1;
         jobPosts = await index_1.default.client.job_post.findMany({
             take: 10,
@@ -95,8 +108,8 @@ exports.default = async (req, res) => {
                         location: false,
                         verified_by: false,
                         token: false,
-                        is_recommender: false
-                    }
+                        is_recommender: false,
+                    },
                 },
                 admin: {
                     select: {
@@ -110,11 +123,11 @@ exports.default = async (req, res) => {
                         profile_image: true,
                         created_at: false,
                         updated_at: false,
-                    }
-                }
+                    },
+                },
             },
             orderBy: {
-                id: "desc",
+                created_at: "desc",
             },
         });
         totalPages = await index_1.default.client.job_post.count({ where });
@@ -130,7 +143,7 @@ exports.default = async (req, res) => {
         let _tags = __tags.map((data) => data.name);
         let __categories = await index_1.default.client.job_category.findMany({
             where: { job_posts: { some: {} } },
-            select: { name: true }
+            select: { name: true },
         });
         let _categories = __categories.map((date) => date.name);
         res.status(200).json(new response_1.default(true, "jop posts fetched successfully", {
@@ -139,7 +152,7 @@ exports.default = async (req, res) => {
             current_page: currentPage,
             next_page: currentPage >= totalPages ? null : currentPage + 1,
             tags: _tags,
-            categories: _categories
+            categories: _categories,
         }));
     }
     catch (error) {

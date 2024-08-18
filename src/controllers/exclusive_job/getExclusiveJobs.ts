@@ -11,6 +11,9 @@ const getExclusiveJobs = async (req: Request, res: Response) => {
     const getJobs = await prisma.exclusive_job.findMany({
       skip: page ? (parseInt(page?.toString()) - 1) * jobsPerPage : undefined,
       take: page ? jobsPerPage : undefined,
+      orderBy: {
+        created_at: "desc",
+      },
     });
 
     return res.status(200).json(

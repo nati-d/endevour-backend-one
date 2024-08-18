@@ -58,10 +58,12 @@ exports.default = async (req, res) => {
                         profile_image: true,
                         created_at: false,
                         updated_at: false,
-                    }
-                }
+                    },
+                },
             },
-            orderBy: { id: "desc" },
+            orderBy: {
+                created_at: "desc",
+            },
         });
         totalPages = await index_1.default.client.news.count({ where });
         totalPages = Math.ceil(totalPages / 10);
@@ -74,9 +76,7 @@ exports.default = async (req, res) => {
             },
         });
         let _tags = __tags.map((data) => data.name);
-        res
-            .status(200)
-            .json(new response_1.default(true, "News getted successfully", {
+        res.status(200).json(new response_1.default(true, "News getted successfully", {
             news: news,
             total_pages: totalPages,
             current_page: currentPage,

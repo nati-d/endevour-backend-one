@@ -13,6 +13,9 @@ const getTags = async (req, res) => {
         const tags = await prismaClient_1.default.tag.findMany({
             skip: page ? (parseInt(page.toString()) - 1) * tagsPerPage : undefined,
             take: tagsPerPage,
+            orderBy: {
+                created_at: "desc",
+            },
         });
         const numberOfPages = Math.ceil(totalTags / tagsPerPage);
         return res.status(200).json(new response_1.default(true, "Tags getted successfully.", {

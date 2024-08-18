@@ -12,6 +12,9 @@ const getTags = async (req: Request, res: Response) => {
     const tags = await prisma.tag.findMany({
       skip: page ? (parseInt(page.toString()) - 1) * tagsPerPage : undefined,
       take: tagsPerPage,
+      orderBy: {
+        created_at: "desc",
+      },
     });
 
     const numberOfPages = Math.ceil(totalTags / tagsPerPage);

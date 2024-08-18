@@ -10,7 +10,9 @@ exports.default = async (req, res) => {
     try {
         let id = parseInt(req.query.id) || undefined;
         let title = req.query.title || undefined;
-        let verified_by = req.auth?.is_admin ? parseInt(req.query.verified_by) || undefined : { not: null };
+        let verified_by = req.auth?.is_admin
+            ? parseInt(req.query.verified_by) || undefined
+            : { not: null };
         let posted_by = parseInt(req.query.posted_by) || undefined;
         let date_lower_bound = req.query.date_lower_bound || undefined;
         let date_upper_bound = req.query.date_upper_bound || undefined;
@@ -59,8 +61,8 @@ exports.default = async (req, res) => {
                             location: false,
                             verified_by: false,
                             token: false,
-                            is_recommender: false
-                        }
+                            is_recommender: false,
+                        },
                     },
                     admin: {
                         select: {
@@ -74,8 +76,8 @@ exports.default = async (req, res) => {
                             profile_image: true,
                             created_at: false,
                             updated_at: false,
-                        }
-                    }
+                        },
+                    },
                 },
                 orderBy: {
                     id: "desc",
@@ -101,8 +103,8 @@ exports.default = async (req, res) => {
                             location: false,
                             verified_by: false,
                             token: false,
-                            is_recommender: false
-                        }
+                            is_recommender: false,
+                        },
                     },
                     admin: {
                         select: {
@@ -116,11 +118,12 @@ exports.default = async (req, res) => {
                             profile_image: true,
                             created_at: false,
                             updated_at: false,
-                        }
-                    }
+                        },
+                    },
                 },
                 orderBy: {
                     id: "desc",
+                    created_at: "desc",
                 },
             });
         totalPages = await index_1.default.client.blog.count({ where });
@@ -134,9 +137,7 @@ exports.default = async (req, res) => {
             },
         });
         let _tags = __tags.map((data) => data.name);
-        return res
-            .status(200)
-            .json(new response_1.default(true, "blog fetched successfully", {
+        return res.status(200).json(new response_1.default(true, "blog fetched successfully", {
             blog,
             total_pages: totalPages,
             current_page: currentPage,

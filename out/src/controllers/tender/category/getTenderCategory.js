@@ -12,6 +12,9 @@ const getTenderCategory = async (req, res) => {
             where: {
                 id: parseInt(category_id),
             },
+            orderBy: {
+                created_at: "desc",
+            },
         });
         if (!category)
             return res
