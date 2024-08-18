@@ -34,9 +34,6 @@ const createExclusiveJob = async (req, res, next) => {
         req.emailData = {
             sendTo: recommendersEmail ? recommendersEmail : "",
             subject: "Recommend your best for the best.",
-            // html:
-            //   createdExclusiveJob.description +
-            //   `<a href='https://www.endevour.org/jobs/recommend/${createdExclusiveJob.id}'>Recommend here</a>`,
             html: (0, recommendForJob_1.default)(createdExclusiveJob.description, `https://www.endevour.org/jobs/recommend/${createdExclusiveJob.id}`),
             otherData: createdExclusiveJob,
             queryOnFail: async () => await prismaClient_1.default.exclusive_job.delete({

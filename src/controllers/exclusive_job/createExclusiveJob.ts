@@ -39,9 +39,6 @@ const createExclusiveJob = async (
     req.emailData = {
       sendTo: recommendersEmail ? recommendersEmail : "",
       subject: "Recommend your best for the best.",
-      // html:
-      //   createdExclusiveJob.description +
-      //   `<a href='https://www.endevour.org/jobs/recommend/${createdExclusiveJob.id}'>Recommend here</a>`,
       html: recommendForJob(
         createdExclusiveJob.description,
         `https://www.endevour.org/jobs/recommend/${createdExclusiveJob.id}`

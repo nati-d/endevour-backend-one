@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import prisma from "../../prisma/client/prismaClient";
 import ApiResponse from "../../types/response";
+import recommendForJob from "../../templates/recommendForJob";
 
 const sendEmailForRecommenders = async (
   req: Request,
@@ -42,9 +43,10 @@ const sendEmailForRecommenders = async (
     req.emailData = {
       sendTo: joinedEmails,
       subject: "Recommend user for the above job",
-      html:
-        updatedExclusiveJob.description +
-        `<a href='https://endevour.org/exclusive-job/recommend?job_id=${updatedExclusiveJob.id}'>Recommend here</a>`,
+      html: recommendForJob(
+        updatedExclusiveJob.description,
+        `https://www.endevour.org/jobs/recommend/${updatedExclusiveJob.id}`
+      ),
       queryOnFail: async () =>
         await prisma.exclusive_job.update({
           where: {

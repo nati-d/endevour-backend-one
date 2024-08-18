@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient"));
 const response_1 = __importDefault(require("../../types/response"));
+const recommendForJob_1 = __importDefault(require("../../templates/recommendForJob"));
 const sendEmailForRecommenders = async (req, res, next) => {
     try {
         const { recommenders_id, job_id } = req.body;
@@ -36,8 +37,7 @@ const sendEmailForRecommenders = async (req, res, next) => {
         req.emailData = {
             sendTo: joinedEmails,
             subject: "Recommend user for the above job",
-            html: updatedExclusiveJob.description +
-                `<a href='https://endevour.org/exclusive-job/recommend?job_id=${updatedExclusiveJob.id}'>Recommend here</a>`,
+            html: (0, recommendForJob_1.default)(updatedExclusiveJob.description, `https://www.endevour.org/jobs/recommend/${updatedExclusiveJob.id}`),
             queryOnFail: async () => await prismaClient_1.default.exclusive_job.update({
                 where: {
                     id: job_id,
