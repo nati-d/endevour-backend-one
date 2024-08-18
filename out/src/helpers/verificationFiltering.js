@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const verificationFiltering = (verifiedBy) => {
     let verified_by;
-    if (!verifiedBy)
+    if (verifiedBy == null)
         return (verified_by = undefined);
     if (verifiedBy == 0) {
         verified_by = { not: null };

@@ -13,10 +13,11 @@ const getTenders = async (req, res) => {
         const statusArray = status ? status.split(",") : undefined;
         const tagsArray = tags ? tags.split(",") : undefined;
         let verifiedBy;
-        if (!req.auth)
+        if (!req.auth) {
             verifiedBy = {
                 not: null,
             };
+        }
         if (req.auth && verified_by) {
             verifiedBy = (0, verificationFiltering_1.default)(parseInt(verified_by.toString()));
         }
