@@ -11,7 +11,7 @@ const sendEmailConfig = (
   file?: Attachment[]
 ) => {
   const transporter = nodemailer.createTransport({
-    host: "api.endevour.org",
+    host: "devidends.org",
     port: 465,
     secure: true,
     auth: {

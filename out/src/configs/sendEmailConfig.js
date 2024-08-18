@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const sendEmailConfig = (sendTo, subject, html, file) => {
     const transporter = nodemailer_1.default.createTransport({
-        host: "api.endevour.org",
+        host: "devidends.org",
         port: 465,
         secure: true,
         auth: {

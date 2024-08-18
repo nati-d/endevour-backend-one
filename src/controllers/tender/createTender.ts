@@ -60,6 +60,7 @@ const createTender = async (
       },
     });
     const userEmails = getSubscribedUsers.map((alert) => alert.user.email);
+    console.log(userEmails);
     req.emailData = {
       html: "Personalized alert notification",
       sendTo: userEmails,
