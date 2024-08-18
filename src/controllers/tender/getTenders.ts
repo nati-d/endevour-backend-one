@@ -22,10 +22,11 @@ const getTenders = async (req: Request, res: Response) => {
 
     let verifiedBy: any;
 
-    if (!req.auth)
+    if (!req.auth) {
       verifiedBy = {
         not: null,
       };
+    }
 
     if (req.auth && verified_by) {
       verifiedBy = verificationFiltering(parseInt(verified_by.toString()));
