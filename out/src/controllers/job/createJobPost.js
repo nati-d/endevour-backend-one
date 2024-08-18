@@ -8,7 +8,7 @@ const client_1 = require("@prisma/client");
 const lodash_1 = __importDefault(require("lodash"));
 const index_2 = __importDefault(require("../../validation/index"));
 const response_1 = __importDefault(require("../../types/response"));
-exports.default = async (req, res) => {
+exports.default = async (req, res, next) => {
     try {
         const { error } = index_2.default.job.jobPost.validate(req.body);
         if (error) {
@@ -55,9 +55,28 @@ exports.default = async (req, res) => {
                 currency: req.body.currency,
             },
         });
-        res
-            .status(201)
-            .json(new response_1.default(true, "job posted successfully", lodash_1.default.merge(newJobPost, salary)));
+        const getSubscribedUsers = await index_1.default.client.personalized_alerts.findMany({
+            where: {
+                alert_for: "job",
+            },
+            include: {
+                user: {
+                    select: {
+                        email: true,
+                    },
+                },
+            },
+        });
+        const userEmails = getSubscribedUsers.map((alert) => alert.user.email);
+        req.emailData = {
+            html: "Personalized alert notification",
+            sendTo: userEmails,
+            subject: "New job for you",
+            resMessage: "Job posted successfully",
+            otherData: lodash_1.default.merge(newJobPost, salary),
+            statusCode: 201,
+        };
+        next();
     }
     catch (error) {
         console.log(error);

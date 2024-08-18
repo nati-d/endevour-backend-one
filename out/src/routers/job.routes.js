@@ -13,7 +13,7 @@ router.get("/get-job-category", controllers_1.default.getJobCategory);
 router.get("/get-job-category-by-id", controllers_1.default.getJobCategoryById);
 router.put("/update-job-category", [middlewares_1.default.tokenAuth, middlewares_1.default.adminAuth], controllers_1.default.updateJobCategory);
 router.delete("/delete-job-category", [middlewares_1.default.tokenAuth, middlewares_1.default.adminAuth], controllers_1.default.deleteJobCategory);
-router.post("/post-job", [middlewares_1.default.tokenAuth], controllers_1.default.insertJobPost);
+router.post("/post-job", [middlewares_1.default.tokenAuth], controllers_1.default.insertJobPost, middlewares_1.default.sendEmail);
 router.get("/get-job-post", middlewares_1.default.tokenForAdmin, controllers_1.default.getJobPost);
 router.get("/get-job-post-by-id", controllers_1.default.getJobPostById);
 router.put("/update-job-post", [middlewares_1.default.tokenAuth], controllers_1.default.updateJobPost);

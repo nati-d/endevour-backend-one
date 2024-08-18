@@ -18,7 +18,8 @@ router.use(Middlewares.tokenAuth);
 router.post(
   "/post",
   Middlewares.uploadFile("files/tender").array("files"),
-  Tender.createTender
+  Tender.createTender,
+  Middlewares.sendEmail
 );
 
 router.put("/update/:tender_id", Tender.updateTender);
