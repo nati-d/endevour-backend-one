@@ -1,9 +1,13 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import prisma from "../../prisma/client/prismaClient";
 import ApiResponse from "../../types/response";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
-const createTender = async (req: Request, res: Response) => {
+const createTender = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { tags, new_tags } = req.body;
 
@@ -43,11 +47,29 @@ const createTender = async (req: Request, res: Response) => {
       },
     });
 
-    return res
-      .status(201)
-      .json(
-        new ApiResponse(true, "Tender created successfully", createdTender)
-      );
+    const getSubscribedUsers = await prisma.personalized_alerts.findMany({
+      where: {
+        alert_for: "tender",
+      },
+      include: {
+        user: {
+          select: {
+            email: true,
+          },
+        },
+      },
+    });
+    const userEmails = getSubscribedUsers.map((alert) => alert.user.email);
+    req.emailData = {
+      html: "Personalized alert notification",
+      sendTo: userEmails,
+      subject: "New tender for you",
+      resMessage: "Tender created successfully",
+      otherData: createdTender,
+      statusCode: 201,
+    };
+
+    next();
   } catch (error) {
     console.error("Error creating tender:", error);
 

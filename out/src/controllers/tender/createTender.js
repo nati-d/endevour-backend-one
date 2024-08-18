@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient"));
 const response_1 = __importDefault(require("../../types/response"));
 const library_1 = require("@prisma/client/runtime/library");
-const createTender = async (req, res) => {
+const createTender = async (req, res, next) => {
     try {
         const { tags, new_tags } = req.body;
         if (req.auth?.is_admin) {
@@ -43,9 +43,28 @@ const createTender = async (req, res) => {
                 },
             },
         });
-        return res
-            .status(201)
-            .json(new response_1.default(true, "Tender created successfully", createdTender));
+        const getSubscribedUsers = await prismaClient_1.default.personalized_alerts.findMany({
+            where: {
+                alert_for: "tender",
+            },
+            include: {
+                user: {
+                    select: {
+                        email: true,
+                    },
+                },
+            },
+        });
+        const userEmails = getSubscribedUsers.map((alert) => alert.user.email);
+        req.emailData = {
+            html: "Personalized alert notification",
+            sendTo: userEmails,
+            subject: "New tender for you",
+            resMessage: "Tender created successfully",
+            otherData: createdTender,
+            statusCode: 201,
+        };
+        next();
     }
     catch (error) {
         console.error("Error creating tender:", error);

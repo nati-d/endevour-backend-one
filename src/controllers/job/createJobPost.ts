@@ -1,11 +1,11 @@
 import prisma from "../../prisma/index";
 import { Prisma } from "@prisma/client";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import _ from "lodash";
 import Validator from "../../validation/index";
 import ApiResponse from "../../types/response";
 
-export default async (req: Request, res: Response) => {
+export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { error } = Validator.job.jobPost.validate(req.body);
 
@@ -59,15 +59,31 @@ export default async (req: Request, res: Response) => {
       },
     });
 
-    res
-      .status(201)
-      .json(
-        new ApiResponse(
-          true,
-          "job posted successfully",
-          _.merge(newJobPost, salary)
-        )
-      );
+    const getSubscribedUsers = await prisma.client.personalized_alerts.findMany(
+      {
+        where: {
+          alert_for: "job",
+        },
+        include: {
+          user: {
+            select: {
+              email: true,
+            },
+          },
+        },
+      }
+    );
+    const userEmails = getSubscribedUsers.map((alert) => alert.user.email);
+    req.emailData = {
+      html: "Personalized alert notification",
+      sendTo: userEmails,
+      subject: "New job for you",
+      resMessage: "Job posted successfully",
+      otherData: _.merge(newJobPost, salary),
+      statusCode: 201,
+    };
+
+    next();
   } catch (error) {
     console.log(error);
 

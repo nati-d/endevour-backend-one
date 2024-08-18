@@ -6,7 +6,7 @@ declare global {
   namespace Express {
     interface Request {
       emailData: {
-        sendTo: string;
+        sendTo: string | string[];
         subject: string;
         html: string;
         file?: Attachment[];

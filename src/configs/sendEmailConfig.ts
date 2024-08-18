@@ -5,7 +5,7 @@ export interface Attachment {
 }
 
 const sendEmailConfig = (
-  sendTo: string,
+  sendTo: string | string[],
   subject: string,
   html: string,
   file?: Attachment[]

@@ -27,7 +27,12 @@ router.delete(
   Controller.deleteJobCategory
 );
 
-router.post("/post-job", [Middleware.tokenAuth], Controller.insertJobPost);
+router.post(
+  "/post-job",
+  [Middleware.tokenAuth],
+  Controller.insertJobPost,
+  Middleware.sendEmail
+);
 
 router.get("/get-job-post", Middleware.tokenForAdmin, Controller.getJobPost);
 
