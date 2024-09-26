@@ -4,6 +4,7 @@ import cors from "cors";
 import "dotenv/config";
 import passport from "passport";
 import Router from "./src/routers";
+import router from "./src/routers";
 import Config from "./src/configs";
 require("./src/services");
 
@@ -53,5 +54,7 @@ app.use("/api/feadback", Router.customerFeadback);
 
 app.use("/api/personalized-alert", Router.personalizedAlert);
 
-const port = 5000;
+
+
+const port = 8080;
 app.listen(port, () => console.log("Server started at port", port));

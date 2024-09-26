@@ -11,6 +11,7 @@ import _getTenders from "./getTenders";
 import _searchTenderByKeyWord from "./searchByKeyWord";
 import _saveTender from "./saveTender";
 import _getSavedTenders from "./getSavedTenders";
+import {startCronJob} from "./scheduledTenderStatusUpdate";
 namespace Tender {
   // -- Tender category --//
   export const createTenderCategory = _createTenderCategory;
@@ -41,6 +42,9 @@ namespace Tender {
 
   // -- Seach for keywords --
   export const searchTenderByKeyWord = _searchTenderByKeyWord;
+
+  // -- Scheduled tender status update --//
+  startCronJob()
 }
 
 export default Tender;
