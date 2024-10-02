@@ -1,27 +1,31 @@
 import { Request, Response } from "express";
 import ApiResponse from "../../types/response";
 import prisma from "../../prisma/client/prismaClient";
-import fs from "fs/promises";
-import path from "path";
+import { v2 as cloudinary } from "cloudinary";
+
 const deleteTender = async (req: Request, res: Response) => {
   try {
     const { tender_id } = req.params;
+
     const existingTender = await prisma.tender.findUnique({
       where: { id: parseInt(tender_id) },
       include: { files: true },
     });
 
-    if (!existingTender)
+    if (!existingTender) {
       return res.status(404).json(new ApiResponse(false, "Tender not found"));
+    }
 
-    if (existingTender.files) {
+    if (existingTender.files && existingTender.files.length > 0) {
       const fileDeletePromises = existingTender.files.map(async (file) => {
-        const filePath = path.join(
-          __dirname,
-          "../../../public/files/tender",
-          file.file
-        );
-        await fs.unlink(filePath);
+        try {
+          const publicId = file.file.split('/').pop()?.split('.')[0]; 
+          if (publicId) {
+            await cloudinary.uploader.destroy(publicId);
+          }
+        } catch (error) {
+          console.error(`Failed to delete file from Cloudinary: ${file.file}`, error);
+        }
       });
 
       await Promise.all(fileDeletePromises);

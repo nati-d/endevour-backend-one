@@ -37,6 +37,7 @@ exports.default = async (req, res) => {
         let tags = !req.query.tags
             ? undefined
             : JSON.parse(req.query.tags) || undefined;
+        const today = new Date().toISOString();
         let where = {
             id,
             contract_type: { in: contract_type },
@@ -46,8 +47,9 @@ exports.default = async (req, res) => {
             },
             category: { in: category },
             closing_date: {
-                gte: closing_date_lower_bound,
-                lte: closing_date_upper_bound,
+                gte: today,
+                ...(closing_date_lower_bound && { gte: closing_date_lower_bound }),
+                ...(closing_date_upper_bound && { lte: closing_date_upper_bound }),
             },
             verified_by: verified_by == 0
                 ? { not: null }
@@ -146,7 +148,7 @@ exports.default = async (req, res) => {
             select: { name: true },
         });
         let _categories = __categories.map((date) => date.name);
-        res.status(200).json(new response_1.default(true, "jop posts fetched successfully", {
+        res.status(200).json(new response_1.default(true, "job posts fetched successfully", {
             job_post: jobPosts,
             total_pages: totalPages,
             current_page: currentPage,

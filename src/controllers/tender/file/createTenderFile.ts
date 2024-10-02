@@ -1,4 +1,3 @@
-// createTenderFile.ts
 import { Request, Response } from "express";
 import ApiResponse from "../../../types/response";
 import prisma from "../../../prisma/client/prismaClient";

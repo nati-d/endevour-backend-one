@@ -11,7 +11,7 @@ router.post(
   [
     Middleware.tokenAuth,
     Middleware.adminAuth,
-    Middleware.uploadFile("/images/news/thumbnail").array("thumbnail"),
+    Middleware.uploadFile().array("thumbnail"),
   ],
   Controller.createNews
 );
@@ -25,7 +25,7 @@ router.put(
   [
     Middleware.tokenAuth,
     Middleware.adminAuth,
-    Middleware.uploadFile("/images/news/thumbnail").array("thumbnail"),
+    Middleware.uploadFile().array("thumbnail"),
   ],
   Controller.updateNews
 );

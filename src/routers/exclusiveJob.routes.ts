@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post(
   "/recommended-applicant/create",
-  Middlewares.uploadFile("files/exclusive_job/applicant_cv").single("cv"),
+  Middlewares.uploadFile().single("cv"),
   ExclusiveJob.createRecommendedApplicant
 );
 
