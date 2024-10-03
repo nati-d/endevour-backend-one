@@ -12,7 +12,7 @@ router.post("/auth/login", index_1.default.adminLogin);
 router.use(index_2.default.tokenAuth);
 router.use(index_2.default.adminAuth);
 router.get("/confirm-password", index_1.default.confirmPassword);
-router.post("/upload-profile-img", index_2.default.uploadFile("images/profile_images/admin").single("profile_image"), index_1.default.adminProfileImgUpload);
+router.post("/upload-profile-img", index_2.default.uploadFile().single("profile_image"), index_1.default.adminProfileImgUpload);
 router.put("/update-profile", index_1.default.updateAdminProfile);
 router.put("/change-password", index_1.default.changeAdminPassword);
 // Accessed only by super_admins

@@ -14,7 +14,7 @@ router.get("/category/get-all-categories", tender_1.default.getAllTenderCategori
 router.get("/search-by-keyword", tender_1.default.searchTenderByKeyWord);
 // Accessed by all authenticated user
 router.use(middlewares_1.default.tokenAuth);
-router.post("/post", middlewares_1.default.uploadFile("files/tender").array("files"), tender_1.default.createTender, middlewares_1.default.sendEmail);
+router.post("/post", middlewares_1.default.uploadFile().array("files"), tender_1.default.createTender, middlewares_1.default.sendEmail);
 router.put("/update/:tender_id", tender_1.default.updateTender);
 router.delete("/delete/:tender_id", tender_1.default.deleteTender);
 router.post("/save-tender", tender_1.default.saveTender);

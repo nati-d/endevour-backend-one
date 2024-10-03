@@ -4,18 +4,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const multer_1 = __importDefault(require("multer"));
-const path_1 = __importDefault(require("path"));
-const uploadFile = (director) => {
-    const storage = multer_1.default.diskStorage({
-        destination: function (req, file, cb) {
-            cb(null, `public/${director}`);
-        },
-        filename: function (req, file, cb) {
-            const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-            cb(null, file.fieldname + "-" + uniqueSuffix + path_1.default.extname(file.originalname));
+const cloudinary_1 = require("cloudinary");
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+cloudinary_1.v2.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+const uploadFile = () => {
+    const storage = new CloudinaryStorage({
+        cloudinary: cloudinary_1.v2,
+        params: {
+            folder: 'devidends',
+            resource_type: 'auto',
+            public_id: (req, file) => {
+                const userId = req.body.userId;
+                const timestamp = Date.now();
+                return `user_${userId}/image_${timestamp}`;
+            },
         },
     });
-    const upload = (0, multer_1.default)({ storage: storage });
-    return upload;
+    const parser = (0, multer_1.default)({ storage: storage });
+    return parser;
 };
 exports.default = uploadFile;
