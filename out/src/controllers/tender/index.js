@@ -16,6 +16,7 @@ const getTenders_1 = __importDefault(require("./getTenders"));
 const searchByKeyWord_1 = __importDefault(require("./searchByKeyWord"));
 const saveTender_1 = __importDefault(require("./saveTender"));
 const getSavedTenders_1 = __importDefault(require("./getSavedTenders"));
+const scheduledTenderStatusUpdate_1 = require("./scheduledTenderStatusUpdate");
 var Tender;
 (function (Tender) {
     // -- Tender category --//
@@ -34,5 +35,7 @@ var Tender;
     Tender.getSavedTenders = getSavedTenders_1.default;
     // -- Seach for keywords --
     Tender.searchTenderByKeyWord = searchByKeyWord_1.default;
+    // -- Scheduled tender status update --//
+    (0, scheduledTenderStatusUpdate_1.startCronJob)();
 })(Tender || (Tender = {}));
 exports.default = Tender;

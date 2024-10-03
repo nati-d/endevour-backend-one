@@ -5,8 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const response_1 = __importDefault(require("../../types/response"));
 const prismaClient_1 = __importDefault(require("../../prisma/client/prismaClient"));
-const promises_1 = __importDefault(require("fs/promises"));
-const path_1 = __importDefault(require("path"));
+const cloudinary_1 = require("cloudinary");
 const deleteTender = async (req, res) => {
     try {
         const { tender_id } = req.params;
@@ -14,12 +13,20 @@ const deleteTender = async (req, res) => {
             where: { id: parseInt(tender_id) },
             include: { files: true },
         });
-        if (!existingTender)
+        if (!existingTender) {
             return res.status(404).json(new response_1.default(false, "Tender not found"));
-        if (existingTender.files) {
+        }
+        if (existingTender.files && existingTender.files.length > 0) {
             const fileDeletePromises = existingTender.files.map(async (file) => {
-                const filePath = path_1.default.join(__dirname, "../../../public/files/tender", file.file);
-                await promises_1.default.unlink(filePath);
+                try {
+                    const publicId = file.file.split('/').pop()?.split('.')[0];
+                    if (publicId) {
+                        await cloudinary_1.v2.uploader.destroy(publicId);
+                    }
+                }
+                catch (error) {
+                    console.error(`Failed to delete file from Cloudinary: ${file.file}`, error);
+                }
             });
             await Promise.all(fileDeletePromises);
         }

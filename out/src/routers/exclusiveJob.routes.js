@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 const exclusive_job_1 = __importDefault(require("../controllers/exclusive_job"));
 const middlewares_1 = __importDefault(require("../middlewares"));
 const router = express_1.default.Router();
-router.post("/recommended-applicant/create", middlewares_1.default.uploadFile("files/exclusive_job/applicant_cv").single("cv"), exclusive_job_1.default.createRecommendedApplicant);
+router.post("/recommended-applicant/create", middlewares_1.default.uploadFile().single("cv"), exclusive_job_1.default.createRecommendedApplicant);
 router.use(middlewares_1.default.tokenAuth);
 router.use(middlewares_1.default.adminAuth);
 //Recommenders

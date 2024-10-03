@@ -13,7 +13,7 @@ router.use(Middleware.adminAuth);
 router.get("/confirm-password", Controller.confirmPassword);
 router.post(
   "/upload-profile-img",
-  Middleware.uploadFile("images/profile_images/admin").single("profile_image"),
+  Middleware.uploadFile().single("profile_image"),
   Controller.adminProfileImgUpload
 );
 router.put("/update-profile", Controller.updateAdminProfile);
